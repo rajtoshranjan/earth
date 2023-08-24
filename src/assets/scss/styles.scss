@@ -1,11 +1,4 @@
 @import url("https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css");
 
-body {
-  padding: 0;
-  margin: 0;
-}
-
-.map-container {
-  width: 100%;
-  height: 100vh;
-}
+@import "./base";
+@import "../../components/components";
