@@ -42,6 +42,7 @@ function App() {
     const maplibreMap = new Map({
       container: mapContainerRef.current,
       style: baseStyleSpec,
+      center: [78.8718, 21.7679],
       zoom: 0,
     });
 
