@@ -12,7 +12,7 @@ const baseStyleSpec: StyleSpecification = {
   sources: {
     satellite: {
       type: "raster",
-      tiles: ["http://mt0.google.com/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}"],
+      tiles: ["https://mt0.google.com/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}"],
       tileSize: 256,
       maxzoom: 22,
     },
