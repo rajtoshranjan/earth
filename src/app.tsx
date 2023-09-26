@@ -1,11 +1,27 @@
 import "./assets/scss/styles.scss";
 import {
+  MaplibreExportControl,
+  Size,
+  PageOrientation,
+  Format,
+  DPI,
+} from "@watergis/maplibre-gl-export";
+import "@watergis/maplibre-gl-export/dist/maplibre-gl-export.css";
+import {
+  AttributionControl,
+  FullscreenControl,
+  GeolocateControl,
+  LogoControl,
   Map,
+  MouseHandler,
   NavigationControl,
+  ScaleControl,
   StyleSpecification,
   TerrainControl,
 } from "maplibre-gl";
 import { useEffect, useRef, useState } from "react";
+import MapboxDraw from "@mapbox/mapbox-gl-draw";
+import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 
 const baseStyleSpec: StyleSpecification = {
   version: 8,
@@ -55,21 +71,42 @@ function App() {
     );
 
     maplibreMap.addControl(
+      new GeolocateControl({ showUserLocation: true, showAccuracyCircle: true })
+    );
+
+    maplibreMap.addControl(
       new TerrainControl({
         source: "terrainSource",
         exaggeration: 1,
       })
     );
+    maplibreMap.addControl(new FullscreenControl({}));
+    maplibreMap.addControl(new ScaleControl({}));
+    // @ts-ignore
+    maplibreMap.addControl(new MapboxDraw(), "top-left");
+
+    maplibreMap.addControl(
+      // @ts-ignore
+      new MaplibreExportControl({
+        PageSize: Size.A4,
+        PageOrientation: PageOrientation.Portrait,
+        Format: Format.PNG,
+        DPI: DPI[300],
+        Crosshair: true,
+        PrintableArea: true,
+      }),
+      "top-right"
+    );
 
     maplibreMap.on("load", () => {
-      maplibreMap.addSource("terrain", {
+      maplibreMap.addSource("terrainSource", {
         type: "raster-dem",
         url:
           "https://api.maptiler.com/tiles/terrain-rgb/tiles.json?key=" +
           import.meta.env.VITE_MAP_TILER_KEY,
       });
       maplibreMap.setTerrain({
-        source: "terrain",
+        source: "terrainSource",
         exaggeration: 2.5,
       });
     });
