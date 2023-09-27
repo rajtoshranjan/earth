@@ -8,20 +8,18 @@ import {
 } from "@watergis/maplibre-gl-export";
 import "@watergis/maplibre-gl-export/dist/maplibre-gl-export.css";
 import {
-  AttributionControl,
   FullscreenControl,
   GeolocateControl,
-  LogoControl,
   Map,
-  MouseHandler,
   NavigationControl,
   ScaleControl,
   StyleSpecification,
   TerrainControl,
 } from "maplibre-gl";
 import { useEffect, useRef, useState } from "react";
-import MapboxDraw from "@mapbox/mapbox-gl-draw";
-import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
+
+import { Draw } from "./draw";
+import { GlobalContext } from "./context";
 
 const baseStyleSpec: StyleSpecification = {
   version: 8,
@@ -82,8 +80,6 @@ function App() {
     );
     maplibreMap.addControl(new FullscreenControl({}));
     maplibreMap.addControl(new ScaleControl({}));
-    // @ts-ignore
-    maplibreMap.addControl(new MapboxDraw(), "top-left");
 
     maplibreMap.addControl(
       // @ts-ignore
@@ -111,10 +107,15 @@ function App() {
       });
     });
 
-    setMap(map);
+    setMap(maplibreMap);
   }, []);
 
-  return <div ref={mapContainerRef} className="map-container" />;
+  return (
+    <GlobalContext.Provider value={{ map }}>
+      <div ref={mapContainerRef} className="map-container" />;
+      <Draw />
+    </GlobalContext.Provider>
+  );
 }
 
 export default App;
