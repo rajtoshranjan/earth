@@ -28,7 +28,7 @@ The Google Earth Clone is a web application that emulates the concept of Google 
 
 - [Vite](https://vitejs.dev/): A fast build tool for modern web development.
 - [React](https://reactjs.org/): A JavaScript library for building user interfaces.
-- [Tailwind CSS](https://tailwindcss.com/): A CSS preprocessor that adds power and elegance to the basic language.
+- [Tailwind CSS](https://tailwindcss.com/): A utility-first CSS framework packed with classes like flex, pt-4, text-center and rotate-90 that can be composed to build any design, directly in your markup.
 
 ## Getting Started
 
