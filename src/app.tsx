@@ -18,7 +18,7 @@ import {
 } from "maplibre-gl";
 import { useEffect, useRef, useState } from "react";
 
-import { Draw } from "./draw";
+// import { Draw } from "./draw";
 import { GlobalContext } from "./context";
 import { Header, SideNav } from "./components";
 
