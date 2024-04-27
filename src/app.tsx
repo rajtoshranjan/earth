@@ -1,4 +1,4 @@
-import "./assets/scss/styles.scss";
+import "./assets/styles.css";
 import {
   MaplibreExportControl,
   Size,
@@ -20,6 +20,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { Draw } from "./draw";
 import { GlobalContext } from "./context";
+import { Header, SideNav } from "./components";
 
 const baseStyleSpec: StyleSpecification = {
   version: 8,
@@ -58,6 +59,7 @@ function App() {
       style: baseStyleSpec,
       center: [78.8718, 21.7679],
       zoom: 0,
+      attributionControl: false,
     });
 
     maplibreMap.addControl(
@@ -65,21 +67,27 @@ function App() {
         visualizePitch: true,
         showZoom: true,
         showCompass: true,
-      })
+      }),
+      "bottom-right"
     );
+    maplibreMap.addControl(new ScaleControl({}), "bottom-left");
 
     maplibreMap.addControl(
-      new GeolocateControl({ showUserLocation: true, showAccuracyCircle: true })
+      new GeolocateControl({
+        showUserLocation: true,
+        showAccuracyCircle: true,
+      }),
+      "bottom-right"
     );
 
     maplibreMap.addControl(
       new TerrainControl({
         source: "terrainSource",
         exaggeration: 1,
-      })
+      }),
+      "bottom-right"
     );
-    maplibreMap.addControl(new FullscreenControl({}));
-    maplibreMap.addControl(new ScaleControl({}));
+    maplibreMap.addControl(new FullscreenControl({}), "top-right");
 
     maplibreMap.addControl(
       // @ts-ignore
@@ -112,8 +120,14 @@ function App() {
 
   return (
     <GlobalContext.Provider value={{ map }}>
-      <div ref={mapContainerRef} className="map-container" />;
-      <Draw />
+      <Header />
+      <div className="flex h-screen w-full dark:bg-gray-900">
+        <SideNav />
+        <div className="w-full" style={{ height: "calc(100vh - 60px)" }}>
+          <div ref={mapContainerRef} className="w-full  h-full" />
+          {/* <Draw /> */}
+        </div>
+      </div>
     </GlobalContext.Provider>
   );
 }
