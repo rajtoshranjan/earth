@@ -27,7 +27,7 @@ const baseStyleSpec: StyleSpecification = {
   sources: {
     satellite: {
       type: "raster",
-      tiles: ["https://mt0.google.com/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}"],
+      tiles: ["https://mt0.google.com/vt/lyrs=y&hl=en&x={x}&y={y}&z={z}"],
       tileSize: 256,
       maxzoom: 22,
     },
@@ -121,9 +121,9 @@ function App() {
   return (
     <GlobalContext.Provider value={{ map }}>
       <Header />
-      <div className="flex h-screen w-full dark:bg-gray-900">
+      <div className="flex w-full bg-gray-600 overflow-hidden">
         <SideNav />
-        <div className="w-full" style={{ height: "calc(100vh - 60px)" }}>
+        <div className="w-full" style={{ height: "calc(100vh - 57px)" }}>
           <div ref={mapContainerRef} className="w-full  h-full" />
           <Draw />
         </div>

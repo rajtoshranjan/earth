@@ -141,9 +141,9 @@ export const Draw = () => {
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
           className="h-4 w-4"
         >
           <path d="M5 3a2 2 0 0 0-2 2"></path>
@@ -275,9 +275,9 @@ export const Draw = () => {
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
           className="h-4 w-4"
         >
           <circle cx="12" cy="12" r="10"></circle>
@@ -296,9 +296,9 @@ export const Draw = () => {
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
           className="h-4 w-4"
         >
           <rect width="12" height="20" x="6" y="2" rx="2"></rect>
@@ -317,9 +317,9 @@ export const Draw = () => {
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
           className="h-4 w-4"
         >
           <path d="M3 6h18"></path>
