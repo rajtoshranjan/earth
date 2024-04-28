@@ -90,13 +90,22 @@ export const Search: React.FC<SearchProps> = ({ className }) => {
   }, [selectedLocation]);
 
   // Handlers.
-  const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
+  const updateSearchQuery = (value?: string) => {
     setQuery(value);
 
     // Update search param.
-    url.searchParams.set("query", value);
+    if (!value) {
+      url.searchParams.delete("query");
+    } else {
+      url.searchParams.set("query", value);
+    }
+
     window.history.pushState(null, "", url.toString());
+  };
+
+  const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    updateSearchQuery(value);
   };
 
   const onPlaceSelect = (feature: FeatureResponse) => {
@@ -112,7 +121,8 @@ export const Search: React.FC<SearchProps> = ({ className }) => {
       id: feature.id,
       name: feature.place_name_en,
     });
-    setQuery(undefined);
+
+    updateSearchQuery();
   };
 
   return (
