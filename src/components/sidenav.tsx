@@ -49,6 +49,7 @@ export const SideNav = () => {
       <div className="flex flex-col space-y-2">
         <div className="inline-flex justify-between">
           <h2 className="text-sm font-medium text-gray-400">Layers</h2>
+
           <button className="inline-flex items-center whitespace-nowrap text-sm font-sm h-5 p-2 justify-start text-gray-400 hover:text-gray-300">
             <ReactSVG src={Icon.Plus} className="h-4 w-4 mr-2" />
             Add Layer
@@ -67,6 +68,7 @@ export const SideNav = () => {
                 >
                   <ReactSVG src={Icon.Eye} className="h-5 w-5" />
                 </button>
+
                 <button className="text-sm font-medium text-gray-50 hover:text-gray-300">
                   <ReactSVG src={Icon.MeatBallMenu} />
                 </button>
