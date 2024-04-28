@@ -3,6 +3,7 @@ import { GlobalContext } from "../contexts";
 import classNames from "classnames";
 import { ReactSVG } from "react-svg";
 import { Icon } from "../assets/icons";
+import { Draw } from "./draw";
 
 export const SideNav = () => {
   // Context.
@@ -13,7 +14,7 @@ export const SideNav = () => {
 
   // Constants.
   const customClassNames = classNames(
-    "absolute z-10 h-screen-container w-64 p-4 space-y-4 flex flex-col bg-gray-900 border-r border-gray-700 transition-all duration-300 ease-in-out",
+    "absolute z-10 h-screen-container w-64 p-4 flex flex-col bg-gray-900 border-r border-gray-700 transition-all duration-300 ease-in-out",
     {
       "-left-64": !show,
       "left-0": show,
@@ -77,6 +78,9 @@ export const SideNav = () => {
           </div>
         </div>
       </div>
+
+      {/* Draw tools */}
+      <Draw className="absolute ml-64" />
     </div>
   );
 };

@@ -12,9 +12,10 @@ import {
   TerraDrawMapLibreGLAdapter,
   TerraDrawRenderMode,
 } from "terra-draw";
-import { GlobalContext } from "./contexts";
+import { GlobalContext } from "../contexts";
 import { ReactSVG } from "react-svg";
-import { Icon } from "./assets/icons";
+import { Icon } from "../assets/icons";
+import classNames from "classnames";
 
 const getModes = () => {
   return [
@@ -83,13 +84,18 @@ const getModes = () => {
   ];
 };
 
-export const Draw = () => {
+type DrawProps = React.HTMLProps<HTMLDivElement>;
+
+export const Draw: React.FC<DrawProps> = ({ className, ...rest }) => {
   // Context.
   const { map } = useContext(GlobalContext);
 
   // States.
   const [draw, setDraw] = useState<TerraDraw>();
   const [selectedMode, setSelectedMode] = useState<HTMLButtonElement>();
+
+  // Constants.
+  const customClassNames = classNames("inline-flex flex-col gap-2", className);
 
   // useEffects.
   useEffect(() => {
@@ -130,11 +136,11 @@ export const Draw = () => {
   };
 
   return (
-    <div className="absolute top-14 mx-2 mt-2 inline-flex flex-col gap-2">
+    <div className={customClassNames} {...rest}>
       <button
         id="select"
         onClick={() => addModeChangeHandler("select")}
-        className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium border border-input h-10 w-10 bg-gray-900 text-gray-50 hover:bg-gray-800 rounded-full"
+        className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium border border-input h-8 w-8 bg-gray-900 text-gray-50 hover:bg-gray-800 rounded-full"
       >
         <ReactSVG src={Icon.Select} className="h-4 w-4" />
         <span className="sr-only">Select</span>
@@ -142,7 +148,7 @@ export const Draw = () => {
       <button
         id="point"
         onClick={() => addModeChangeHandler("point")}
-        className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium border border-input h-10 w-10 bg-gray-900 text-gray-50 hover:bg-gray-800 rounded-full"
+        className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium border border-input h-8 w-8 bg-gray-900 text-gray-50 hover:bg-gray-800 rounded-full"
       >
         <ReactSVG src={Icon.PointMarker} className="h-4 w-4" />
         <span className="sr-only">Draw Point</span>
@@ -151,7 +157,7 @@ export const Draw = () => {
       <button
         id="linestring"
         onClick={() => addModeChangeHandler("linestring")}
-        className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium border border-input h-10 w-10 bg-gray-900 text-gray-50 hover:bg-gray-800 rounded-full"
+        className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium border border-input h-8 w-8 bg-gray-900 text-gray-50 hover:bg-gray-800 rounded-full"
       >
         <ReactSVG src={Icon.Line} className="h-4 w-4" />
         <span className="sr-only">Draw Line</span>
@@ -159,7 +165,7 @@ export const Draw = () => {
       <button
         id="polygon"
         onClick={() => addModeChangeHandler("polygon")}
-        className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium border border-input h-10 w-10 bg-gray-900 text-gray-50 hover:bg-gray-800 rounded-full"
+        className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium border border-input h-8 w-8 bg-gray-900 text-gray-50 hover:bg-gray-800 rounded-full"
       >
         <ReactSVG src={Icon.Polygon} className="h-4 w-4" />
         <span className="sr-only">Draw Polygon</span>
@@ -167,7 +173,7 @@ export const Draw = () => {
       <button
         id="freehand"
         onClick={() => addModeChangeHandler("freehand")}
-        className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium border border-input h-10 w-10 bg-gray-900 text-gray-50 hover:bg-gray-800 rounded-full"
+        className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium border border-input h-8 w-8 bg-gray-900 text-gray-50 hover:bg-gray-800 rounded-full"
       >
         <ReactSVG src={Icon.Freehand} className="h-4 w-4" />
         <span className="sr-only">Freehand Drawing</span>
@@ -175,7 +181,7 @@ export const Draw = () => {
       <button
         id="circle"
         onClick={() => addModeChangeHandler("circle")}
-        className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium border border-input h-10 w-10 bg-gray-900 text-gray-50 hover:bg-gray-800 rounded-full"
+        className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium border border-input h-8 w-8 bg-gray-900 text-gray-50 hover:bg-gray-800 rounded-full"
       >
         <ReactSVG src={Icon.Circle} className="h-4 w-4" />
         <span className="sr-only">Draw Circle</span>
@@ -183,7 +189,7 @@ export const Draw = () => {
       <button
         id="rectangle"
         onClick={() => addModeChangeHandler("rectangle")}
-        className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium border border-input h-10 w-10 bg-gray-900 text-gray-50 hover:bg-gray-800 rounded-full"
+        className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium border border-input h-8 w-8 bg-gray-900 text-gray-50 hover:bg-gray-800 rounded-full"
       >
         <ReactSVG src={Icon.Rectangle} className="h-4 w-4" />
         <span className="sr-only">Draw Rectangle</span>
@@ -191,7 +197,7 @@ export const Draw = () => {
 
       <button
         onClick={() => draw?.clear()}
-        className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium border border-input h-10 w-10 bg-gray-900 text-gray-50 hover:bg-gray-800 rounded-full"
+        className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium border border-input h-8 w-8 bg-gray-900 text-gray-50 hover:bg-gray-800 rounded-full"
       >
         <ReactSVG src={Icon.Bin} className="h-4 w-4" />
         <span className="sr-only">Clear</span>

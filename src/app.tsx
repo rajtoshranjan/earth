@@ -18,7 +18,6 @@ import {
 } from "maplibre-gl";
 import { useEffect, useRef, useState } from "react";
 
-import { Draw } from "./draw";
 import { GlobalContext } from "./contexts";
 import { Header, SideNav } from "./components";
 
@@ -123,10 +122,11 @@ function App() {
       <Header />
       <SideNav />
 
-      <div className="w-full h-screen-container bg-gray-600">
-        <div ref={mapContainerRef} className="w-full  h-full" />
-        <Draw />
-      </div>
+      {/* Map Container */}
+      <div
+        ref={mapContainerRef}
+        className="w-full h-screen-container bg-gray-600"
+      />
     </GlobalContext.Provider>
   );
 }
