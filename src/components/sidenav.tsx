@@ -4,13 +4,17 @@ import classNames from "classnames";
 import { ReactSVG } from "react-svg";
 import { Icon } from "../assets/icons";
 import { Draw } from "./draw";
+import { LocalStorageManager } from "../utils";
 
 export const SideNav = () => {
   // Context.
   const { map } = useContext(GlobalContext);
+  const isSideNavOpen = LocalStorageManager.isSideNavOpen();
+  const defaultShow =
+    isSideNavOpen !== null ? isSideNavOpen : window.innerWidth >= 1024;
 
   // States.
-  const [show, setShow] = useState<boolean>(false);
+  const [show, setShow] = useState<boolean>(defaultShow);
 
   // Constants.
   const customClassNames = classNames(
@@ -22,6 +26,11 @@ export const SideNav = () => {
   );
 
   // Handlers.
+  const onClickToggleSideNav = () => {
+    LocalStorageManager.setSideNavOpen(!show);
+    setShow((prev) => !prev);
+  };
+
   const onLayerToggle = () => {
     const layerId = "satellite";
 
@@ -38,7 +47,7 @@ export const SideNav = () => {
     <div className={customClassNames}>
       <button
         className="absolute ml-60 px-1 py-4 w-5 top-2/4 -translate-y-2/4 bg-gray-900 text-gray-50 rounded-e-lg border-r border-t border-b border-gray-700"
-        onClick={() => setShow(!show)}
+        onClick={onClickToggleSideNav}
       >
         {show ? (
           <ReactSVG src={Icon.ChevronSmallLeft} />
@@ -80,7 +89,7 @@ export const SideNav = () => {
       </div>
 
       {/* Draw tools */}
-      <Draw className="absolute ml-64" />
+      <Draw className="absolute ml-60 -mt-1 pl-3" />
     </div>
   );
 };
