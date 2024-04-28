@@ -19,7 +19,7 @@ import {
 import { useEffect, useRef, useState } from "react";
 
 import { Draw } from "./draw";
-import { GlobalContext } from "./context";
+import { GlobalContext } from "./contexts";
 import { Header, SideNav } from "./components";
 
 const baseStyleSpec: StyleSpecification = {

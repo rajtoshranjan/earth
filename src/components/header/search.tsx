@@ -5,7 +5,7 @@ import {
   FeatureCollectionResponse,
   SelectedLocation,
 } from "./types";
-import { GlobalContext } from "../../context";
+import { GlobalContext } from "../../contexts";
 
 type SearchProps = React.HTMLProps<HTMLDivElement>;
 

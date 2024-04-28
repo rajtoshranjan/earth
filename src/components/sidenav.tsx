@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { GlobalContext } from "../context";
+import { GlobalContext } from "../contexts";
 import classNames from "classnames";
 
 export const SideNav = () => {

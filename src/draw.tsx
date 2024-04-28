@@ -12,7 +12,7 @@ import {
   TerraDrawMapLibreGLAdapter,
   TerraDrawRenderMode,
 } from "terra-draw";
-import { GlobalContext } from "./context";
+import { GlobalContext } from "./contexts";
 
 const getModes = () => {
   return [
