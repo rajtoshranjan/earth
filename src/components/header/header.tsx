@@ -28,7 +28,7 @@ export const Header = () => {
       </div>
 
       {/* Right Side */}
-      <div className="flex w-3/12 items-center space-x-4">
+      <div className="flex w-8/12 md:w-6/12 lg:w-3/12 items-center space-x-4">
         {/* Search */}
         <Search />
 
