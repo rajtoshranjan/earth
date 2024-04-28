@@ -30,7 +30,7 @@ export const SideNav = () => {
     <div className={customClassNames}>
       {/* Toggle Button */}
       <button
-        className="absolute ml-60 px-1 py-4 w-5 top-2/4 -translate-y-2/4 bg-gray-900 text-gray-50 rounded-e-lg border-r border-t border-b border-gray-700"
+        className="absolute ml-60 px-1 py-4 w-[1.4rem] top-2/4 -translate-y-2/4 bg-gray-900 text-gray-50 rounded-e-lg border-r border-t border-b border-gray-700"
         onClick={onClickToggleSideNav}
       >
         {show ? (
