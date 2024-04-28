@@ -24,7 +24,8 @@ export const Search: React.FC<SearchProps> = ({ className }) => {
   // State.
   const [query, setQuery] = useState<string>();
   const [selectedLocation, setSelectedLocation] = useState<SelectedLocation>();
-  const [response, setResponse] = useState<FeatureCollectionResponse>();
+  const [searchedLocations, setSearchedLocations] =
+    useState<FeatureCollectionResponse>();
 
   // useEffect.
   useEffect(() => {
@@ -36,13 +37,9 @@ export const Search: React.FC<SearchProps> = ({ className }) => {
       return;
     }
 
-    fetch(
-      `https://api.maptiler.com/geocoding/${query}.json?proximity=ip&fuzzyMatch=true&limit=5&key=${
-        import.meta.env.VITE_MAP_TILER_KEY
-      }`
-    ).then(async (res) => {
-      return setResponse(await res.json());
-    });
+    const timeoutId = setTimeout(fetchLocationList, 500);
+
+    return () => clearTimeout(timeoutId);
   }, [query]);
 
   useEffect(() => {
@@ -64,7 +61,7 @@ export const Search: React.FC<SearchProps> = ({ className }) => {
 
       map?.addLayer({
         source: "searchLocation",
-        id: "layer",
+        id: "searchLocationBoundary",
         type: "line",
         paint: {
           "line-color": "red",
@@ -77,12 +74,22 @@ export const Search: React.FC<SearchProps> = ({ className }) => {
       const source = map?.getSource("searchLocation");
 
       if (source) {
-        console.log(source);
-        map?.removeLayer("layer");
+        map?.removeLayer("searchLocationBoundary");
         map?.removeSource("searchLocation");
       }
     };
   }, [selectedLocation]);
+
+  // Helpers.
+  const fetchLocationList = () => {
+    fetch(
+      `https://api.maptiler.com/geocoding/${query}.json?proximity=ip&fuzzyMatch=true&limit=5&key=${
+        import.meta.env.VITE_MAP_TILER_KEY
+      }`
+    ).then(async (res) => {
+      return setSearchedLocations(await res.json());
+    });
+  };
 
   // Handlers.
   const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -139,9 +146,9 @@ export const Search: React.FC<SearchProps> = ({ className }) => {
       {/* Search Options */}
       {query && (
         <div className="absolute mt-1 w-full rounded-md shadow-md bg-gray-800 border-gray-600">
-          {response && response.features.length > 0 ? (
+          {searchedLocations && searchedLocations.features.length > 0 ? (
             <ul className="py-1 text-sm text-gray-400">
-              {response.features.map((feature) => (
+              {searchedLocations.features.map((feature) => (
                 <SearchItem
                   feature={feature}
                   onClick={() => onPlaceSelect(feature)}
