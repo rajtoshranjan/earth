@@ -4,17 +4,17 @@ import classNames from "classnames";
 import { ReactSVG } from "react-svg";
 import { Icon } from "../assets/icons";
 import { Draw } from "./draw";
-import { LocalStorageManager } from "../utils";
+import { useLocalStorage } from "@uidotdev/usehooks";
 
 export const SideNav = () => {
   // Context.
   const { map } = useContext(GlobalContext);
-  const isSideNavOpen = LocalStorageManager.isSideNavOpen();
-  const defaultShow =
-    isSideNavOpen !== null ? isSideNavOpen : window.innerWidth >= 1024;
 
   // States.
-  const [show, setShow] = useState<boolean>(defaultShow);
+  const [show, setShow] = useLocalStorage<boolean>(
+    "isSideNavOpen",
+    window.innerWidth >= 1024
+  );
 
   // Constants.
   const customClassNames = classNames(
@@ -27,7 +27,6 @@ export const SideNav = () => {
 
   // Handlers.
   const onClickToggleSideNav = () => {
-    LocalStorageManager.setSideNavOpen(!show);
     setShow((prev) => !prev);
   };
 

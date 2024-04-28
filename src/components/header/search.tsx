@@ -8,6 +8,7 @@ import {
 import { GlobalContext } from "../../contexts";
 import { ReactSVG } from "react-svg";
 import { Icon } from "../../assets/icons";
+import { useDebounce } from "@uidotdev/usehooks";
 
 type SearchProps = React.HTMLProps<HTMLDivElement>;
 
@@ -25,6 +26,8 @@ export const Search: React.FC<SearchProps> = ({ className }) => {
 
   // State.
   const [query, setQuery] = useState<string>();
+  const debouncedSearchQuery = useDebounce(query, 300);
+
   const [selectedLocation, setSelectedLocation] = useState<SelectedLocation>();
   const [searchedLocations, setSearchedLocations] =
     useState<FeatureCollectionResponse>();
@@ -35,14 +38,18 @@ export const Search: React.FC<SearchProps> = ({ className }) => {
   }, []);
 
   useEffect(() => {
-    if (!query) {
+    if (!debouncedSearchQuery) {
       return;
     }
 
-    const timeoutId = setTimeout(fetchLocationList, 500);
-
-    return () => clearTimeout(timeoutId);
-  }, [query]);
+    fetch(
+      `https://api.maptiler.com/geocoding/${query}.json?proximity=ip&fuzzyMatch=true&limit=5&key=${
+        import.meta.env.VITE_MAP_TILER_KEY
+      }`
+    ).then(async (res) => {
+      return setSearchedLocations(await res.json());
+    });
+  }, [debouncedSearchQuery]);
 
   useEffect(() => {
     if (!selectedLocation?.id) {
@@ -81,17 +88,6 @@ export const Search: React.FC<SearchProps> = ({ className }) => {
       }
     };
   }, [selectedLocation]);
-
-  // Helpers.
-  const fetchLocationList = () => {
-    fetch(
-      `https://api.maptiler.com/geocoding/${query}.json?proximity=ip&fuzzyMatch=true&limit=5&key=${
-        import.meta.env.VITE_MAP_TILER_KEY
-      }`
-    ).then(async (res) => {
-      return setSearchedLocations(await res.json());
-    });
-  };
 
   // Handlers.
   const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
