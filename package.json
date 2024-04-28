@@ -14,6 +14,7 @@
     "maplibre-gl": "^2.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-svg": "^16.1.34",
     "terra-draw": "^0.0.1-alpha.48"
   },
   "devDependencies": {

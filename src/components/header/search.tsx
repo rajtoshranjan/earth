@@ -6,6 +6,8 @@ import {
   SelectedLocation,
 } from "./types";
 import { GlobalContext } from "../../contexts";
+import { ReactSVG } from "react-svg";
+import { Icon } from "../../assets/icons";
 
 type SearchProps = React.HTMLProps<HTMLDivElement>;
 
@@ -119,21 +121,10 @@ export const Search: React.FC<SearchProps> = ({ className }) => {
 
   return (
     <div className={customClassNames}>
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className="absolute left-3 top-3 h-4 w-4 text-gray-400"
-      >
-        <circle cx="11" cy="11" r="8"></circle>
-        <path d="m21 21-4.3-4.3"></path>
-      </svg>
+      <ReactSVG
+        src={Icon.Search}
+        className="absolute left-3 top-3 h-4 w-4 text-gray-400 stroke-5"
+      />
 
       <input
         className="h-10 w-full border border-input px-3 text-sm bg-gray-700 text-gray-50 pl-10 pr-4 py-2 rounded-md focus:outline-none "

@@ -1,5 +1,7 @@
 import React from "react";
 import { Search } from "./search";
+import { Icon } from "../../assets/icons";
+import { ReactSVG } from "react-svg";
 
 export const Header = () => {
   return (
@@ -7,22 +9,7 @@ export const Header = () => {
       {/* Left Side */}
       <div className="flex space-x-4">
         <a className="flex items-center space-x-2" href="#">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="h-6 w-6 text-blue-500"
-          >
-            <circle cx="12" cy="12" r="10"></circle>
-            <line x1="2" x2="22" y1="12" y2="12"></line>
-            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-          </svg>
+          <ReactSVG src={Icon.Earth} className="h-6 w-6 text-blue-500" />
           <span className="text-lg font-bold text-gray-50">Earth</span>
         </a>
       </div>
