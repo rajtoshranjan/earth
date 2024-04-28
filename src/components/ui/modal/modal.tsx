@@ -27,28 +27,30 @@ export const Modal: React.FC<ModalProps> & ModalComponents = ({
   );
 
   return (
-    show && (
-      <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-        <div className={customClassNames} {...rest}>
-          <div className="flex flex-col bg-neutral-800 border shadow-sm rounded-xl pointer-events-auto border-neutral-700 shadow-neutral-700/70">
-            {/* Header */}
-            <div className="flex justify-between items-center py-3 px-4 border-b border-neutral-700">
-              <h3 className="font-bold  text-gray-50">{title}</h3>
+    <>
+      {show && (
+        <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+          <div className={customClassNames} {...rest}>
+            <div className="flex flex-col bg-neutral-800 border shadow-sm rounded-xl pointer-events-auto border-neutral-700 shadow-neutral-700/70">
+              {/* Header */}
+              <div className="flex justify-between items-center py-3 px-4 border-b border-neutral-700">
+                <h3 className="font-bold  text-gray-50">{title}</h3>
 
-              <button
-                type="button"
-                className="flex justify-center items-center size-7 text-sm font-semibold rounded-full border border-transparent  disabled:opacity-50 disabled:pointer-events-none text-white hover:bg-neutral-700"
-                onClick={() => toggle()}
-              >
-                <ReactSVG src={Icon.Close} className="size-6" />
-              </button>
+                <button
+                  type="button"
+                  className="flex justify-center items-center size-7 text-sm font-semibold rounded-full border border-transparent  disabled:opacity-50 disabled:pointer-events-none text-white hover:bg-neutral-700"
+                  onClick={() => toggle()}
+                >
+                  <ReactSVG src={Icon.Close} className="size-6" />
+                </button>
+              </div>
+
+              {children}
             </div>
-
-            {children}
           </div>
         </div>
-      </div>
-    )
+      )}
+    </>
   );
 };
 
