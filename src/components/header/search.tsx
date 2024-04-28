@@ -137,6 +137,7 @@ export const Search: React.FC<SearchProps> = ({ className }) => {
             <ul className="py-1 text-sm text-gray-400">
               {searchedLocations.features.map((feature) => (
                 <SearchItem
+                  key={feature.id}
                   feature={feature}
                   onClick={() => onPlaceSelect(feature)}
                 />

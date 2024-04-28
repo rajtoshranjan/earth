@@ -16,13 +16,12 @@ export const Header = () => {
 
       {/* Right Side */}
       <div className="flex w-8/12 md:w-6/12 lg:w-3/12 items-center space-x-4">
-        {/* Search */}
         <Search />
 
         <button className="w-8 h-8 border flex shrink-0 overflow-hidden rounded-full ">
           <img
             className="aspect-square h-full w-full"
-            src="https://source.unsplash.com/random/200x200?sig=1"
+            src="https://source.unsplash.com/random/100x100?sig=1"
           />
         </button>
       </div>
