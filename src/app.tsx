@@ -121,12 +121,11 @@ function App() {
   return (
     <GlobalContext.Provider value={{ map }}>
       <Header />
-      <div className="flex w-full bg-gray-600 overflow-hidden">
-        <SideNav />
-        <div className="w-full" style={{ height: "calc(100vh - 57px)" }}>
-          <div ref={mapContainerRef} className="w-full  h-full" />
-          <Draw />
-        </div>
+      <SideNav />
+
+      <div className="w-full h-screen-container bg-gray-600">
+        <div ref={mapContainerRef} className="w-full  h-full" />
+        <Draw />
       </div>
     </GlobalContext.Provider>
   );

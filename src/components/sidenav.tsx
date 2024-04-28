@@ -1,9 +1,22 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { GlobalContext } from "../context";
+import classNames from "classnames";
 
 export const SideNav = () => {
   // Context.
   const { map } = useContext(GlobalContext);
+
+  // States.
+  const [show, setShow] = useState<boolean>(false);
+
+  // Constants.
+  const customClassNames = classNames(
+    "absolute z-10 h-screen-container w-64 p-4 space-y-4 flex flex-col bg-gray-900 border-r border-gray-700 transition-all duration-300 ease-in-out",
+    {
+      "-left-64": !show,
+      "left-0": show,
+    }
+  );
 
   // Handlers.
   const onLayerToggle = () => {
@@ -19,7 +32,31 @@ export const SideNav = () => {
   };
 
   return (
-    <div className="flex flex-col bg-gray-900 border-r border-gray-700 w-64 p-4 space-y-4 transition-all duration-300 ease-in-out">
+    <div className={customClassNames}>
+      <button
+        className="absolute ml-60 px-1 py-4 w-5 top-2/4 -translate-y-2/4 bg-gray-900 text-gray-50 rounded-e-lg border-r border-t border-b border-gray-700"
+        onClick={() => setShow(!show)}
+      >
+        {show ? (
+          <svg
+            fill="currentColor"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 52 52"
+            enable-background="new 0 0 52 52"
+          >
+            <path d="M38,8.3v35.4c0,1-1.3,1.7-2.2,0.9L14.6,27.3c-0.8-0.6-0.8-1.9,0-2.5L35.8,7.3C36.7,6.6,38,7.2,38,8.3z" />
+          </svg>
+        ) : (
+          <svg
+            fill="currentColor"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 52 52"
+            enable-background="new 0 0 52 52"
+          >
+            <path d="M14,43.7V8.3c0-1,1.3-1.7,2.2-0.9l21.2,17.3c0.8,0.6,0.8,1.9,0,2.5L16.2,44.7C15.3,45.4,14,44.8,14,43.7z" />
+          </svg>
+        )}
+      </button>
       <div className="flex flex-col space-y-2">
         <div className="inline-flex justify-between">
           <h2 className="text-sm font-medium text-gray-400">Layers</h2>

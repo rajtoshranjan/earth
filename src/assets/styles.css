@@ -4,6 +4,12 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Custom Classes */
+.h-screen-container {
+  height: calc(100vh - 57px);
+}
+
+/* Map Styles */
 .mapboxgl-ctrl,
 .maplibregl-export-control {
   background-color: theme("colors.gray.900");
