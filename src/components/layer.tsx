@@ -2,18 +2,21 @@ import React, { useContext } from "react";
 import { ReactSVG } from "react-svg";
 import { Icon } from "../assets/icons";
 import { GlobalContext } from "../contexts";
+import { useToggle } from "@uidotdev/usehooks";
 
 export const Layer = () => {
+  // States.
+  const [isVisible, toggleVisibility] = useToggle(true);
+
   // Context.
   const { map } = useContext(GlobalContext);
 
   // Handlers
   const onLayerToggle = () => {
+    toggleVisibility();
     const layerId = "satellite";
 
-    const visibility = map?.getLayoutProperty(layerId, "visibility");
-
-    if (visibility === "visible") {
+    if (isVisible) {
       map?.setLayoutProperty(layerId, "visibility", "none");
     } else {
       map?.setLayoutProperty(layerId, "visibility", "visible");
@@ -31,7 +34,10 @@ export const Layer = () => {
               className="text-sm font-medium text-gray-50 hover:text-gray-300"
               onClick={onLayerToggle}
             >
-              <ReactSVG src={Icon.Eye} className="h-5 w-5" />
+              <ReactSVG
+                src={isVisible ? Icon.Eye : Icon.EyeCross}
+                className="h-5 w-5"
+              />
             </button>
 
             <button className="text-sm font-medium text-gray-50 hover:text-gray-300">
