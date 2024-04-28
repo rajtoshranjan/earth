@@ -27,7 +27,7 @@ export const Layer = () => {
     <div className="flex flex-col space-y-1">
       <div className="flex items-center justify-between">
         <div className="inline-flex space-between space-x-7  items-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:text-accent-foreground h-10 px-4 py-2 justify-start text-gray-50 hover:bg-gray-800">
-          <ReactSVG src={Icon.Satellite} className="h-4 w-4 mr-2" />
+          <ReactSVG src={Icon.Satellite} className="size-4 mr-2" />
           Google Satellite
           <div className="flex items-center gap-2 ">
             <button

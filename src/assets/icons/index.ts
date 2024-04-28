@@ -2,6 +2,7 @@ import Bin from "./bin.svg";
 import ChevronSmallLeft from "./chevron-small-left.svg";
 import ChevronSmallRight from "./chevron-small-right.svg";
 import Circle from "./circle.svg";
+import Close from "./close.svg";
 import Earth from "./earth.svg";
 import EyeCross from "./eye-cross.svg";
 import Eye from "./eye.svg";
@@ -21,6 +22,7 @@ export const Icon = {
   ChevronSmallLeft,
   ChevronSmallRight,
   Circle,
+  Close,
   Earth,
   Eye,
   EyeCross,

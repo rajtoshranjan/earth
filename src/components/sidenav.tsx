@@ -46,7 +46,7 @@ export const SideNav = () => {
           <h2 className="text-sm font-medium text-gray-400">Layers</h2>
 
           <button className="inline-flex items-center whitespace-nowrap text-sm font-sm h-5 p-2 justify-start text-gray-400 hover:text-gray-300">
-            <ReactSVG src={Icon.Plus} className="h-4 w-4 mr-2" />
+            <ReactSVG src={Icon.Plus} className="size-4 mr-2" />
             Add Layer
           </button>
         </div>

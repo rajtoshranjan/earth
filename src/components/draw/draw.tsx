@@ -59,22 +59,22 @@ export const Draw: React.FC<DrawProps> = ({ className, ...rest }) => {
           key={key}
           onClick={() => addModeChangeHandler(key)}
           className={classNames(
-            "inline-flex items-center justify-center whitespace-nowrap text-sm font-medium h-8 w-8 bg-gray-900  hover:bg-gray-800 rounded",
+            "inline-flex items-center justify-center whitespace-nowrap text-sm font-medium size-8 bg-gray-900  hover:bg-gray-800 rounded",
             {
               "text-blue-400": key === selectedMode,
               "text-gray-50": key !== selectedMode,
             }
           )}
         >
-          <ReactSVG src={value.icon} className="h-4 w-4" />
+          <ReactSVG src={value.icon} className="size-4" />
         </button>
       ))}
 
       <button
         onClick={() => draw?.clear()}
-        className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium h-8 w-8 bg-gray-900 text-gray-50 hover:bg-gray-800 rounded"
+        className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium size-8 bg-gray-900 text-gray-50 hover:bg-gray-800 rounded"
       >
-        <ReactSVG src={Icon.Bin} className="h-4 w-4" />
+        <ReactSVG src={Icon.Bin} className="size-4" />
         <span className="sr-only">Clear</span>
       </button>
     </div>
