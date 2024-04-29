@@ -1,4 +1,4 @@
-# Google Earth Clone
+# CodinGunda Earth
 
 This project is a Google Earth clone that made with Vite, React, and SCSS for its development. It provides a simplified version of the features found in Google Earth, allowing users to explore and interact with the Earth's geography and landmarks in a visually engaging way.
 
