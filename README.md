@@ -1,6 +1,6 @@
 # CodinGunda Earth
 
-This project is a Google Earth clone that made with Vite, React, and SCSS for its development. It provides a simplified version of the features found in Google Earth, allowing users to explore and interact with the Earth's geography and landmarks in a visually engaging way.
+This project is a Google Earth clone that made with Vite, React, and Tailwind CSS for its development. It provides a simplified version of the features found in Google Earth, allowing users to explore and interact with the Earth's geography and landmarks in a visually engaging way.
 
 ## Table of Contents
 
@@ -29,6 +29,7 @@ The Google Earth Clone is a web application that emulates the concept of Google 
 - [Vite](https://vitejs.dev/): A fast build tool for modern web development.
 - [React](https://reactjs.org/): A JavaScript library for building user interfaces.
 - [Tailwind CSS](https://tailwindcss.com/): A utility-first CSS framework packed with classes like flex, pt-4, text-center and rotate-90 that can be composed to build any design, directly in your markup.
+- [Maplibre GL JS](https://maplibre.org/): An open-source TypeScript library for publishing maps.
 
 ## Getting Started
 
