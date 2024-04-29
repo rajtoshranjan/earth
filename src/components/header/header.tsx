@@ -8,10 +8,10 @@ export const Header = () => {
     <header className="sticky z-10 top-0 w-full bg-gray-900 border-b border-gray-700 px-4 py-2 flex items-center justify-between">
       {/* Left Side */}
       <div className="flex space-x-4">
-        <a className="flex items-center space-x-2" href="#">
+        <div className="flex items-center space-x-2 select-none">
           <ReactSVG src={Icon.Earth} className="h-6 w-6 text-blue-500" />
           <span className="text-lg font-bold text-gray-50">Earth</span>
-        </a>
+        </div>
       </div>
 
       {/* Right Side */}
