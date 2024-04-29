@@ -61,6 +61,15 @@ function App() {
       attributionControl: false,
     });
 
+    maplibreMap.on("load", () => {
+      maplibreMap.addSource("terrainSource", {
+        type: "raster-dem",
+        url:
+          "https://api.maptiler.com/tiles/terrain-rgb/tiles.json?key=" +
+          import.meta.env.VITE_MAP_TILER_KEY,
+      });
+    });
+
     maplibreMap.addControl(
       new NavigationControl({
         visualizePitch: true,
@@ -100,19 +109,6 @@ function App() {
       }),
       "top-right"
     );
-
-    maplibreMap.on("load", () => {
-      maplibreMap.addSource("terrainSource", {
-        type: "raster-dem",
-        url:
-          "https://api.maptiler.com/tiles/terrain-rgb/tiles.json?key=" +
-          import.meta.env.VITE_MAP_TILER_KEY,
-      });
-      maplibreMap.setTerrain({
-        source: "terrainSource",
-        exaggeration: 2.5,
-      });
-    });
 
     setMap(maplibreMap);
   }, []);
