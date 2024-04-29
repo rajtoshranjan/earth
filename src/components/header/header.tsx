@@ -1,7 +1,5 @@
-import React from "react";
+import { Icon, IconIdentifier } from "../ui";
 import { Search } from "./search";
-import { Icon } from "../../assets/icons";
-import { ReactSVG } from "react-svg";
 
 export const Header = () => {
   return (
@@ -9,7 +7,10 @@ export const Header = () => {
       {/* Left Side */}
       <div className="flex space-x-4">
         <div className="flex items-center space-x-2 select-none">
-          <ReactSVG src={Icon.Earth} className="h-6 w-6 text-blue-500" />
+          <Icon
+            identifier={IconIdentifier.Earth}
+            className="h-6 w-6 text-blue-500"
+          />
           <span className="text-lg font-bold text-gray-50">Earth</span>
         </div>
       </div>

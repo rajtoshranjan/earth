@@ -1,25 +1,25 @@
-import { Icon } from "../../assets/icons";
+import { IconIdentifier } from "../ui";
 
 export const MODES = {
   select: {
-    icon: Icon.Select,
+    iconIdentifier: IconIdentifier.Select,
   },
   point: {
-    icon: Icon.PointMarker,
+    iconIdentifier: IconIdentifier.PointMarker,
   },
   linestring: {
-    icon: Icon.Line,
+    iconIdentifier: IconIdentifier.Line,
   },
   polygon: {
-    icon: Icon.Polygon,
+    iconIdentifier: IconIdentifier.Polygon,
   },
   rectangle: {
-    icon: Icon.Rectangle,
+    iconIdentifier: IconIdentifier.Rectangle,
   },
   circle: {
-    icon: Icon.Circle,
+    iconIdentifier: IconIdentifier.Circle,
   },
   freehand: {
-    icon: Icon.Freehand,
+    iconIdentifier: IconIdentifier.Freehand,
   },
 };

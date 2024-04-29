@@ -1,9 +1,9 @@
 import { useToggle } from "@uidotdev/usehooks";
 import React from "react";
-import { ReactSVG } from "react-svg";
-import { Icon } from "../../../assets/icons";
-import { ModalBaseProps, ModalComponents, ModalProps } from "./type";
+
 import classNames from "classnames";
+import { Icon, IconIdentifier } from "../icon";
+import { ModalBaseProps, ModalComponents, ModalProps } from "./type";
 
 export const Modal: React.FC<ModalProps> & ModalComponents = ({
   title,
@@ -41,7 +41,7 @@ export const Modal: React.FC<ModalProps> & ModalComponents = ({
                   className="flex justify-center items-center size-7 text-sm font-semibold rounded-full border border-transparent  disabled:opacity-50 disabled:pointer-events-none text-white hover:bg-neutral-700"
                   onClick={() => toggle()}
                 >
-                  <ReactSVG src={Icon.Close} className="size-6" />
+                  <Icon identifier={IconIdentifier.Close} className="size-6" />
                 </button>
               </div>
 

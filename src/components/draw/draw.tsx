@@ -2,11 +2,11 @@ import React, { useContext, useEffect, useState } from "react";
 
 import { TerraDraw, TerraDrawMapLibreGLAdapter } from "terra-draw";
 import { GlobalContext } from "../../contexts";
-import { ReactSVG } from "react-svg";
-import { Icon } from "../../assets/icons";
+
 import classNames from "classnames";
-import { setupModes } from "./helpers";
+import { Button, IconIdentifier } from "../ui";
 import { MODES } from "./constants";
+import { setupModes } from "./helpers";
 
 type DrawProps = React.HTMLProps<HTMLDivElement>;
 
@@ -55,28 +55,18 @@ export const Draw: React.FC<DrawProps> = ({ className, ...rest }) => {
   return (
     <div className={customClassNames} {...rest}>
       {Object.entries(MODES).map(([key, value]) => (
-        <button
+        <Button
           key={key}
+          active={key === selectedMode}
+          iconIdentifier={value.iconIdentifier}
           onClick={() => addModeChangeHandler(key)}
-          className={classNames(
-            "inline-flex items-center justify-center whitespace-nowrap text-sm font-medium size-8 bg-gray-900  hover:bg-gray-800 rounded",
-            {
-              "text-blue-400": key === selectedMode,
-              "text-gray-50": key !== selectedMode,
-            }
-          )}
-        >
-          <ReactSVG src={value.icon} className="size-4" />
-        </button>
+        />
       ))}
 
-      <button
+      <Button
+        iconIdentifier={IconIdentifier.Bin}
         onClick={() => draw?.clear()}
-        className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium size-8 bg-gray-900 text-gray-50 hover:bg-gray-800 rounded"
-      >
-        <ReactSVG src={Icon.Bin} className="size-4" />
-        <span className="sr-only">Clear</span>
-      </button>
+      />
     </div>
   );
 };

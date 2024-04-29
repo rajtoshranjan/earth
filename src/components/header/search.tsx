@@ -1,14 +1,14 @@
-import React, { ChangeEvent, useContext, useEffect, useState } from "react";
 import classNames from "classnames";
+import React, { ChangeEvent, useContext, useEffect, useState } from "react";
+import { GlobalContext } from "../../contexts";
 import {
-  FeatureResponse,
   FeatureCollectionResponse,
+  FeatureResponse,
   SelectedLocation,
 } from "./types";
-import { GlobalContext } from "../../contexts";
-import { ReactSVG } from "react-svg";
-import { Icon } from "../../assets/icons";
+
 import { useDebounce } from "@uidotdev/usehooks";
+import { Icon, IconIdentifier } from "../ui";
 
 type SearchProps = React.HTMLProps<HTMLDivElement>;
 
@@ -127,8 +127,8 @@ export const Search: React.FC<SearchProps> = ({ className }) => {
 
   return (
     <div className={customClassNames}>
-      <ReactSVG
-        src={Icon.Search}
+      <Icon
+        identifier={IconIdentifier.Search}
         className="absolute left-3 top-3 size-4 text-gray-400 stroke-5"
       />
 

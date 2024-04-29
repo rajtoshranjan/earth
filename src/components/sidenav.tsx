@@ -1,9 +1,8 @@
-import classNames from "classnames";
-import { ReactSVG } from "react-svg";
-import { Icon } from "../assets/icons";
-import { Draw } from "./draw";
 import { useLocalStorage } from "@uidotdev/usehooks";
+import classNames from "classnames";
+import { Draw } from "./draw";
 import { Layer } from "./layer";
+import { Icon, IconIdentifier } from "./ui";
 
 export const SideNav = () => {
   // States.
@@ -30,14 +29,17 @@ export const SideNav = () => {
     <div className={customClassNames}>
       {/* Toggle Button */}
       <button
-        className="absolute ml-60 px-1 py-4 w-[1.4rem] top-2/4 -translate-y-2/4 bg-gray-900 text-gray-50 rounded-e-lg border-r border-t border-b border-gray-700"
+        className="absolute flex ml-60 px-1 py-4 w-[1.4rem] top-2/4 -translate-y-2/4 bg-gray-900 text-gray-50 rounded-e-lg border-r border-t border-b border-gray-700"
         onClick={onClickToggleSideNav}
       >
-        {show ? (
-          <ReactSVG src={Icon.ChevronSmallLeft} />
-        ) : (
-          <ReactSVG src={Icon.ChevronSmallRight} />
-        )}
+        <Icon
+          identifier={
+            show
+              ? IconIdentifier.ChevronSmallLeft
+              : IconIdentifier.ChevronSmallRight
+          }
+          className="size-[14px]"
+        />
       </button>
 
       {/* Body */}
@@ -46,7 +48,7 @@ export const SideNav = () => {
           <h2 className="text-sm font-medium text-gray-400">Layers</h2>
 
           <button className="inline-flex items-center whitespace-nowrap text-sm font-sm h-5 p-2 justify-start text-gray-400 hover:text-gray-300">
-            <ReactSVG src={Icon.Plus} className="size-4 mr-2" />
+            <Icon identifier={IconIdentifier.Plus} className="size-4 mr-2" />
             Add Layer
           </button>
         </div>
