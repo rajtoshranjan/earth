@@ -15,7 +15,7 @@ This project is a Google Earth clone that made with Vite, React, and Tailwind CS
 
 ## Introduction
 
-The Google Earth Clone is a web application that emulates the concept of Google Earth. Users can view and interact with a globe that displays geographic information, maps, and landmarks. The application aims to provide an immersive experience similar to the well-known Google Earth platform.
+The CodinGunda Earth is a web application that emulates the features of Google Earth. Users can view and interact with a globe that displays geographic information, maps, and landmarks. The application aims to provide an immersive experience similar to the well-known Google Earth platform.
 
 ## Features
 
@@ -33,12 +33,12 @@ The Google Earth Clone is a web application that emulates the concept of Google 
 
 ## Getting Started
 
-To get started with the Google Earth Clone, follow these steps:
+To get started with the CodinGunda Earth, follow these steps:
 
 ### Installation
 
-1. Clone the repository: `git clone https://github.com/rajtoshranjan/google-earth-clone.git`
-2. Navigate to the project directory: `cd google-earth-clone`
+1. Clone the repository: `git clone https://github.com/rajtoshranjan/codingunda-earth.git`
+2. Navigate to the project directory: `cd codingunda-earth`
 3. Install dependencies: `npm install`
 
 ### Usage
