@@ -6,7 +6,7 @@
 
 /* Custom Classes */
 .h-screen-container {
-  height: calc(100vh - 57px);
+  height: calc(100dvh - 57px);
 }
 
 /* Map Styles */
