@@ -58,7 +58,7 @@ export const Auth = () => {
         />
       </Popover.Button>
 
-      <Popover.Panel className="absolute bg-gray-800 right-0 mt-4 mr-3 py-3 rounded-lg text-gray-50 w-60">
+      <Popover.Panel className="absolute bg-gray-800 right-0 mt-4 mr-3 py-3 rounded-lg text-gray-50 min-w-60">
         <div className="px-4 mb-3">
           {loggedUser ? (
             <>
