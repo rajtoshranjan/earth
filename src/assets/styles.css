@@ -9,6 +9,23 @@
   height: calc(100dvh - 57px);
 }
 
+input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  height: 1em;
+  width: 1em;
+  border-radius: 50em;
+  background: url(./icons/cross-circle.svg) no-repeat 50% 50%;
+  background-size: contain;
+  pointer-events: none;
+  opacity: 0;
+  margin-left: 0.5em;
+}
+
+input[type="search"]:focus::-webkit-search-cancel-button {
+  opacity: 0.5;
+  pointer-events: all;
+}
+
 /* Map Styles */
 .mapboxgl-ctrl {
   background-color: theme("colors.gray.900");

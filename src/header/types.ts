@@ -51,8 +51,3 @@ export type FeatureCollectionResponse = {
   query: string[];
   attribution: string;
 };
-
-export type SelectedLocation = {
-  id: string;
-  name: string;
-};

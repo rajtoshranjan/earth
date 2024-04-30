@@ -1,20 +1,19 @@
 import classNames from "classnames";
-import React, { ChangeEvent, useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../contexts";
-import {
-  FeatureCollectionResponse,
-  FeatureResponse,
-  SelectedLocation,
-} from "./types";
+import { FeatureCollectionResponse, FeatureResponse } from "./types";
 
+import { Combobox } from "@headlessui/react";
 import { useDebounce } from "@uidotdev/usehooks";
 import { Icon, IconIdentifier } from "../components";
 import { EnvVariables } from "../env-variables";
 
 type SearchProps = React.HTMLProps<HTMLDivElement>;
 
-type SearchItemProps = React.HTMLProps<HTMLLIElement> & {
+type SearchItemProps = React.HTMLProps<HTMLDivElement> & {
   feature: FeatureResponse;
+  isSelected: boolean;
+  isActive: boolean;
 };
 
 export const Search: React.FC<SearchProps> = ({ className }) => {
@@ -29,7 +28,7 @@ export const Search: React.FC<SearchProps> = ({ className }) => {
   const [query, setQuery] = useState<string>();
   const debouncedSearchQuery = useDebounce(query, 300);
 
-  const [selectedLocation, setSelectedLocation] = useState<SelectedLocation>();
+  const [selectedLocation, setSelectedLocation] = useState<FeatureResponse>();
   const [searchedLocations, setSearchedLocations] =
     useState<FeatureCollectionResponse>();
 
@@ -100,11 +99,6 @@ export const Search: React.FC<SearchProps> = ({ className }) => {
     window.history.pushState(null, "", url.toString());
   };
 
-  const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    updateSearchQuery(value);
-  };
-
   const onPlaceSelect = (feature: FeatureResponse) => {
     if (!feature.place_name_en) {
       return;
@@ -114,73 +108,92 @@ export const Search: React.FC<SearchProps> = ({ className }) => {
       map?.fitBounds(feature.bbox);
     }
 
-    setSelectedLocation({
-      id: feature.id,
-      name: feature.place_name_en,
-    });
+    setSelectedLocation(feature);
 
     updateSearchQuery();
   };
 
   return (
     <div className={customClassNames}>
-      <Icon
-        identifier={IconIdentifier.Search}
-        className="absolute left-3 top-3 size-4 text-gray-400 stroke-5"
-      />
-
-      <input
-        className="h-10 w-full border border-input px-3 text-sm bg-gray-700 text-gray-50 pl-10 pr-4 py-2 rounded-md focus:outline-none "
-        placeholder="Search locations"
-        type="search"
-        value={query ?? selectedLocation?.name}
-        onChange={onInputChange}
-      />
-
-      {/* Search Options */}
-      {query && (
-        <div className="absolute mt-1 w-full rounded-md shadow-md bg-gray-800 border-gray-600">
-          {searchedLocations && searchedLocations.features.length > 0 ? (
-            <ul className="py-1 text-sm text-gray-400">
-              {searchedLocations.features.map((feature) => (
-                <SearchItem
-                  key={feature.id}
-                  feature={feature}
-                  onClick={() => onPlaceSelect(feature)}
-                />
-              ))}
-            </ul>
-          ) : (
-            <div className="flex flex-col text-center space-y-2 p-5">
-              <h3 className="text-lg font-medium text-gray-300">
-                No results found
-              </h3>
-              <p className="text-sm text-gray-400">
-                Try searching for a different place.
-              </p>
-            </div>
-          )}
+      <Combobox value={selectedLocation} onChange={onPlaceSelect}>
+        <div className="flex items-center overflow-hidden rounded-lg bg-gray-700">
+          <Icon
+            identifier={IconIdentifier.Search}
+            className="size-5 text-gray-400 ml-3"
+          />
+          <Combobox.Input
+            type="search"
+            className="w-full border-none py-2 pr-3 pl-2 text-sm leading-5 bg-gray-700 text-gray-50 outline-none"
+            displayValue={(feature: FeatureResponse) =>
+              feature.place_name_en ?? ""
+            }
+            onChange={(e) => updateSearchQuery(e.target.value)}
+            placeholder="Search locations"
+          />
         </div>
-      )}
+
+        <Combobox.Options className="absolute mt-1 max-h-80 w-full overflow-auto rounded-md bg-gray-800 py-1 text-base shadow-lg focus:outline-none">
+          {searchedLocations?.features.length === 0 && query !== "" ? (
+            <div className="relative cursor-default select-none px-4 py-2 text-gray-50">
+              Nothing found.
+            </div>
+          ) : (
+            searchedLocations?.features.map((feature) => (
+              <Combobox.Option key={feature.id} value={feature}>
+                {({ active }) => (
+                  <SearchItem
+                    feature={feature}
+                    isSelected={feature.id === selectedLocation?.id}
+                    isActive={active}
+                  />
+                )}
+              </Combobox.Option>
+            ))
+          )}
+        </Combobox.Options>
+      </Combobox>
     </div>
   );
 };
 
-const SearchItem: React.FC<SearchItemProps> = ({ feature, ...rest }) => {
+const SearchItem: React.FC<SearchItemProps> = ({
+  feature,
+  isSelected,
+  isActive,
+  className,
+  ...rest
+}) => {
+  // Constants.
   const place = feature.place_name_en?.split(",").map((part) => part.trim());
 
   const placeName = place && place[0];
   const placeAddress = place?.slice(1).join(", ");
 
+  const customClassNames = classNames(
+    "flex items-center px-4 py-2 text-gray-200 hover:text-white select-none",
+    className,
+    {
+      "font-medium": isSelected,
+      "font-normal": !isSelected,
+      "bg-gray-700": isActive,
+    }
+  );
+
   return (
-    <li
-      className="block px-4 py-2 text-gray-200 hover:bg-gray-600 hover:text-white"
-      {...rest}
-    >
-      <div>
-        <a href="#">{placeName}</a>
-        <p className="text-gray-400">{placeAddress}</p>
+    <div className={customClassNames} {...rest}>
+      <div className="w-full">
+        <p className="text-md">
+          <span>{placeName}</span>
+        </p>
+        <p className="text-gray-400 block truncate text-sm">{placeAddress}</p>
       </div>
-    </li>
+      {isSelected && (
+        <Icon
+          identifier={IconIdentifier.Tick}
+          className="size-4 mr-1 text-teal-600 ml-auto"
+          title="selected"
+        />
+      )}
+    </div>
   );
 };

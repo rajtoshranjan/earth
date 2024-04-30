@@ -19,4 +19,5 @@ export enum IconIdentifier {
   Satellite = "satellite",
   Search = "search",
   Select = "select",
+  Tick = "tick",
 }
