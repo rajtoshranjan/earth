@@ -9,6 +9,6 @@ export type ModalProps = ModalBaseProps & {
 };
 
 export type ModalComponents = {
-  Body: ForwardRef<HTMLElement, ModalBaseProps>;
-  Footer: ForwardRef<HTMLElement, ModalBaseProps>;
+  Body: ForwardRef<HTMLDivElement, ModalBaseProps>;
+  Footer: ForwardRef<HTMLDivElement, ModalBaseProps>;
 };

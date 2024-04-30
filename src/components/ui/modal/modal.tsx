@@ -54,30 +54,30 @@ export const Modal: React.FC<ModalProps> & ModalComponents = ({
   );
 };
 
-Modal.Body = React.forwardRef<HTMLElement, ModalBaseProps>(
-  ({ children, className, ...rest }) => {
-    // Constants.
-    const customClassNames = classNames(
-      "p-4 overflow-y-auto text-gray-50",
-      className
-    );
+Modal.Body = React.forwardRef(({ children, className, ...rest }, ref) => {
+  // Constants.
+  const customClassNames = classNames(
+    "p-4 overflow-y-auto text-gray-50",
+    className
+  );
 
-    return (
-      <div className={customClassNames} {...rest}>
-        {children}
-      </div>
-    );
-  }
-);
+  return (
+    <div ref={ref} className={customClassNames} {...rest}>
+      {children}
+    </div>
+  );
+});
 
-Modal.Footer = React.forwardRef<HTMLElement, ModalBaseProps>(
-  ({ children, className, ...rest }) => {
-    // Constants.
-    const customClassNames = classNames(
-      "flex justify-end items-center gap-x-2 py-3 px-4 border-t border-neutral-700",
-      className
-    );
+Modal.Footer = React.forwardRef(({ children, className, ...rest }, ref) => {
+  // Constants.
+  const customClassNames = classNames(
+    "flex justify-end items-center gap-x-2 py-3 px-4 border-t border-neutral-700",
+    className
+  );
 
-    return <div className={customClassNames}>{children}</div>;
-  }
-);
+  return (
+    <div ref={ref} className={customClassNames}>
+      {children}
+    </div>
+  );
+});
