@@ -4,7 +4,7 @@ import { TerraDraw, TerraDrawMapLibreGLAdapter } from "terra-draw";
 import { GlobalContext } from "../../contexts";
 
 import classNames from "classnames";
-import { Button, IconIdentifier } from "../ui";
+import { Button, IconIdentifier } from "../../components";
 import { MODES } from "./constants";
 import { setupModes } from "./helpers";
 

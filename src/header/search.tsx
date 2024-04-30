@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import React, { ChangeEvent, useContext, useEffect, useState } from "react";
-import { GlobalContext } from "../../contexts";
+import { GlobalContext } from "../contexts";
 import {
   FeatureCollectionResponse,
   FeatureResponse,
@@ -8,7 +8,7 @@ import {
 } from "./types";
 
 import { useDebounce } from "@uidotdev/usehooks";
-import { Icon, IconIdentifier } from "../ui";
+import { Icon, IconIdentifier } from "../components";
 
 type SearchProps = React.HTMLProps<HTMLDivElement>;
 

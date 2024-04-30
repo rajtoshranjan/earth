@@ -2,12 +2,12 @@ import { useLocalStorage } from "@uidotdev/usehooks";
 import classNames from "classnames";
 import { Draw } from "./draw";
 import { Layer } from "./layer";
-import { Icon, IconIdentifier } from "./ui";
+import { Icon, IconIdentifier } from "../components";
 
-export const SideNav = () => {
+export const LayerPanel = () => {
   // States.
   const [show, setShow] = useLocalStorage<boolean>(
-    "isSideNavOpen",
+    "isLayerPanelOpen",
     window.innerWidth >= 1024
   );
 
@@ -21,7 +21,7 @@ export const SideNav = () => {
   );
 
   // Handlers.
-  const onClickToggleSideNav = () => {
+  const onClickToggleLayerPanel = () => {
     setShow((prev) => !prev);
   };
 
@@ -30,7 +30,7 @@ export const SideNav = () => {
       {/* Toggle Button */}
       <button
         className="absolute flex ml-60 px-1 py-4 w-[1.4rem] top-2/4 -translate-y-2/4 bg-gray-900 text-gray-50 rounded-e-lg border-r border-t border-b border-gray-700"
-        onClick={onClickToggleSideNav}
+        onClick={onClickToggleLayerPanel}
       >
         <Icon
           identifier={

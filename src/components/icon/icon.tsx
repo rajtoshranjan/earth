@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import React, { HTMLProps } from "react";
 import IcoMoon from "react-icomoon";
-import iconSet from "../../../assets/icons/selection.json";
+import iconSet from "../../assets/icons/selection.json";
 import { IconIdentifier } from "./constants";
 
 export type IconProps = HTMLProps<SVGAElement> & {

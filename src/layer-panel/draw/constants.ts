@@ -1,4 +1,4 @@
-import { IconIdentifier } from "../ui";
+import { IconIdentifier } from "../../components";
 
 export const MODES = {
   select: {

@@ -19,7 +19,8 @@ import {
 import { useEffect, useRef, useState } from "react";
 
 import { GlobalContext } from "./contexts";
-import { Header, SideNav } from "./components";
+import { LayerPanel } from "./layer-panel";
+import { Header } from "./header";
 
 const baseStyleSpec: StyleSpecification = {
   version: 8,
@@ -116,7 +117,7 @@ function App() {
   return (
     <GlobalContext.Provider value={{ map }}>
       <Header />
-      <SideNav />
+      <LayerPanel />
 
       {/* Map Container */}
       <div

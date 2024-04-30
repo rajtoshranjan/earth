@@ -1,5 +1,5 @@
 import { HTMLProps } from "react";
-import { ForwardRef } from "../../../utils";
+import { ForwardRef } from "../../utils";
 
 export type ModalBaseProps = HTMLProps<HTMLDivElement>;
 

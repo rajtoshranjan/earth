@@ -1,4 +1,4 @@
-import { Icon, IconIdentifier } from "../ui";
+import { Icon, IconIdentifier } from "../components";
 import { Search } from "./search";
 
 export const Header = () => {

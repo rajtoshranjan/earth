@@ -3,7 +3,7 @@ import React from "react";
 
 import classNames from "classnames";
 import { Icon, IconIdentifier } from "../icon";
-import { ModalBaseProps, ModalComponents, ModalProps } from "./type";
+import { ModalComponents, ModalProps } from "./type";
 
 export const Modal: React.FC<ModalProps> & ModalComponents = ({
   title,

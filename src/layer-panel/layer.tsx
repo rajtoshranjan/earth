@@ -1,7 +1,7 @@
 import { useToggle } from "@uidotdev/usehooks";
 import { useContext } from "react";
 import { GlobalContext } from "../contexts";
-import { Icon, IconIdentifier } from "./ui";
+import { Icon, IconIdentifier } from "../components";
 
 export const Layer = () => {
   // States.
