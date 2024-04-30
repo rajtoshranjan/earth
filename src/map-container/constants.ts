@@ -1,10 +1,11 @@
 import { SourceSpecification, StyleSpecification } from "maplibre-gl";
+import { EnvVariables } from "../env-variables";
 
 export const terrainSource: SourceSpecification = {
   type: "raster-dem",
   url:
     "https://api.maptiler.com/tiles/terrain-rgb/tiles.json?key=" +
-    import.meta.env.VITE_MAP_TILER_KEY,
+    EnvVariables.mapTilerKey,
 };
 
 export const baseStyleSpec: StyleSpecification = {

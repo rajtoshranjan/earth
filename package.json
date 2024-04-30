@@ -9,8 +9,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.19",
     "@uidotdev/usehooks": "^2.4.1",
     "classnames": "^2.5.1",
+    "firebase": "^10.11.1",
     "maplibre-gl": "^2.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

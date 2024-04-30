@@ -7,6 +7,7 @@ import classNames from "classnames";
 import { Button, IconIdentifier } from "../../components";
 import { MODES } from "./constants";
 import { setupModes } from "./helpers";
+import { toTitleCase } from "../../utils";
 
 type DrawProps = React.HTMLProps<HTMLDivElement>;
 
@@ -60,12 +61,14 @@ export const Draw: React.FC<DrawProps> = ({ className, ...rest }) => {
           active={key === selectedMode}
           iconIdentifier={value.iconIdentifier}
           onClick={() => addModeChangeHandler(key)}
+          title={toTitleCase(key)}
         />
       ))}
 
       <Button
         iconIdentifier={IconIdentifier.Bin}
         onClick={() => draw?.clear()}
+        title="Clear"
       />
     </div>
   );

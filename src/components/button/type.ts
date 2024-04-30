@@ -7,4 +7,6 @@ export type ButtonProps = DetailedHTMLProps<
 > & {
   active?: boolean;
   iconIdentifier?: IconIdentifier;
+  variant?: "primary" | "secondary";
+  size?: "sm" | "md" | "lg";
 };

@@ -9,6 +9,7 @@ import {
 
 import { useDebounce } from "@uidotdev/usehooks";
 import { Icon, IconIdentifier } from "../components";
+import { EnvVariables } from "../env-variables";
 
 type SearchProps = React.HTMLProps<HTMLDivElement>;
 
@@ -43,9 +44,7 @@ export const Search: React.FC<SearchProps> = ({ className }) => {
     }
 
     fetch(
-      `https://api.maptiler.com/geocoding/${query}.json?proximity=ip&fuzzyMatch=true&limit=5&key=${
-        import.meta.env.VITE_MAP_TILER_KEY
-      }`
+      `https://api.maptiler.com/geocoding/${query}.json?proximity=ip&fuzzyMatch=true&limit=5&key=${EnvVariables.mapTilerKey}`
     ).then(async (res) => {
       return setSearchedLocations(await res.json());
     });
@@ -57,9 +56,7 @@ export const Search: React.FC<SearchProps> = ({ className }) => {
     }
 
     fetch(
-      `https://api.maptiler.com/geocoding/${
-        selectedLocation.id
-      }.json?limit=3&key=${import.meta.env.VITE_MAP_TILER_KEY}`
+      `https://api.maptiler.com/geocoding/${selectedLocation.id}.json?limit=3&key=${EnvVariables.mapTilerKey}`
     ).then(async (res) => {
       const feature = await res.json();
 
