@@ -4,7 +4,7 @@ import { Search } from "./search";
 
 export const Header = () => {
   return (
-    <header className="sticky z-10 top-0 w-full bg-gray-900 border-b border-gray-700 px-4 py-2 flex items-center justify-between">
+    <header className="sticky z-10 top-0 w-full h-[3.4rem] bg-gray-900 border-b border-gray-700 px-4 flex items-center justify-between">
       {/* Left Side */}
       <div className="flex space-x-4">
         <div className="flex items-center space-x-2 select-none">

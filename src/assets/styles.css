@@ -6,7 +6,7 @@
 
 /* Custom Classes */
 .h-screen-container {
-  height: calc(100dvh - 57px);
+  height: calc(100dvh - 3.4rem);
 }
 
 input[type="search"]::-webkit-search-cancel-button {
