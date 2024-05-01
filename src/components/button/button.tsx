@@ -21,8 +21,8 @@ export const Button: React.FC<ButtonProps> = ({
       "bg-transparent hover:bg-gray-700": variant == "secondary",
       "text-blue-400": active,
       "text-gray-50": !active,
-      "h-10": size === "md",
-      "h-12": size === "lg",
+      "h-10 min-w-10": size === "md",
+      "h-12 min-w-12": size === "lg",
     }
   );
 
