@@ -42,6 +42,8 @@ export const LayerPanel = () => {
           className="size-[14px]"
         />
       </button>
+      {/* Draw tools */}
+      <Draw className="absolute ml-[15.65rem] -mt-[0.35rem]" />
 
       {/* Body */}
       <h2 className="sticky text-sm font-medium text-gray-400">Layers</h2>
@@ -51,9 +53,6 @@ export const LayerPanel = () => {
       </div>
 
       <AddLayer className="w-full mt-3" />
-
-      {/* Draw tools */}
-      <Draw className="absolute ml-[15.65rem] -mt-[0.35rem]" />
     </div>
   );
 };
