@@ -23,32 +23,28 @@ export const Layer = () => {
   };
 
   return (
-    <div className="flex flex-col space-y-1">
-      <div className="flex items-center justify-between">
-        <div className="inline-flex space-between space-x-7  items-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:text-accent-foreground h-10 px-4 py-2 justify-start text-gray-50 hover:bg-gray-800">
-          <Icon identifier={IconIdentifier.Satellite} className="size-4 mr-2" />
-          Google Satellite
-          <div className="flex items-center gap-2 ">
-            <button
-              className="flex text-sm font-medium text-gray-50 hover:text-gray-300"
-              onClick={onLayerToggle}
-            >
-              <Icon
-                identifier={
-                  isVisible ? IconIdentifier.Eye : IconIdentifier.EyeCross
-                }
-                className="size-5"
-              />
-            </button>
+    <div className="group w-full inline-flex gap-2 items-center whitespace-nowrap rounded-md text-sm font-medium transition-colors disabled:pointer-events-none disabled:opacity-50 h-10 px-3 text-gray-50 hover:bg-gray-800">
+      <div>
+        <Icon identifier={IconIdentifier.Satellite} className="size-4" />
+      </div>
+      <span className="truncate">Google Satellite</span>
 
-            <button className="flex text-sm font-medium text-gray-50 hover:text-gray-300">
-              <Icon
-                identifier={IconIdentifier.MeatBallMenu}
-                className="size-4"
-              />
-            </button>
-          </div>
-        </div>
+      <div className="group-hover:flex items-center gap-2 hidden ml-auto">
+        <button
+          className="flex text-sm font-medium text-gray-50 hover:text-gray-300"
+          onClick={onLayerToggle}
+        >
+          <Icon
+            identifier={
+              isVisible ? IconIdentifier.Eye : IconIdentifier.EyeCross
+            }
+            className="size-5"
+          />
+        </button>
+
+        <button className="flex text-sm font-medium text-gray-50 hover:text-gray-300">
+          <Icon identifier={IconIdentifier.MeatBallMenu} className="size-4" />
+        </button>
       </div>
     </div>
   );

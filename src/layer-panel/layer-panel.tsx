@@ -3,6 +3,7 @@ import classNames from "classnames";
 import { Draw } from "./draw";
 import { Layer } from "./layer";
 import { Icon, IconIdentifier } from "../components";
+import { AddLayer } from "./add-layer";
 
 export const LayerPanel = () => {
   // States.
@@ -13,7 +14,7 @@ export const LayerPanel = () => {
 
   // Constants.
   const customClassNames = classNames(
-    "absolute z-10 h-screen-container w-64 p-4 flex flex-col bg-gray-900 border-r border-gray-700 transition-all duration-300 ease-in-out",
+    "absolute z-10 h-screen-container w-64 p-4 bg-gray-900 border-r border-gray-700 transition-all duration-300 ease-in-out",
     {
       "-left-64": !show,
       "left-0": show,
@@ -43,18 +44,13 @@ export const LayerPanel = () => {
       </button>
 
       {/* Body */}
-      <div className="flex flex-col space-y-2">
-        <div className="inline-flex justify-between">
-          <h2 className="text-sm font-medium text-gray-400">Layers</h2>
+      <h2 className="sticky text-sm font-medium text-gray-400">Layers</h2>
 
-          <button className="inline-flex items-center whitespace-nowrap text-sm font-sm h-5 p-2 justify-start text-gray-400 hover:text-gray-300">
-            <Icon identifier={IconIdentifier.Plus} className="size-4 mr-2" />
-            Add Layer
-          </button>
-        </div>
-
+      <div className="space-y-2 w-full h-[calc(100%-5rem)] mt-3 overflow-y-scroll">
         <Layer />
       </div>
+
+      <AddLayer className="w-full mt-3" />
 
       {/* Draw tools */}
       <Draw className="absolute ml-[15.65rem] -mt-[0.35rem]" />
