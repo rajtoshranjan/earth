@@ -20,7 +20,10 @@ export const Draw: React.FC<DrawProps> = ({ className, ...rest }) => {
   const [selectedMode, setSelectedMode] = useState<string>();
 
   // Constants.
-  const customClassNames = classNames("inline-flex flex-col gap-2", className);
+  const customClassNames = classNames(
+    "inline-flex flex-col gap-0 rounded-lg overflow-hidden",
+    className
+  );
 
   // useEffects.
   useEffect(() => {
@@ -62,6 +65,7 @@ export const Draw: React.FC<DrawProps> = ({ className, ...rest }) => {
           iconIdentifier={value.iconIdentifier}
           onClick={() => addModeChangeHandler(key)}
           title={toTitleCase(key)}
+          className="rounded-none"
         />
       ))}
 
@@ -69,6 +73,7 @@ export const Draw: React.FC<DrawProps> = ({ className, ...rest }) => {
         iconIdentifier={IconIdentifier.Bin}
         onClick={() => draw?.clear()}
         title="Clear"
+        className="rounded-none"
       />
     </div>
   );

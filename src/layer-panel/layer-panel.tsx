@@ -57,7 +57,7 @@ export const LayerPanel = () => {
       </div>
 
       {/* Draw tools */}
-      <Draw className="absolute ml-60 -mt-1 pl-3" />
+      <Draw className="absolute ml-[15.65rem] -mt-[0.35rem]" />
     </div>
   );
 };
