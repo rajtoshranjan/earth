@@ -33,7 +33,7 @@ export const setupMapControls = (map: Map) => {
     "bottom-right"
   );
 
-  map.addControl(new FullscreenControl({}), "top-right");
+  map.addControl(new FullscreenControl({}), "bottom-right");
 
   map.addControl(new ScaleControl({}), "bottom-left");
 };
