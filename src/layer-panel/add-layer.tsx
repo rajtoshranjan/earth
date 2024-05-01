@@ -22,12 +22,7 @@ export const AddLayer: React.FC<HTMLProps<HTMLElement>> = ({ className }) => {
         Add Layer
       </Button>
 
-      <Modal
-        title="Add Raster Layer"
-        show={show}
-        onClose={toggle}
-        position={window.innerWidth < 640 ? "top-center" : "top-right"}
-      >
+      <Modal title="Add Raster Layer" show={show} onClose={toggle}>
         <form>
           {/* Tile Overlay */}
           <h6 className="text-sm text-gray-500">Tile Overlay</h6>
