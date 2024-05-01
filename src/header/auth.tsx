@@ -50,7 +50,7 @@ export const Auth = () => {
   };
 
   return (
-    <Popover>
+    <Popover className="relative">
       <Popover.Button className="size-8 border flex shrink-0 overflow-hidden rounded-full outline-none">
         <img
           className="aspect-square size-full"
@@ -58,7 +58,7 @@ export const Auth = () => {
         />
       </Popover.Button>
 
-      <Popover.Panel className="absolute bg-gray-800 right-0 mt-4 mr-3 py-3 rounded-lg text-gray-50 min-w-60">
+      <Popover.Panel className="absolute bg-gray-800 right-0 mt-4 py-3 rounded-lg shadow-md text-gray-50 min-w-60 border border-gray-700">
         <div className="px-4 mb-3">
           {loggedUser ? (
             <>
