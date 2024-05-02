@@ -48,7 +48,7 @@ export const LayerPanel = () => {
       {/* Body */}
       <h2 className="sticky text-sm font-medium text-gray-400">Layers</h2>
 
-      <div className="space-y-2 w-full h-[calc(100%-5rem)] mt-3 overflow-y-scroll">
+      <div className="space-y-2 w-full h-[calc(100%-5rem)] mt-3 overflow-y-auto">
         <Layer />
       </div>
 
