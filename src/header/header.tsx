@@ -1,6 +1,6 @@
-import { Icon, IconIdentifier } from "../components";
-import { Auth } from "./auth";
-import { Search } from "./search";
+import { Icon, IconIdentifier } from '../components';
+import { Auth } from './auth';
+import { Search } from './search';
 
 export const Header = () => {
   return (

@@ -1,3 +1,3 @@
-import { HTMLProps } from "react";
+import { HTMLProps } from 'react';
 
-export type InputProps = Omit<HTMLProps<HTMLInputElement>, "placeholder">;
+export type InputProps = Omit<HTMLProps<HTMLInputElement>, 'placeholder'>;

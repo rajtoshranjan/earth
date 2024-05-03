@@ -5,7 +5,7 @@ import {
   NavigationControl,
   ScaleControl,
   TerrainControl,
-} from "maplibre-gl";
+} from 'maplibre-gl';
 
 export const setupMapControls = (map: Map) => {
   map.addControl(
@@ -14,7 +14,7 @@ export const setupMapControls = (map: Map) => {
       showZoom: true,
       showCompass: true,
     }),
-    "bottom-right"
+    'bottom-right',
   );
 
   map.addControl(
@@ -22,18 +22,18 @@ export const setupMapControls = (map: Map) => {
       showUserLocation: true,
       showAccuracyCircle: true,
     }),
-    "bottom-right"
+    'bottom-right',
   );
 
   map.addControl(
     new TerrainControl({
-      source: "terrainSource",
+      source: 'terrainSource',
       exaggeration: 1,
     }),
-    "bottom-right"
+    'bottom-right',
   );
 
-  map.addControl(new FullscreenControl({}), "bottom-right");
+  map.addControl(new FullscreenControl({}), 'bottom-right');
 
-  map.addControl(new ScaleControl({}), "bottom-left");
+  map.addControl(new ScaleControl({}), 'bottom-left');
 };

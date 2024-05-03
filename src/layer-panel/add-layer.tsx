@@ -1,14 +1,14 @@
-import React, { HTMLProps } from "react";
-import { Button, Icon, IconIdentifier, Input, Modal } from "../components";
-import classNames from "classnames";
-import { useToggle } from "@uidotdev/usehooks";
+import React, { HTMLProps } from 'react';
+import { Button, IconIdentifier, Input, Modal } from '../components';
+import classNames from 'classnames';
+import { useToggle } from '@uidotdev/usehooks';
 
 export const AddLayer: React.FC<HTMLProps<HTMLElement>> = ({ className }) => {
   // States.
   const [show, toggle] = useToggle(false);
 
   // Constants.
-  const customClassNames = classNames("border", className);
+  const customClassNames = classNames('border', className);
 
   return (
     <>
@@ -31,12 +31,13 @@ export const AddLayer: React.FC<HTMLProps<HTMLElement>> = ({ className }) => {
             <p className=" text-gray-300">
               Enter the URL of a tile server that hosts a set of images to
               overlay on the map. The URL pattern should specify x, y and zoom
-              values in format {"{x}"}/{"{y}"}/{"{x}"}
+              values in format {'{x}'}/{'{y}'}/{'{x}'}
             </p>
             <a
               className="text-xs text-blue-400 underline"
               href="https://docs.maptiler.com/maplibre-gl-native-ios/tile-url-templates/"
               target="_blank"
+              rel="noreferrer"
             >
               Learn More
             </a>

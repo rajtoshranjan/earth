@@ -1,13 +1,13 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from 'react';
 
-import { TerraDraw, TerraDrawMapLibreGLAdapter } from "terra-draw";
-import { GlobalContext } from "../../contexts";
+import { TerraDraw, TerraDrawMapLibreGLAdapter } from 'terra-draw';
+import { GlobalContext } from '../../contexts';
 
-import classNames from "classnames";
-import { Button, IconIdentifier } from "../../components";
-import { MODES } from "./constants";
-import { setupModes } from "./helpers";
-import { toTitleCase } from "../../utils";
+import classNames from 'classnames';
+import { Button, IconIdentifier } from '../../components';
+import { MODES } from './constants';
+import { setupModes } from './helpers';
+import { toTitleCase } from '../../utils';
 
 type DrawProps = React.HTMLProps<HTMLDivElement>;
 
@@ -21,8 +21,8 @@ export const Draw: React.FC<DrawProps> = ({ className, ...rest }) => {
 
   // Constants.
   const customClassNames = classNames(
-    "inline-flex flex-col gap-0 rounded-lg overflow-hidden",
-    className
+    'inline-flex flex-col gap-0 rounded-lg overflow-hidden',
+    className,
   );
 
   // useEffects.
@@ -31,7 +31,7 @@ export const Draw: React.FC<DrawProps> = ({ className, ...rest }) => {
       return;
     }
 
-    map.on("load", () => {
+    map.on('load', () => {
       const terraDraw = new TerraDraw({
         // @ts-ignore
         adapter: new TerraDrawMapLibreGLAdapter({

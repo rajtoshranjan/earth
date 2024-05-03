@@ -1,24 +1,24 @@
-import { useLocalStorage } from "@uidotdev/usehooks";
-import classNames from "classnames";
-import { Draw } from "./draw";
-import { Layer } from "./layer";
-import { Icon, IconIdentifier } from "../components";
-import { AddLayer } from "./add-layer";
+import { useLocalStorage } from '@uidotdev/usehooks';
+import classNames from 'classnames';
+import { Draw } from './draw';
+import { Layer } from './layer';
+import { Icon, IconIdentifier } from '../components';
+import { AddLayer } from './add-layer';
 
 export const LayerPanel = () => {
   // States.
   const [show, setShow] = useLocalStorage<boolean>(
-    "isLayerPanelOpen",
-    window.innerWidth >= 1024
+    'isLayerPanelOpen',
+    window.innerWidth >= 1024,
   );
 
   // Constants.
   const customClassNames = classNames(
-    "absolute z-10 h-screen-container w-64 p-4 bg-gray-900 border-r border-gray-700 transition-all duration-300 ease-in-out",
+    'absolute z-10 h-screen-container w-64 p-4 bg-gray-900 border-r border-gray-700 transition-all duration-300 ease-in-out',
     {
-      "-left-64": !show,
-      "left-0": show,
-    }
+      '-left-64': !show,
+      'left-0': show,
+    },
   );
 
   // Handlers.

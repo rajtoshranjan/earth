@@ -1,5 +1,5 @@
-import Logo from "./logo.png";
-import User from "./user.png";
+import Logo from './logo.png';
+import User from './user.png';
 
 export const Image = {
   Logo,

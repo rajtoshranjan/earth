@@ -1,13 +1,13 @@
-import { useState } from "react";
-import "./assets/styles.css";
+import { useState } from 'react';
+import './assets/styles.css';
 
-import { Map } from "maplibre-gl";
+import { Map } from 'maplibre-gl';
 
-import { GlobalContext } from "./contexts";
-import { Header } from "./header";
-import { LayerPanel } from "./layer-panel";
-import { MapView } from "./map-container";
-import { User } from "firebase/auth";
+import { GlobalContext } from './contexts';
+import { Header } from './header';
+import { LayerPanel } from './layer-panel';
+import { MapView } from './map-container';
+import { User } from 'firebase/auth';
 
 function App() {
   // States.

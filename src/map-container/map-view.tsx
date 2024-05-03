@@ -1,9 +1,9 @@
-import classNames from "classnames";
-import { Map } from "maplibre-gl";
-import React, { HTMLProps, useContext, useEffect, useRef } from "react";
-import { GlobalContext } from "../contexts";
-import { baseStyleSpec } from "./constants";
-import { setupMapControls } from "./helpers";
+import classNames from 'classnames';
+import { Map } from 'maplibre-gl';
+import React, { HTMLProps, useContext, useEffect, useRef } from 'react';
+import { GlobalContext } from '../contexts';
+import { baseStyleSpec } from './constants';
+import { setupMapControls } from './helpers';
 
 export const MapView: React.FC<HTMLProps<HTMLDivElement>> = ({
   className,
@@ -17,8 +17,8 @@ export const MapView: React.FC<HTMLProps<HTMLDivElement>> = ({
 
   // Constants.
   const customClassNames = classNames(
-    "w-full h-screen-container bg-gray-600",
-    className
+    'w-full h-screen-container bg-gray-600',
+    className,
   );
 
   // useEffects.

@@ -1,9 +1,8 @@
-import { Dialog, Transition } from "@headlessui/react";
-import { useToggle } from "@uidotdev/usehooks";
-import classNames from "classnames";
-import React, { Fragment } from "react";
-import { Icon, IconIdentifier } from "../icon";
-import { ModalProps } from "./type";
+import { Transition } from '@headlessui/react';
+import classNames from 'classnames';
+import React, { Fragment } from 'react';
+import { Icon, IconIdentifier } from '../icon';
+import { ModalProps } from './type';
 
 export const Modal: React.FC<ModalProps> = ({
   title,
@@ -11,19 +10,19 @@ export const Modal: React.FC<ModalProps> = ({
   className,
   show,
   onClose,
-  position = "top-right",
+  position = 'top-right',
   ...rest
 }) => {
   // Constants.
   const customClassNames = classNames(
-    "fixed below-header m-2 z-40 h-fit w-full max-w-sm transform overflow-hidden rounded-xl flex-col bg-gray-800 border pointer-events-auto border-gray-700 shadow-xl transition-all",
+    'fixed below-header m-2 z-40 h-fit w-full max-w-sm transform overflow-hidden rounded-xl flex-col bg-gray-800 border pointer-events-auto border-gray-700 shadow-xl transition-all',
     className,
     {
-      "left-1/2 !top-1/2 -translate-x-1/2 -translate-y-1/2":
-        position === "center",
-      "left-1/2 -translate-x-1/2": position === "top-center",
-      "right-0": position === "top-right",
-    }
+      'left-1/2 !top-1/2 -translate-x-1/2 -translate-y-1/2':
+        position === 'center',
+      'left-1/2 -translate-x-1/2': position === 'top-center',
+      'right-0': position === 'top-right',
+    },
   );
 
   return (

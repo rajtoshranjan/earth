@@ -7,7 +7,7 @@ import {
   TerraDrawFreehandMode,
   TerraDrawRectangleMode,
   TerraDrawRenderMode,
-} from "terra-draw";
+} from 'terra-draw';
 
 export const setupModes = () => {
   return [
@@ -66,10 +66,10 @@ export const setupModes = () => {
     new TerraDrawCircleMode(),
     new TerraDrawFreehandMode(),
     new TerraDrawRenderMode({
-      modeName: "arbitary",
+      modeName: 'arbitary',
       styles: {
-        polygonFillColor: "#4357AD",
-        polygonOutlineColor: "#48A9A6",
+        polygonFillColor: '#4357AD',
+        polygonOutlineColor: '#48A9A6',
         polygonOutlineWidth: 2,
       },
     }),

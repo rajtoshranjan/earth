@@ -1,5 +1,5 @@
-import { ButtonHTMLAttributes, DetailedHTMLProps, HTMLProps } from "react";
-import { IconIdentifier } from "../icon/constants";
+import { ButtonHTMLAttributes, DetailedHTMLProps } from 'react';
+import { IconIdentifier } from '../icon/constants';
 
 export type ButtonProps = DetailedHTMLProps<
   ButtonHTMLAttributes<HTMLButtonElement>,
@@ -7,6 +7,6 @@ export type ButtonProps = DetailedHTMLProps<
 > & {
   active?: boolean;
   iconIdentifier?: IconIdentifier;
-  variant?: "primary" | "secondary";
-  size?: "sm" | "md" | "lg";
+  variant?: 'primary' | 'secondary';
+  size?: 'sm' | 'md' | 'lg';
 };

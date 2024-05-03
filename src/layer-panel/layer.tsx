@@ -1,7 +1,7 @@
-import { useToggle } from "@uidotdev/usehooks";
-import { useContext } from "react";
-import { GlobalContext } from "../contexts";
-import { Icon, IconIdentifier } from "../components";
+import { useToggle } from '@uidotdev/usehooks';
+import { useContext } from 'react';
+import { GlobalContext } from '../contexts';
+import { Icon, IconIdentifier } from '../components';
 
 export const Layer = () => {
   // States.
@@ -13,12 +13,12 @@ export const Layer = () => {
   // Handlers
   const onLayerToggle = () => {
     toggleVisibility();
-    const layerId = "satellite";
+    const layerId = 'satellite';
 
     if (isVisible) {
-      map?.setLayoutProperty(layerId, "visibility", "none");
+      map?.setLayoutProperty(layerId, 'visibility', 'none');
     } else {
-      map?.setLayoutProperty(layerId, "visibility", "visible");
+      map?.setLayoutProperty(layerId, 'visibility', 'visible');
     }
   };
 

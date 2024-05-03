@@ -1,6 +1,6 @@
-import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import { EnvVariables } from "../env-variables";
+import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
+import { EnvVariables } from '../env-variables';
 
 const firebaseConfig = {
   apiKey: EnvVariables.firebaseApiKey,

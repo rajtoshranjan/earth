@@ -1,4 +1,4 @@
-import { LngLatBoundsLike } from "maplibre-gl";
+import { LngLatBoundsLike } from 'maplibre-gl';
 
 type Context = {
   ref: string;
@@ -17,7 +17,7 @@ type PropertiesResponse = {
   country_code: string;
   wikidata?: string;
   kind: string;
-  "osm:place_type"?: string;
+  'osm:place_type'?: string;
   place_type_name: (string | null)[];
 };
 

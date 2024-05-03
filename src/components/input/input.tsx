@@ -1,12 +1,12 @@
-import React from "react";
-import { InputProps } from "./types";
-import classNames from "classnames";
+import React from 'react';
+import { InputProps } from './types';
+import classNames from 'classnames';
 
 export const Input: React.FC<InputProps> = ({ label, className, ...rest }) => {
   // Constants.
   const customClassNames = classNames(
-    "relative z-0 bg-gray-800 border rounded-lg",
-    className
+    'relative z-0 bg-gray-800 border rounded-lg',
+    className,
   );
 
   return (

@@ -1,15 +1,15 @@
-import { Popover } from "@headlessui/react";
+import { Popover } from '@headlessui/react';
 import {
   GoogleAuthProvider,
   onAuthStateChanged,
   signInWithPopup,
   signOut,
-} from "firebase/auth";
-import { useContext, useEffect } from "react";
-import { Image } from "../assets/images";
-import { Button, IconIdentifier } from "../components";
-import { GlobalContext } from "../contexts";
-import { firebaseAuth } from "../services";
+} from 'firebase/auth';
+import { useContext, useEffect } from 'react';
+import { Image } from '../assets/images';
+import { Button, IconIdentifier } from '../components';
+import { GlobalContext } from '../contexts';
+import { firebaseAuth } from '../services';
 
 export const Auth = () => {
   // Contexts.
@@ -55,6 +55,7 @@ export const Auth = () => {
         <img
           className="aspect-square size-full"
           src={loggedUser ? loggedUser.photoURL ?? randomAvatarUrl : Image.User}
+          alt={loggedUser?.displayName ?? 'User Info'}
         />
       </Popover.Button>
 
@@ -67,6 +68,7 @@ export const Auth = () => {
                 <img
                   className="aspect-square size-10 rounded-full border"
                   src={loggedUser.photoURL ?? randomAvatarUrl}
+                  alt={loggedUser.displayName ?? 'user'}
                 />
                 <div className="flex flex-col">
                   <span className="text-md">{loggedUser.displayName}</span>

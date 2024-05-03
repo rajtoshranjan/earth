@@ -1,1 +1,1 @@
-export * from "./layer-panel";
+export * from './layer-panel';
