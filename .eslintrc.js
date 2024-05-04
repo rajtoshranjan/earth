@@ -14,6 +14,9 @@ module.exports = {
     'plugin:jsx-a11y/recommended',
     'prettier',
     'plugin:prettier/recommended',
+    'plugin:tailwindcss/recommended',
+    'plugin:import/recommended',
+    'plugin:import/typescript',
   ],
   plugins: [
     'react',

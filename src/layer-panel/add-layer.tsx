@@ -27,7 +27,7 @@ export const AddLayer: React.FC<HTMLProps<HTMLElement>> = ({ className }) => {
           {/* Tile Overlay */}
           <h6 className="text-sm text-gray-500">Tile Overlay</h6>
           <Input label="Overlay URL Pattern" className="mt-2" />
-          <div className="text-xs px-1 mt-2">
+          <div className="mt-2 px-1 text-xs">
             <p className=" text-gray-300">
               Enter the URL of a tile server that hosts a set of images to
               overlay on the map. The URL pattern should specify x, y and zoom
@@ -51,8 +51,8 @@ export const AddLayer: React.FC<HTMLProps<HTMLElement>> = ({ className }) => {
           />
 
           {/* Tile Coverage */}
-          <h6 className="text-sm mt-5 text-gray-500">Tile Coverage (bounds)</h6>
-          <div className="mt-2 flex flex-col items-center justify-center py-2 gap-5">
+          <h6 className="mt-5 text-sm text-gray-500">Tile Coverage (bounds)</h6>
+          <div className="mt-2 flex flex-col items-center justify-center gap-5 py-2">
             <Input
               className="w-6/12"
               label="North Latitude"
@@ -81,7 +81,7 @@ export const AddLayer: React.FC<HTMLProps<HTMLElement>> = ({ className }) => {
             />
           </div>
         </form>
-        <div className="flex justify-end mt-6">
+        <div className="mt-6 flex justify-end">
           <Button
             iconIdentifier={IconIdentifier.Plus}
             variant="secondary"

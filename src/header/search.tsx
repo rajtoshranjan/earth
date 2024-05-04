@@ -119,11 +119,11 @@ export const Search: React.FC<SearchProps> = ({ className }) => {
         <div className="flex items-center overflow-hidden rounded-lg bg-gray-700">
           <Icon
             identifier={IconIdentifier.Search}
-            className="size-5 text-gray-400 ml-3"
+            className="ml-3 size-5 text-gray-400"
           />
           <Combobox.Input
             type="search"
-            className="w-full border-none py-2 pr-3 pl-2 text-sm leading-5 bg-gray-700 text-gray-50 outline-none"
+            className="w-full border-none bg-gray-700 py-2 pl-2 pr-3 text-sm leading-5 text-gray-50 outline-none"
             displayValue={(feature: FeatureResponse) =>
               feature.place_name_en ?? ''
             }
@@ -182,15 +182,13 @@ const SearchItem: React.FC<SearchItemProps> = ({
   return (
     <div className={customClassNames} {...rest}>
       <div className="w-full">
-        <p className="text-md">
-          <span>{placeName}</span>
-        </p>
-        <p className="text-gray-400 block truncate text-sm">{placeAddress}</p>
+        <p>{placeName}</p>
+        <p className="block truncate text-sm text-gray-400">{placeAddress}</p>
       </div>
       {isSelected && (
         <Icon
           identifier={IconIdentifier.Tick}
-          className="size-4 mr-1 text-teal-600 ml-auto"
+          className="ml-auto mr-1 size-4 text-teal-600"
           title="selected"
         />
       )}

@@ -65,7 +65,7 @@ export const Draw: React.FC<DrawProps> = ({ className, ...rest }) => {
           iconIdentifier={value.iconIdentifier}
           onClick={() => addModeChangeHandler(key)}
           title={toTitleCase(key)}
-          className="rounded-none size-[34px]"
+          className="size-[34px] rounded-none"
         />
       ))}
 
@@ -73,7 +73,7 @@ export const Draw: React.FC<DrawProps> = ({ className, ...rest }) => {
         iconIdentifier={IconIdentifier.Bin}
         onClick={() => draw?.clear()}
         title="Clear"
-        className="rounded-none size-[34px]"
+        className="size-[34px] rounded-none"
       />
     </div>
   );

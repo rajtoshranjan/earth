@@ -51,7 +51,7 @@ export const Auth = () => {
 
   return (
     <Popover className="relative">
-      <Popover.Button className="size-8 border flex shrink-0 overflow-hidden rounded-full outline-none">
+      <Popover.Button className="flex size-8 shrink-0 overflow-hidden rounded-full border outline-none">
         <img
           className="aspect-square size-full"
           src={loggedUser ? loggedUser.photoURL ?? randomAvatarUrl : Image.User}
@@ -59,8 +59,8 @@ export const Auth = () => {
         />
       </Popover.Button>
 
-      <Popover.Panel className="absolute bg-gray-800 right-0 mt-4 py-3 rounded-lg shadow-md text-gray-50 min-w-60 border border-gray-700">
-        <div className="px-4 mb-3">
+      <Popover.Panel className="absolute right-0 mt-4 min-w-60 rounded-lg border border-gray-700 bg-gray-800 py-3 text-gray-50 shadow-md">
+        <div className="mb-3 px-4">
           {loggedUser ? (
             <>
               {/* User details card */}
@@ -71,7 +71,7 @@ export const Auth = () => {
                   alt={loggedUser.displayName ?? 'user'}
                 />
                 <div className="flex flex-col">
-                  <span className="text-md">{loggedUser.displayName}</span>
+                  <span>{loggedUser.displayName}</span>
                   <span className="text-xs text-gray-300">
                     {loggedUser.email}
                   </span>
@@ -81,7 +81,7 @@ export const Auth = () => {
               {/* Logout button */}
               <Button
                 variant="secondary"
-                className="border w-full my-1"
+                className="my-1 w-full border"
                 iconIdentifier={IconIdentifier.Logout}
                 onClick={logout}
               >
@@ -92,7 +92,7 @@ export const Auth = () => {
             // Login buttons.
             <Button
               variant="secondary"
-              className="border w-full my-1"
+              className="my-1 w-full border"
               iconIdentifier={IconIdentifier.GoogleColor}
               onClick={loginWithGoogle}
             >
@@ -103,12 +103,12 @@ export const Auth = () => {
 
         {/* Panel Footer */}
         <hr />
-        <div className="flex gap-2 px-4 items-center justify-center rounded-md mt-2">
-          <p className="text-sm font-medium text-gray-300 italic">Product by</p>
+        <div className="mt-2 flex items-center justify-center gap-2 rounded-md px-4">
+          <p className="text-sm font-medium italic text-gray-300">Product by</p>
           <img
             src={Image.Logo}
             alt="CodinGunda"
-            className="aspect-square object-contain size-6"
+            className="aspect-square size-6 object-contain"
             title="CodinGunda"
           />
         </div>

@@ -40,12 +40,12 @@ export const Modal: React.FC<ModalProps> = ({
     >
       <div className={customClassNames} {...rest}>
         {/* Header */}
-        <div className="flex justify-between items-center h-12 px-4 border-b border-gray-700">
+        <div className="flex h-12 items-center justify-between border-b border-gray-700 px-4">
           <h3 className="font-bold text-gray-50">{title}</h3>
 
           <button
             type="button"
-            className="flex justify-center items-center size-7 rounded-full border-none outline-none text-white hover:bg-gray-700"
+            className="flex size-7 items-center justify-center rounded-full border-none text-white outline-none hover:bg-gray-700"
             onClick={onClose}
           >
             <Icon identifier={IconIdentifier.Close} className="size-6" />
@@ -53,7 +53,7 @@ export const Modal: React.FC<ModalProps> = ({
         </div>
 
         {/* Body */}
-        <div className="p-4 overflow-y-auto text-gray-50">{children}</div>
+        <div className="overflow-y-auto p-4 text-gray-50">{children}</div>
       </div>
     </Transition>
   );

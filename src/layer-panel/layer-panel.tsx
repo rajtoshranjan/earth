@@ -30,7 +30,7 @@ export const LayerPanel = () => {
     <div className={customClassNames}>
       {/* Toggle Button */}
       <button
-        className="absolute flex ml-60 px-1 py-4 w-[1.4rem] top-2/4 -translate-y-2/4 bg-gray-900 text-gray-50 rounded-e-lg border-r border-t border-b border-gray-700"
+        className="absolute top-2/4 ml-60 flex w-[1.4rem] -translate-y-2/4 rounded-e-lg border-y border-r border-gray-700 bg-gray-900 px-1 py-4 text-gray-50"
         onClick={onClickToggleLayerPanel}
       >
         <Icon
@@ -43,16 +43,16 @@ export const LayerPanel = () => {
         />
       </button>
       {/* Draw tools */}
-      <Draw className="absolute ml-[15.65rem] -mt-[0.35rem]" />
+      <Draw className="absolute -mt-[0.35rem] ml-[15.65rem] " />
 
       {/* Body */}
       <h2 className="sticky text-sm font-medium text-gray-400">Layers</h2>
 
-      <div className="space-y-2 w-full h-[calc(100%-5rem)] mt-3 overflow-y-auto">
+      <div className="mt-3 h-[calc(100%-5rem)] w-full space-y-2 overflow-y-auto">
         <Layer />
       </div>
 
-      <AddLayer className="w-full mt-3" />
+      <AddLayer className="mt-3 w-full" />
     </div>
   );
 };

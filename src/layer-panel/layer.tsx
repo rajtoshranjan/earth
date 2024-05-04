@@ -23,13 +23,13 @@ export const Layer = () => {
   };
 
   return (
-    <div className="group w-full inline-flex gap-2 items-center whitespace-nowrap rounded-md text-sm font-medium transition-colors disabled:pointer-events-none disabled:opacity-50 h-10 px-3 text-gray-50 hover:bg-gray-800">
+    <div className="group inline-flex h-10 w-full items-center gap-2 whitespace-nowrap rounded-md px-3 text-sm font-medium text-gray-50 transition-colors hover:bg-gray-800 disabled:pointer-events-none disabled:opacity-50">
       <div>
         <Icon identifier={IconIdentifier.Satellite} className="size-4" />
       </div>
       <span className="truncate">Google Satellite</span>
 
-      <div className="group-hover:flex items-center gap-2 hidden ml-auto">
+      <div className="ml-auto hidden items-center gap-2 group-hover:flex">
         <button
           className="flex text-sm font-medium text-gray-50 hover:text-gray-300"
           onClick={onLayerToggle}
