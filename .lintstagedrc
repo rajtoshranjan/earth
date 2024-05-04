@@ -3,5 +3,5 @@
     "eslint --quiet --fix",
     "prettier --write --ignore-unknown"
   ],
-  "*.{json,html}": ["prettier --write --ignore-unknown"]
+  "*.{json,html,css}": ["prettier --write --ignore-unknown"]
 }
