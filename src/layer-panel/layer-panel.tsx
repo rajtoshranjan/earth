@@ -1,8 +1,8 @@
 import { useLocalStorage } from '@uidotdev/usehooks';
 import classNames from 'classnames';
+import { Icon, IconIdentifier } from '../components';
 import { Draw } from './draw';
 import { Layer } from './layer';
-import { Icon, IconIdentifier } from '../components';
 import { AddLayer } from './add-layer';
 
 export const LayerPanel = () => {

@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
 
 import { TerraDraw, TerraDrawMapLibreGLAdapter } from 'terra-draw';
+import classNames from 'classnames';
 import { GlobalContext } from '../../contexts';
 
-import classNames from 'classnames';
 import { Button, IconIdentifier } from '../../components';
+import { toTitleCase } from '../../utils';
 import { MODES } from './constants';
 import { setupModes } from './helpers';
-import { toTitleCase } from '../../utils';
 
 type DrawProps = React.HTMLProps<HTMLDivElement>;
 

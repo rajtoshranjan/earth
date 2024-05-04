@@ -1,6 +1,6 @@
 import React from 'react';
-import { InputProps } from './types';
 import classNames from 'classnames';
+import { InputProps } from './types';
 
 export const Input: React.FC<InputProps> = ({ label, className, ...rest }) => {
   // Constants.

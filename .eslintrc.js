@@ -39,10 +39,14 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': ['error'],
     '@typescript-eslint/ban-ts-comment': 'off',
     'prettier/prettier': 'error',
+    // React rules.
     'react/prop-types': 'off',
     'react/react-in-jsx-scope': 'off',
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'off',
+
+    // Import rules.
+    'import/order': 'error',
   },
   settings: {
     react: {

@@ -1,12 +1,12 @@
 import classNames from 'classnames';
 import React, { useContext, useEffect, useState } from 'react';
-import { GlobalContext } from '../contexts';
-import { FeatureCollectionResponse, FeatureResponse } from './types';
 
 import { Combobox } from '@headlessui/react';
 import { useDebounce } from '@uidotdev/usehooks';
+import { GlobalContext } from '../contexts';
 import { Icon, IconIdentifier } from '../components';
 import { EnvVariables } from '../env-variables';
+import { FeatureCollectionResponse, FeatureResponse } from './types';
 
 type SearchProps = React.HTMLProps<HTMLDivElement>;
 

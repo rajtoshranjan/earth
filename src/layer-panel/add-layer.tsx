@@ -1,7 +1,7 @@
 import React, { HTMLProps } from 'react';
-import { Button, IconIdentifier, Input, Modal } from '../components';
 import classNames from 'classnames';
 import { useToggle } from '@uidotdev/usehooks';
+import { Button, IconIdentifier, Input, Modal } from '../components';
 
 export const AddLayer: React.FC<HTMLProps<HTMLElement>> = ({ className }) => {
   // States.
