@@ -5,8 +5,11 @@ import { Combobox } from '@headlessui/react';
 import { useDebounce } from '@uidotdev/usehooks';
 import { GlobalContext } from '../contexts';
 import { Icon, IconIdentifier } from '../components';
-import { EnvVariables } from '../env-variables';
-import { FeatureCollectionResponse, FeatureResponse } from './types';
+import {
+  useSearchLocation,
+  FeatureResponse,
+  useLocation,
+} from '../services/apis';
 
 type SearchProps = React.HTMLProps<HTMLDivElement>;
 
@@ -28,51 +31,45 @@ export const Search: React.FC<SearchProps> = ({ className }) => {
   const [query, setQuery] = useState<string>();
   const debouncedSearchQuery = useDebounce(query, 300);
 
-  const [selectedLocation, setSelectedLocation] = useState<FeatureResponse>();
-  const [searchedLocations, setSearchedLocations] =
-    useState<FeatureCollectionResponse>();
+  const [selectedLocationId, setSelectedLocationId] = useState<string>();
 
-  // useEffect.
+  // APIs.
+  const { data: searchedLocations } = useSearchLocation(debouncedSearchQuery);
+  const { data: selectedLocationFeatures } = useLocation(selectedLocationId);
+
+  // useEffects.
   useEffect(() => {
-    setQuery(url.searchParams.get('query') ?? undefined);
+    setSelectedLocationId(url.searchParams.get('location') ?? undefined);
   }, []);
 
   useEffect(() => {
-    if (!debouncedSearchQuery) {
+    if (!selectedLocationFeatures) {
       return;
     }
 
-    fetch(
-      `https://api.maptiler.com/geocoding/${query}.json?proximity=ip&fuzzyMatch=true&limit=5&key=${EnvVariables.mapTilerKey}`,
-    ).then(async (res) => {
-      return setSearchedLocations(await res.json());
+    // Zoom to location.
+    if (selectedLocationFeatures.features[0].bbox) {
+      map?.fitBounds(selectedLocationFeatures?.features[0].bbox);
+    } else {
+      map?.jumpTo({
+        center: selectedLocationFeatures.features[0].center,
+      });
+    }
+
+    // Show searched location on map.
+    map?.addSource('searchLocation', {
+      type: 'geojson',
+      data: selectedLocationFeatures,
     });
-  }, [debouncedSearchQuery]);
 
-  useEffect(() => {
-    if (!selectedLocation?.id) {
-      return;
-    }
-
-    fetch(
-      `https://api.maptiler.com/geocoding/${selectedLocation.id}.json?limit=3&key=${EnvVariables.mapTilerKey}`,
-    ).then(async (res) => {
-      const feature = await res.json();
-
-      map?.addSource('searchLocation', {
-        type: 'geojson',
-        data: feature,
-      });
-
-      map?.addLayer({
-        source: 'searchLocation',
-        id: 'searchLocationBoundary',
-        type: 'line',
-        paint: {
-          'line-color': 'red',
-          'line-width': 3,
-        },
-      });
+    map?.addLayer({
+      source: 'searchLocation',
+      id: 'searchLocationBoundary',
+      type: 'line',
+      paint: {
+        'line-color': 'red',
+        'line-width': 3,
+      },
     });
 
     return () => {
@@ -83,39 +80,29 @@ export const Search: React.FC<SearchProps> = ({ className }) => {
         map?.removeSource('searchLocation');
       }
     };
-  }, [selectedLocation]);
+  }, [selectedLocationFeatures]);
 
   // Handlers.
-  const updateSearchQuery = (value?: string) => {
-    setQuery(value);
-
-    // Update search param.
-    if (!value) {
-      url.searchParams.delete('query');
-    } else {
-      url.searchParams.set('query', value);
-    }
-
-    window.history.pushState(null, '', url.toString());
-  };
-
   const onPlaceSelect = (feature: FeatureResponse) => {
     if (!feature.place_name_en) {
       return;
     }
 
-    if (feature.bbox) {
-      map?.fitBounds(feature.bbox);
-    }
+    // Update search param.
+    url.searchParams.set('location', feature.id);
+    window.history.pushState(null, '', url.toString());
 
-    setSelectedLocation(feature);
-
-    updateSearchQuery();
+    setSelectedLocationId(feature.id);
   };
 
   return (
     <div className={customClassNames}>
-      <Combobox value={selectedLocation} onChange={onPlaceSelect}>
+      <Combobox
+        value={searchedLocations?.features.find(
+          ({ id }) => id === selectedLocationId,
+        )}
+        onChange={onPlaceSelect}
+      >
         <div className="flex items-center overflow-hidden rounded-lg bg-gray-700">
           <Icon
             identifier={IconIdentifier.Search}
@@ -127,7 +114,7 @@ export const Search: React.FC<SearchProps> = ({ className }) => {
             displayValue={(feature: FeatureResponse) =>
               feature.place_name_en ?? ''
             }
-            onChange={(e) => updateSearchQuery(e.target.value)}
+            onChange={(e) => setQuery(e.target.value)}
             placeholder="Search locations"
           />
         </div>
@@ -143,7 +130,7 @@ export const Search: React.FC<SearchProps> = ({ className }) => {
                 {({ active }) => (
                   <SearchItem
                     feature={feature}
-                    isSelected={feature.id === selectedLocation?.id}
+                    isSelected={feature.id === selectedLocationId}
                     isActive={active}
                   />
                 )}
