@@ -67,8 +67,21 @@ export const Search: React.FC<SearchProps> = ({ className }) => {
       id: 'searchLocationBoundary',
       type: 'line',
       paint: {
-        'line-color': 'red',
+        'line-color': '#dc2626',
         'line-width': 3,
+      },
+    });
+
+    map?.addLayer({
+      source: 'searchLocation',
+      id: 'searchLocationCenter',
+      type: 'symbol',
+      paint: {
+        'icon-color': '#dc2626',
+      },
+      layout: {
+        'icon-image': 'marker',
+        'icon-size': 2,
       },
     });
 
@@ -76,6 +89,7 @@ export const Search: React.FC<SearchProps> = ({ className }) => {
       const source = map?.getSource('searchLocation');
 
       if (source) {
+        map?.removeLayer('searchLocationCenter');
         map?.removeLayer('searchLocationBoundary');
         map?.removeSource('searchLocation');
       }
