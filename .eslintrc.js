@@ -47,6 +47,9 @@ module.exports = {
 
     // Import rules.
     'import/order': 'error',
+    'import/newline-after-import': 'error',
+    'import/no-self-import': 'error',
+    'import/no-cycle': 'error',
   },
   settings: {
     react: {
