@@ -43,7 +43,7 @@ export const LayerPanel = () => {
         />
       </button>
       {/* Draw tools */}
-      <Draw className="absolute -mt-[0.35rem] ml-[15.65rem] " />
+      <Draw className="absolute ml-[15.65rem] mt-[-0.35rem] " />
 
       {/* Body */}
       <h2 className="sticky text-sm font-medium text-gray-400">Layers</h2>
