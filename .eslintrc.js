@@ -46,8 +46,8 @@ module.exports = {
     'react-hooks/exhaustive-deps': 'off',
 
     // Import rules.
-    'import/order': 'error',
-    'import/newline-after-import': 'error',
+    'import/order': 'warn',
+    'import/newline-after-import': 'warn',
     'import/no-self-import': 'error',
     'import/no-cycle': 'error',
   },
