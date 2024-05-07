@@ -1,6 +1,6 @@
 {
   "*.{js,jsx,ts,tsx}": [
-    "eslint --quiet --fix --max-warnings 0",
+    "eslint --quiet --fix --max-warnings=0",
     "prettier --write --ignore-unknown"
   ],
   "*.{json,html,css}": ["prettier --write --ignore-unknown"]
