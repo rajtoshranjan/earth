@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from 'react';
 
 import { Combobox } from '@headlessui/react';
 import { useDebounce } from '@uidotdev/usehooks';
+import { Marker } from 'maplibre-gl';
 import { GlobalContext } from '../contexts';
 import { Icon, IconIdentifier } from '../components';
 import {
@@ -72,24 +73,20 @@ export const Search: React.FC<SearchProps> = ({ className }) => {
       },
     });
 
-    map?.addLayer({
-      source: 'searchLocation',
-      id: 'searchLocationCenter',
-      type: 'symbol',
-      paint: {
-        'icon-color': '#dc2626',
-      },
-      layout: {
-        'icon-image': 'marker',
-        'icon-size': 2,
-      },
+    // Add Marker in center.
+    const marker = new Marker({
+      color: '#dc2626',
+      anchor: 'center',
+      scale: 0.9,
     });
+    marker.setLngLat(selectedLocationFeatures.features[0].center);
+    map && marker.addTo(map);
 
     return () => {
       const source = map?.getSource('searchLocation');
 
       if (source) {
-        map?.removeLayer('searchLocationCenter');
+        marker.remove();
         map?.removeLayer('searchLocationBoundary');
         map?.removeSource('searchLocation');
       }

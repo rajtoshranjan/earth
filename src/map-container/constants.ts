@@ -10,7 +10,6 @@ export const terrainSource: SourceSpecification = {
 
 export const baseStyleSpec: StyleSpecification = {
   version: 8,
-  sprite: 'https://api.maptiler.com/maps/streets-v2/sprite',
 
   sources: {
     satellite: {
