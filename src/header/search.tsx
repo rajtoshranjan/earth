@@ -130,6 +130,7 @@ export const Search: React.FC<SearchProps> = ({ className }) => {
             }
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search locations"
+            autoComplete="off"
           />
         </div>
 

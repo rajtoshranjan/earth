@@ -1,4 +1,4 @@
-@import url("https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css");
+@import url('https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css');
 
 @tailwind base;
 @tailwind components;
@@ -22,21 +22,30 @@
   z-index: -1;
 }
 
-input[type="search"]::-webkit-search-cancel-button {
-  -webkit-appearance: none;
-  height: 1em;
-  width: 1em;
-  border-radius: 50em;
-  background: url(./icons/cross-circle.svg) no-repeat 50% 50%;
-  background-size: contain;
-  pointer-events: none;
-  opacity: 0;
-  margin-left: 0.5em;
-}
+/* Overrides */
+@layer base {
+  input[type='search']::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    height: 1em;
+    width: 1em;
+    border-radius: 50em;
+    background: url(./icons/cross-circle.svg) no-repeat 50% 50%;
+    background-size: contain;
+    pointer-events: none;
+    opacity: 0;
+    margin-left: 0.5em;
+  }
 
-input[type="search"]:focus::-webkit-search-cancel-button {
-  opacity: 0.5;
-  pointer-events: all;
+  input[type='search']:focus::-webkit-search-cancel-button {
+    opacity: 0.5;
+    pointer-events: all;
+  }
+
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 }
 
 /* 
@@ -46,8 +55,8 @@ input[type="search"]:focus::-webkit-search-cancel-button {
 */
 
 .maplibregl-ctrl {
-  background-color: theme("colors.gray.900");
-  color: theme("colors.gray.50");
+  background-color: theme('colors.gray.900');
+  color: theme('colors.gray.50');
   border-radius: 0.5rem;
   overflow: hidden;
 }
@@ -75,7 +84,7 @@ input[type="search"]:focus::-webkit-search-cancel-button {
 }
 
 .maplibregl-ctrl-group button:hover {
-  background-color: theme("colors.gray.800") !important;
+  background-color: theme('colors.gray.800') !important;
 }
 
 .maplibregl-ctrl-scale {
