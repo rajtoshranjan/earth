@@ -1,6 +1,7 @@
 import React, { HTMLProps } from 'react';
 import classNames from 'classnames';
 import { useToggle } from '@uidotdev/usehooks';
+import { Fieldset } from '@headlessui/react';
 import { Button, IconIdentifier, Input, Modal } from '../components';
 
 export const AddLayer: React.FC<HTMLProps<HTMLElement>> = ({ className }) => {
@@ -23,7 +24,7 @@ export const AddLayer: React.FC<HTMLProps<HTMLElement>> = ({ className }) => {
       </Button>
 
       <Modal title="Add Raster Layer" show={show} onClose={toggle}>
-        <form>
+        <Fieldset as="form">
           {/* Tile Overlay */}
           <h6 className="text-sm text-gray-500">Tile Overlay</h6>
           <Input label="Overlay URL Pattern" className="mt-2" />
@@ -80,7 +81,7 @@ export const AddLayer: React.FC<HTMLProps<HTMLElement>> = ({ className }) => {
               type="number"
             />
           </div>
-        </form>
+        </Fieldset>
         <div className="mt-6 flex justify-end">
           <Button
             iconIdentifier={IconIdentifier.Plus}

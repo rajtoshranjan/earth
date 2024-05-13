@@ -10,7 +10,7 @@
     "lint": "eslint \"src/**/*.{ts,tsx,js}\" --fix --max-warnings=0 && tsc --extendedDiagnostics"
   },
   "dependencies": {
-    "@headlessui/react": "^1.7.19",
+    "@headlessui/react": "^2.0.3",
     "@tanstack/react-query": "^5.34.1",
     "@uidotdev/usehooks": "^2.4.1",
     "classnames": "^2.5.1",

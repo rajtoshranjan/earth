@@ -1,4 +1,4 @@
-import { Transition } from '@headlessui/react';
+import { Button, Transition } from '@headlessui/react';
 import classNames from 'classnames';
 import React, { Fragment } from 'react';
 import { Icon, IconIdentifier } from '../icon';
@@ -43,13 +43,13 @@ export const Modal: React.FC<ModalProps> = ({
         <div className="flex h-12 items-center justify-between border-b border-gray-700 px-4">
           <h3 className="font-bold text-gray-50">{title}</h3>
 
-          <button
+          <Button
             type="button"
             className="flex size-7 items-center justify-center rounded-full border-none text-white outline-none hover:bg-gray-700"
             onClick={onClose}
           >
             <Icon identifier={IconIdentifier.Close} className="size-6" />
-          </button>
+          </Button>
         </div>
 
         {/* Body */}

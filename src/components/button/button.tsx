@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
+import { Button as HeadlessButton } from '@headlessui/react';
 import { Icon } from '../icon';
 import { ButtonProps } from './type';
 
@@ -29,10 +30,12 @@ export const Button: React.FC<ButtonProps> = ({
   );
 
   return (
-    <button className={customClassNames} {...rest}>
-      {iconIdentifier && <Icon identifier={iconIdentifier} />}
+    <HeadlessButton className={customClassNames} {...rest}>
+      <>
+        {iconIdentifier && <Icon identifier={iconIdentifier} />}
 
-      {children}
-    </button>
+        {children}
+      </>
+    </HeadlessButton>
   );
 };

@@ -1,10 +1,7 @@
-import { ButtonHTMLAttributes, DetailedHTMLProps } from 'react';
+import { ButtonProps as HeadlessButtonProps } from '@headlessui/react';
 import { IconIdentifier } from '../icon/constants';
 
-export type ButtonProps = DetailedHTMLProps<
-  ButtonHTMLAttributes<HTMLButtonElement>,
-  HTMLButtonElement
-> & {
+export type ButtonProps = HeadlessButtonProps & {
   active?: boolean;
   iconIdentifier?: IconIdentifier;
   variant?: 'primary' | 'secondary';

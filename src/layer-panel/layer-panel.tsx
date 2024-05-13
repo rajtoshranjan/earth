@@ -1,5 +1,6 @@
 import { useLocalStorage } from '@uidotdev/usehooks';
 import classNames from 'classnames';
+import { Button } from '@headlessui/react';
 import { Icon, IconIdentifier } from '../components';
 import { Draw } from './draw';
 import { Layer } from './layer';
@@ -29,7 +30,7 @@ export const LayerPanel = () => {
   return (
     <div className={customClassNames}>
       {/* Toggle Button */}
-      <button
+      <Button
         className="absolute top-2/4 ml-60 flex w-[1.4rem] -translate-y-2/4 rounded-e-lg border-y border-r border-gray-700 bg-gray-900 px-1 py-4 text-gray-50"
         onClick={onClickToggleLayerPanel}
       >
@@ -41,7 +42,7 @@ export const LayerPanel = () => {
           }
           className="size-[14px]"
         />
-      </button>
+      </Button>
       {/* Draw tools */}
       <Draw className="absolute ml-[15.65rem] mt-[-0.35rem] " />
 
