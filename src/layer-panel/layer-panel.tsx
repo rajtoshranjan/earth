@@ -64,7 +64,7 @@ export const LayerPanel = () => {
         </DropdownMenu>
       </div>
 
-      <div className="mt-3 h-[calc(100%-5rem)] w-full space-y-2 overflow-y-auto">
+      <div className="mt-3 h-[calc(100%-2.5rem)] w-full space-y-2 overflow-y-auto">
         <Layer />
       </div>
 
