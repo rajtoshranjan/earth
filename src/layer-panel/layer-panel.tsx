@@ -1,7 +1,7 @@
-import { useLocalStorage } from '@uidotdev/usehooks';
+import { useLocalStorage, useToggle } from '@uidotdev/usehooks';
 import classNames from 'classnames';
 import { Button } from '@headlessui/react';
-import { Icon, IconIdentifier } from '../components';
+import { DropdownMenu, Icon, IconIdentifier } from '../components';
 import { Draw } from './draw';
 import { Layer } from './layer';
 import { AddLayer } from './add-layer';
@@ -12,6 +12,8 @@ export const LayerPanel = () => {
     'isLayerPanelOpen',
     window.innerWidth >= 1024,
   );
+
+  const [showAddLayerModal, toggleAddLayerModal] = useToggle(false);
 
   // Constants.
   const customClassNames = classNames(
@@ -43,17 +45,31 @@ export const LayerPanel = () => {
           className="size-[14px]"
         />
       </Button>
+
       {/* Draw tools */}
       <Draw className="absolute ml-[15.65rem] mt-[-0.35rem] " />
 
       {/* Body */}
-      <h2 className="sticky text-sm font-medium text-gray-400">Layers</h2>
+      <div className="flex items-center justify-between">
+        <h2 className="sticky text-sm font-medium text-gray-400">Layers</h2>
+        <DropdownMenu
+          iconIdentifier={IconIdentifier.MeatBallMenu}
+          className=" bg-transparent"
+          anchor="bottom start"
+        >
+          <DropdownMenu.Item onClick={() => toggleAddLayerModal(true)}>
+            <Icon identifier={IconIdentifier.Layer} />
+            Add Raster Layer
+          </DropdownMenu.Item>
+        </DropdownMenu>
+      </div>
 
       <div className="mt-3 h-[calc(100%-5rem)] w-full space-y-2 overflow-y-auto">
         <Layer />
       </div>
 
-      <AddLayer className="mt-3 w-full" />
+      {/* Add layer modal */}
+      <AddLayer show={showAddLayerModal} onClose={toggleAddLayerModal} />
     </div>
   );
 };
