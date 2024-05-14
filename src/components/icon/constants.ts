@@ -9,6 +9,7 @@ export enum IconIdentifier {
   EyeCross = 'eye-cross',
   Freehand = 'freehand',
   GoogleColor = 'google-color',
+  Layer = 'layer',
   Line = 'line',
   Logout = 'log-out',
   MeatBallMenu = 'meat-ball-menu',
