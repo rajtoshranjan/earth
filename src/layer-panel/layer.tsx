@@ -42,6 +42,7 @@ export const Layer: React.FC<LayerProps> = ({
             Delete
           </DropdownMenu.Item>
         </DropdownMenu>
+
         <button
           className="flex text-sm font-medium hover:text-gray-300 group-data-[visible=false]:block"
           onClick={() => layerManager?.toggleLayerVisibility(layerId)}
