@@ -87,7 +87,7 @@ export const AddLayerModal: React.FC<AddLayerModalProps> = ({
           <p className=" text-gray-300">
             Enter the URL of a tile server that hosts a set of images to overlay
             on the map. The URL pattern should specify x, y and zoom values in
-            format {'{x}'}/{'{y}'}/{'{x}'}
+            format {'{x}'}/{'{y}'}/{'{z}'}
           </p>
           <a
             className="text-xs text-blue-400 underline"
