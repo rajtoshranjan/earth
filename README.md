@@ -1,28 +1,25 @@
 # CodinGunda Earth
 
-This project is a Google Earth clone that made with Vite, React, and Tailwind CSS for its development. It provides a simplified version of the features found in Google Earth, allowing users to explore and interact with the Earth's geography and landmarks in a visually engaging way.
+This project is an Earth exploration application inspired by Google Earth, built using Maplibre, React, and Tailwind CSS. While it draws inspiration from Google Earth's design and functionality, it includes unique custom-made features and improvements. This application offers a visually engaging way for users to explore and interact with Earth's geography and landmarks.
+
+Note: Although inspired by Google Earth, this project includes significant differences in both design and functionality, providing a distinct user experience.
 
 ## Table of Contents
 
-- [Introduction](#introduction)
 - [Features](#features)
 - [Technologies Used](#technologies-used)
 - [Getting Started](#getting-started)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
-
-## Introduction
-
-The CodinGunda Earth is a web application that emulates the features of Google Earth. Users can view and interact with a globe that displays geographic information, maps, and landmarks. The application aims to provide an immersive experience similar to the well-known Google Earth platform.
 
 ## Features
 
-- Interactive 3D Globe: Explore a 3D representation of Earth's surface.
-- Zoom and Pan: Zoom in and out and pan across the globe.
+- Interactive 3D Map: Explore a 3D representation of Earth's surface.
+- Zoom and Pan: Zoom in and out and pan across the map.
 - Landmarks: View prominent landmarks and points of interest.
 - Geographic Information: Access geographic data and maps.
+- Measurement: Measure distance and area
+- Custom: Add custom raster and vector layers
 
 ## Technologies Used
 
@@ -39,9 +36,9 @@ To get started with the CodinGunda Earth, follow these steps:
 
 1. Clone the repository: `git clone https://github.com/rajtoshranjan/codingunda-earth.git`
 2. Navigate to the project directory: `cd codingunda-earth`
-3. Install dependencies: `npm install`
+3. Install dependencies: `npm i` or `npm ci`
 
 ### Usage
 
 1. Start the development server: `npm run dev`
-2. Open your web browser and go to `http://localhost:3000`
+2. Open your web browser and go to `http://localhost:5173`
