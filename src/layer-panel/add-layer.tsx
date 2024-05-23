@@ -166,7 +166,7 @@ export const AddLayerModal: React.FC<AddLayerModalProps> = ({
             iconIdentifier={IconIdentifier.Plus}
             variant="secondary"
             className="border px-5"
-            size="md"
+            size="sm"
           >
             Add Layer
           </Button>
