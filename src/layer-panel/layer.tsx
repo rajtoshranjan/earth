@@ -1,49 +1,57 @@
-import { useToggle } from '@uidotdev/usehooks';
-import { useContext } from 'react';
+import React, { useContext } from 'react';
+import { DropdownMenu, Icon, IconIdentifier } from '../components';
+import { LayerInfo } from '../utils/hooks';
 import { GlobalContext } from '../contexts';
-import { Icon, IconIdentifier } from '../components';
 
-export const Layer = () => {
-  // States.
-  const [isVisible, toggleVisibility] = useToggle(true);
+type LayerProps = {
+  layerId: string;
+  layerInfo: LayerInfo;
+};
 
+export const Layer: React.FC<LayerProps> = ({
+  layerInfo,
+
+  layerId,
+}) => {
   // Context.
-  const { map } = useContext(GlobalContext);
-
-  // Handlers
-  const onLayerToggle = () => {
-    toggleVisibility();
-    const layerId = 'satellite';
-
-    if (isVisible) {
-      map?.setLayoutProperty(layerId, 'visibility', 'none');
-    } else {
-      map?.setLayoutProperty(layerId, 'visibility', 'visible');
-    }
-  };
+  const { layerManager } = useContext(GlobalContext);
 
   return (
-    <div className="group inline-flex h-10 w-full items-center gap-2 whitespace-nowrap rounded-md px-3 text-sm font-medium text-gray-50 transition-colors hover:bg-gray-800 disabled:pointer-events-none disabled:opacity-50">
+    <div
+      className="group inline-flex h-10 w-full items-center gap-2 whitespace-nowrap rounded-md px-3 text-sm font-medium text-gray-50 transition-colors hover:bg-gray-800 data-[visible=false]:text-gray-500"
+      data-visible={layerInfo.show}
+      draggable
+    >
       <div>
-        <Icon identifier={IconIdentifier.Satellite} className="size-4" />
+        <Icon identifier={IconIdentifier.Layer} className="size-4" />
       </div>
-      <span className="truncate">Google Satellite</span>
+      <span className="truncate">{layerInfo.name}</span>
 
-      <div className="ml-auto hidden items-center gap-2 group-hover:flex">
+      <div className="ml-auto flex items-center gap-2 *:hidden group-hover:*:block">
+        <DropdownMenu
+          iconIdentifier={IconIdentifier.MeatBallMenu}
+          className="bg-transparent px-[0.15rem] py-[0.1rem] data-[open]:block"
+          anchor="bottom end"
+        >
+          <DropdownMenu.Item
+            onClick={() => {
+              layerManager?.removeLayer(layerId);
+            }}
+          >
+            <Icon identifier={IconIdentifier.Bin} className="size-4" />
+            Delete
+          </DropdownMenu.Item>
+        </DropdownMenu>
         <button
-          className="flex text-sm font-medium text-gray-50 hover:text-gray-300"
-          onClick={onLayerToggle}
+          className="flex text-sm font-medium hover:text-gray-300 group-data-[visible=false]:block"
+          onClick={() => layerManager?.toggleLayerVisibility(layerId)}
         >
           <Icon
             identifier={
-              isVisible ? IconIdentifier.Eye : IconIdentifier.EyeCross
+              layerInfo.show ? IconIdentifier.Eye : IconIdentifier.EyeCross
             }
             className="size-5"
           />
-        </button>
-
-        <button className="flex text-sm font-medium text-gray-50 hover:text-gray-300">
-          <Icon identifier={IconIdentifier.MeatBallMenu} className="size-4" />
         </button>
       </div>
     </div>

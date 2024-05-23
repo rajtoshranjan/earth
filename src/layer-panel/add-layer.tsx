@@ -1,19 +1,88 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { useForm } from 'react-hook-form';
 import { Fieldset } from '@headlessui/react';
 import { Button, IconIdentifier, Input, Modal } from '../components';
+import { GlobalContext } from '../contexts';
 
-type AddLayerProps = {
+type AddLayerModalProps = {
   onClose: VoidFunction;
   show: boolean;
 };
 
-export const AddLayer: React.FC<AddLayerProps> = ({ ...rest }) => {
+type FormData = {
+  name: string;
+  urlPattern: string;
+  tileSize: number;
+  northLatitude: number;
+  westLongitude: number;
+  eastLongitude: number;
+  southLatitude: number;
+};
+
+export const AddLayerModal: React.FC<AddLayerModalProps> = ({
+  show,
+  onClose,
+}) => {
+  // Context.
+  const { layerManager } = useContext(GlobalContext);
+
+  // Hooks.
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<FormData>({
+    defaultValues: {
+      tileSize: 256,
+      northLatitude: 85.0,
+      westLongitude: -180.0,
+      eastLongitude: 180.0,
+      southLatitude: -85.0,
+    },
+  });
+
+  // Handlers.
+  const onSubmit = (data: FormData) => {
+    layerManager?.addRasterLayer({
+      name: data.name,
+      tiles: [data.urlPattern],
+      bounds: [
+        data.westLongitude,
+        data.southLatitude,
+        data.eastLongitude,
+        data.northLatitude,
+      ],
+      tileSize: data.tileSize,
+    });
+
+    reset();
+    onClose();
+  };
+
   return (
-    <Modal title="Add Raster Layer" {...rest}>
-      <Fieldset as="form">
+    <Modal title="Add Raster Layer" show={show} onClose={onClose}>
+      <Fieldset as="form" onSubmit={handleSubmit(onSubmit)}>
+        {/* Basic Info */}
+        <h6 className="text-sm text-gray-500">Basic Info</h6>
+        <Input
+          label="Layer Name"
+          className="mt-2"
+          error={errors.name}
+          {...register('name', { required: true })}
+        />
+
         {/* Tile Overlay */}
-        <h6 className="text-sm text-gray-500">Tile Overlay</h6>
-        <Input label="Overlay URL Pattern" className="mt-2" />
+        <h6 className="mt-5 text-sm text-gray-500">Tile Overlay</h6>
+
+        <Input
+          label="Overlay URL Pattern"
+          className="mt-2"
+          {...register('urlPattern', {
+            required: true,
+          })}
+          error={errors.urlPattern}
+        />
         <div className="mt-2 px-1 text-xs">
           <p className=" text-gray-300">
             Enter the URL of a tile server that hosts a set of images to overlay
@@ -34,7 +103,10 @@ export const AddLayer: React.FC<AddLayerProps> = ({ ...rest }) => {
           label="Tile Size (px)"
           className="mt-6"
           type="number"
-          defaultValue={256}
+          {...register('tileSize', {
+            required: true,
+          })}
+          error={errors.tileSize}
         />
 
         {/* Tile Coverage */}
@@ -43,41 +115,63 @@ export const AddLayer: React.FC<AddLayerProps> = ({ ...rest }) => {
           <Input
             className="w-6/12"
             label="North Latitude"
-            defaultValue={85.0}
             type="number"
+            {...register('northLatitude', {
+              required: true,
+              max: 85,
+              min: -85,
+            })}
+            error={errors.northLatitude}
           />
           <div className="flex items-center justify-center gap-2">
             <Input
               className="w-6/12"
               label="West Longitude"
-              defaultValue={-180.0}
               type="number"
+              {...register('westLongitude', {
+                required: true,
+                max: 180,
+                min: -180,
+              })}
+              error={errors.westLongitude}
             />
             <Input
               className="w-6/12"
               label="East Longitude"
-              defaultValue={180.0}
               type="number"
+              {...register('eastLongitude', {
+                required: true,
+                max: 180,
+                min: -180,
+              })}
+              error={errors.eastLongitude}
             />
           </div>
           <Input
             className="w-6/12"
             label="South Latitude"
-            defaultValue={-85.0}
             type="number"
+            {...register('southLatitude', {
+              required: true,
+              max: 85,
+              min: -85,
+            })}
+            error={errors.southLatitude}
           />
         </div>
+
+        <div className="mt-6 flex justify-end">
+          <Button
+            type="submit"
+            iconIdentifier={IconIdentifier.Plus}
+            variant="secondary"
+            className="border px-5"
+            size="md"
+          >
+            Add Layer
+          </Button>
+        </div>
       </Fieldset>
-      <div className="mt-6 flex justify-end">
-        <Button
-          iconIdentifier={IconIdentifier.Plus}
-          variant="secondary"
-          className="border px-5"
-          size="md"
-        >
-          Add Layer
-        </Button>
-      </div>
     </Modal>
   );
 };

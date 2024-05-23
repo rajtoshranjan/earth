@@ -1,12 +1,17 @@
 import { useLocalStorage, useToggle } from '@uidotdev/usehooks';
 import classNames from 'classnames';
 import { Button } from '@headlessui/react';
+import { useContext } from 'react';
 import { DropdownMenu, Icon, IconIdentifier } from '../components';
+import { GlobalContext } from '../contexts';
 import { Draw } from './draw';
 import { Layer } from './layer';
-import { AddLayer } from './add-layer';
+import { AddLayerModal } from './add-layer';
 
 export const LayerPanel = () => {
+  // Context.
+  const { layers } = useContext(GlobalContext);
+
   // States.
   const [show, setShow] = useLocalStorage<boolean>(
     'isLayerPanelOpen',
@@ -65,11 +70,22 @@ export const LayerPanel = () => {
       </div>
 
       <div className="mt-3 h-[calc(100%-2.5rem)] w-full space-y-2 overflow-y-auto">
-        <Layer />
+        {layers &&
+          Object.entries(layers).map(([layerId, layerInfo]) => (
+            <Layer key={layerId} layerId={layerId} layerInfo={layerInfo} />
+          ))}
+
+        {layers && Object.keys(layers).length === 0 && (
+          <div>
+            <p className="mt-4 text-center text-sm text-gray-600">
+              No layers available
+            </p>
+          </div>
+        )}
       </div>
 
       {/* Add layer modal */}
-      <AddLayer show={showAddLayerModal} onClose={toggleAddLayerModal} />
+      <AddLayerModal show={showAddLayerModal} onClose={toggleAddLayerModal} />
     </div>
   );
 };

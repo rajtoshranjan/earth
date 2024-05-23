@@ -18,12 +18,15 @@
     "maplibre-gl": "^2.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.51.5",
     "react-icomoon": "^2.5.7",
-    "terra-draw": "^0.0.1-alpha.48"
+    "terra-draw": "^0.0.1-alpha.48",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.21",
     "@types/react-dom": "^18.2.7",
+    "@types/uuid": "^9.0.8",
     "@typescript-eslint/eslint-plugin": "^7.8.0",
     "@typescript-eslint/parser": "^7.8.0",
     "@vitejs/plugin-react-swc": "^3.3.2",
