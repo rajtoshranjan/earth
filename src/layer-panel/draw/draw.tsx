@@ -33,7 +33,6 @@ export const Draw: React.FC<DrawProps> = ({ className, ...rest }) => {
 
     map.on('load', () => {
       const terraDraw = new TerraDraw({
-        // @ts-ignore
         adapter: new TerraDrawMapLibreGLAdapter({
           map,
         }),
