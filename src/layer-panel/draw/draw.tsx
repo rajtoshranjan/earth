@@ -47,7 +47,7 @@ export const Draw: React.FC<DrawProps> = ({ className, ...rest }) => {
   }, [map]);
 
   // Handlers.
-  const addModeChangeHandler = (mode: string) => {
+  const modeChangeHandler = (mode: string) => {
     if (!draw) {
       return;
     }
@@ -63,7 +63,7 @@ export const Draw: React.FC<DrawProps> = ({ className, ...rest }) => {
           key={key}
           active={key === selectedMode}
           iconIdentifier={value.iconIdentifier}
-          onClick={() => addModeChangeHandler(key)}
+          onClick={() => modeChangeHandler(key)}
           title={toTitleCase(key)}
           className="size-[34px] rounded-none"
         />
