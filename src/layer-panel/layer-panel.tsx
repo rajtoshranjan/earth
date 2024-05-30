@@ -42,12 +42,9 @@ export const LayerPanel = () => {
         onClick={onClickToggleLayerPanel}
       >
         <Icon
-          identifier={
-            show
-              ? IconIdentifier.ChevronSmallLeft
-              : IconIdentifier.ChevronSmallRight
-          }
-          className="size-[14px]"
+          identifier={IconIdentifier.Down}
+          className="size-[14px] -rotate-90 data-[open=true]:rotate-90"
+          data-open={show}
         />
       </Button>
 
