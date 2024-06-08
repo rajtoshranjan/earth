@@ -1,6 +1,6 @@
-import React from 'react';
+import { Field, Input as HeadlessInput, Label } from '@headlessui/react';
 import classNames from 'classnames';
-import { Field, Label, Input as HeadlessInput } from '@headlessui/react';
+import React from 'react';
 import { InputProps } from './types';
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
@@ -8,7 +8,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
     // Constants.
     const containerClassName = classNames(className);
     const fieldClassName = classNames(
-      'relative z-0 rounded-lg border bg-gray-800',
+      'relative z-0 rounded-lg border bg-gray-800 overflow-hidden',
       {
         'border-red-400': !!error,
       },

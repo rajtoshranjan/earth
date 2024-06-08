@@ -1,13 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react';
 
-import { TerraDraw, TerraDrawMapLibreGLAdapter } from 'terra-draw';
 import classNames from 'classnames';
+import { TerraDraw, TerraDrawMapLibreGLAdapter } from 'terra-draw';
+
 import { GlobalContext } from '../../contexts';
 
 import { Button, IconIdentifier } from '../../components';
 import { toTitleCase } from '../../utils';
 import { MODES } from './constants';
+import { DrawFeatureModal } from './draw-feature-modal';
 import { setupModes } from './helpers';
+import { Modes } from './types';
 
 type DrawProps = React.HTMLProps<HTMLDivElement>;
 
@@ -17,7 +20,7 @@ export const Draw: React.FC<DrawProps> = ({ className, ...rest }) => {
 
   // States.
   const [draw, setDraw] = useState<TerraDraw>();
-  const [selectedMode, setSelectedMode] = useState<string>();
+  const [selectedMode, setSelectedMode] = useState<Modes>();
 
   // Constants.
   const customClassNames = classNames(
@@ -27,32 +30,49 @@ export const Draw: React.FC<DrawProps> = ({ className, ...rest }) => {
 
   // useEffects.
   useEffect(() => {
-    if (!map) {
-      return;
-    }
+    let terraDraw: TerraDraw | undefined;
 
-    map.on('load', () => {
-      const terraDraw = new TerraDraw({
+    const loadTerraDraw = () => {
+      terraDraw = new TerraDraw({
         adapter: new TerraDrawMapLibreGLAdapter({
           map,
         }),
         modes: setupModes(),
       });
 
-      terraDraw.start();
-
       setDraw(terraDraw);
-    });
+    };
+
+    map?.on('load', loadTerraDraw);
+
+    return () => {
+      terraDraw?.stop();
+
+      map?.off('load', loadTerraDraw);
+    };
   }, [map]);
 
   // Handlers.
-  const modeChangeHandler = (mode: string) => {
+  const onModeChange = (mode: Modes) => {
     if (!draw) {
       return;
     }
 
+    if (!draw.enabled) {
+      draw.start();
+    }
+
     draw.setMode(mode);
     setSelectedMode(mode);
+  };
+
+  const onClear = () => {
+    draw?.clear();
+  };
+
+  const onModalClose = () => {
+    setSelectedMode(undefined);
+    draw?.stop();
   };
 
   return (
@@ -62,7 +82,7 @@ export const Draw: React.FC<DrawProps> = ({ className, ...rest }) => {
           key={key}
           active={key === selectedMode}
           iconIdentifier={value.iconIdentifier}
-          onClick={() => modeChangeHandler(key)}
+          onClick={() => onModeChange(key as Modes)}
           title={toTitleCase(key)}
           className="size-[34px] rounded-none"
         />
@@ -70,10 +90,19 @@ export const Draw: React.FC<DrawProps> = ({ className, ...rest }) => {
 
       <Button
         iconIdentifier={IconIdentifier.Bin}
-        onClick={() => draw?.clear()}
+        onClick={onClear}
         title="Clear"
         className="size-[34px] rounded-none"
       />
+
+      {/* Feature details modal */}
+      {draw && (
+        <DrawFeatureModal
+          show={!!selectedMode}
+          onClose={onModalClose}
+          draw={draw}
+        />
+      )}
     </div>
   );
 };

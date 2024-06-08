@@ -1,8 +1,13 @@
 import classNames from 'classnames';
 import React, { useContext, useEffect, useState } from 'react';
 
-import { Combobox } from '@headlessui/react';
-import { useDebounce } from '@uidotdev/usehooks';
+import {
+  Combobox,
+  ComboboxInput,
+  ComboboxOption,
+  ComboboxOptions,
+} from '@headlessui/react';
+import { useDebounceValue } from 'usehooks-ts';
 import { Marker } from 'maplibre-gl';
 import { GlobalContext } from '../contexts';
 import { Icon, IconIdentifier } from '../components';
@@ -29,8 +34,7 @@ export const Search: React.FC<SearchProps> = ({ className }) => {
   const url = new URL(window.location.href);
 
   // State.
-  const [query, setQuery] = useState<string>();
-  const debouncedSearchQuery = useDebounce(query, 300);
+  const [debouncedSearchQuery, setQuery] = useDebounceValue<string>('', 300);
 
   const [selectedLocationId, setSelectedLocationId] = useState<string>();
 
@@ -58,18 +62,13 @@ export const Search: React.FC<SearchProps> = ({ className }) => {
     }
 
     // Show searched location on map.
-    map?.addSource('searchLocation', {
+    const layerId = map?.createGeoJSONLayer({
       type: 'geojson',
+      // @ts-ignore
       data: selectedLocationFeatures,
-    });
-
-    map?.addLayer({
-      source: 'searchLocation',
-      id: 'searchLocationBoundary',
-      type: 'line',
-      paint: {
-        'line-color': '#dc2626',
-        'line-width': 3,
+      styles: {
+        polygonOutlineColor: '#dc2626',
+        polygonOutlineWidth: 3,
       },
     });
 
@@ -83,12 +82,9 @@ export const Search: React.FC<SearchProps> = ({ className }) => {
     map && marker.addTo(map);
 
     return () => {
-      const source = map?.getSource('searchLocation');
-
-      if (source) {
-        marker.remove();
-        map?.removeLayer('searchLocationBoundary');
-        map?.removeSource('searchLocation');
+      marker.remove();
+      if (layerId) {
+        map?.deleteLayer(layerId);
       }
     };
   }, [selectedLocationFeatures]);
@@ -119,11 +115,11 @@ export const Search: React.FC<SearchProps> = ({ className }) => {
             identifier={IconIdentifier.Search}
             className="ml-3 size-5 text-gray-400"
           />
-          <Combobox.Input
+          <ComboboxInput
             type="search"
             className="w-full border-none bg-gray-700 py-2 pl-2 pr-3 text-sm leading-5 text-gray-50 outline-none"
-            displayValue={(feature: FeatureResponse) =>
-              feature.place_name_en ?? ''
+            displayValue={(feature?: FeatureResponse) =>
+              feature?.place_name_en ?? ''
             }
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search locations"
@@ -131,25 +127,26 @@ export const Search: React.FC<SearchProps> = ({ className }) => {
           />
         </div>
 
-        <Combobox.Options className="absolute mt-1 max-h-80 w-full overflow-auto rounded-md bg-gray-800 py-1 text-base shadow-lg focus:outline-none">
-          {searchedLocations?.features.length === 0 && query !== '' ? (
+        <ComboboxOptions className="absolute mt-1 max-h-80 w-full overflow-auto rounded-md bg-gray-800 py-1 text-base shadow-lg focus:outline-none">
+          {searchedLocations?.features.length === 0 &&
+          debouncedSearchQuery !== '' ? (
             <div className="relative cursor-default select-none px-4 py-2 text-gray-50">
               Nothing found.
             </div>
           ) : (
             searchedLocations?.features.map((feature) => (
-              <Combobox.Option key={feature.id} value={feature}>
-                {({ active }) => (
+              <ComboboxOption key={feature.id} value={feature}>
+                {({ selected }) => (
                   <SearchItem
                     feature={feature}
                     isSelected={feature.id === selectedLocationId}
-                    isActive={active}
+                    isActive={selected}
                   />
                 )}
-              </Combobox.Option>
+              </ComboboxOption>
             ))
           )}
-        </Combobox.Options>
+        </ComboboxOptions>
       </Combobox>
     </div>
   );

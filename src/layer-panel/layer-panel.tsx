@@ -1,4 +1,4 @@
-import { useLocalStorage, useToggle } from '@uidotdev/usehooks';
+import { useLocalStorage, useToggle } from 'usehooks-ts';
 import classNames from 'classnames';
 import { Button } from '@headlessui/react';
 import { useContext } from 'react';
@@ -18,7 +18,8 @@ export const LayerPanel = () => {
     window.innerWidth >= 1024,
   );
 
-  const [showAddLayerModal, toggleAddLayerModal] = useToggle(false);
+  const [showAddLayerModal, toggleAddLayerModal, setShowAddLayerModal] =
+    useToggle(false);
 
   // Constants.
   const customClassNames = classNames(
@@ -59,7 +60,7 @@ export const LayerPanel = () => {
           className=" bg-transparent"
           anchor="bottom start"
         >
-          <DropdownMenu.Item onClick={() => toggleAddLayerModal(true)}>
+          <DropdownMenu.Item onClick={() => setShowAddLayerModal(true)}>
             <Icon identifier={IconIdentifier.Layer} />
             Add Raster Layer
           </DropdownMenu.Item>

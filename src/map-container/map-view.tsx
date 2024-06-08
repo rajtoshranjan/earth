@@ -1,7 +1,7 @@
 import classNames from 'classnames';
-import { Map } from 'maplibre-gl';
 import React, { HTMLProps, useContext, useEffect, useRef } from 'react';
 import { GlobalContext } from '../contexts';
+import { Map } from '../core/maplibre';
 import { baseStyleSpec } from './constants';
 import { setupMapControls } from './helpers';
 
@@ -33,7 +33,6 @@ export const MapView: React.FC<HTMLProps<HTMLDivElement>> = ({
       center: [78.8718, 21.7679],
       zoom: 0,
       attributionControl: false,
-      renderWorldCopies: false,
     });
 
     setupMapControls(maplibreMap);

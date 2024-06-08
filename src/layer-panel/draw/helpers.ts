@@ -6,8 +6,8 @@ import {
   TerraDrawSelectMode,
   TerraDrawFreehandMode,
   TerraDrawRectangleMode,
-  TerraDrawRenderMode,
 } from 'terra-draw';
+import { DEFAULT_STYLES } from './constants';
 
 export const setupModes = () => {
   return [
@@ -16,6 +16,7 @@ export const setupModes = () => {
         arbitary: {
           feature: {},
         },
+
         polygon: {
           feature: {
             draggable: true,
@@ -28,9 +29,7 @@ export const setupModes = () => {
             },
           },
         },
-        freehand: {
-          feature: { draggable: true, coordinates: {} },
-        },
+
         linestring: {
           feature: {
             draggable: true,
@@ -41,36 +40,70 @@ export const setupModes = () => {
             },
           },
         },
+
+        point: {
+          feature: {
+            draggable: true,
+          },
+        },
+
+        freehand: {
+          feature: { draggable: true, coordinates: {} },
+        },
+
         circle: {
           feature: {
             draggable: true,
           },
         },
-        point: {
+
+        rectangle: {
           feature: {
             draggable: true,
           },
         },
       },
     }),
-    new TerraDrawPointMode(),
+    new TerraDrawPointMode({
+      styles: DEFAULT_STYLES,
+    }),
     new TerraDrawLineStringMode({
       snapping: true,
       allowSelfIntersections: false,
+      styles: DEFAULT_STYLES,
     }),
     new TerraDrawPolygonMode({
+      styles: {
+        fillColor: DEFAULT_STYLES.polygonFillColor,
+        fillOpacity: DEFAULT_STYLES.polygonFillOpacity,
+        outlineColor: DEFAULT_STYLES.polygonOutlineColor,
+        outlineWidth: DEFAULT_STYLES.polygonOutlineWidth,
+      },
       snapping: true,
       allowSelfIntersections: false,
     }),
-    new TerraDrawRectangleMode(),
-    new TerraDrawCircleMode(),
-    new TerraDrawFreehandMode(),
-    new TerraDrawRenderMode({
-      modeName: 'arbitary',
+    new TerraDrawRectangleMode({
       styles: {
-        polygonFillColor: '#4357AD',
-        polygonOutlineColor: '#48A9A6',
-        polygonOutlineWidth: 2,
+        fillColor: DEFAULT_STYLES.polygonFillColor,
+        fillOpacity: DEFAULT_STYLES.polygonFillOpacity,
+        outlineColor: DEFAULT_STYLES.polygonOutlineColor,
+        outlineWidth: DEFAULT_STYLES.polygonOutlineWidth,
+      },
+    }),
+    new TerraDrawCircleMode({
+      styles: {
+        fillColor: DEFAULT_STYLES.polygonFillColor,
+        fillOpacity: DEFAULT_STYLES.polygonFillOpacity,
+        outlineColor: DEFAULT_STYLES.polygonOutlineColor,
+        outlineWidth: DEFAULT_STYLES.polygonOutlineWidth,
+      },
+    }),
+    new TerraDrawFreehandMode({
+      styles: {
+        fillColor: DEFAULT_STYLES.polygonFillColor,
+        fillOpacity: DEFAULT_STYLES.polygonFillOpacity,
+        outlineColor: DEFAULT_STYLES.polygonOutlineColor,
+        outlineWidth: DEFAULT_STYLES.polygonOutlineWidth,
       },
     }),
   ];
