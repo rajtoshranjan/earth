@@ -8,7 +8,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
     // Constants.
     const containerClassName = classNames(className);
     const fieldClassName = classNames(
-      'relative z-0 rounded-lg border bg-gray-800 overflow-hidden',
+      'relative z-0 rounded-lg border bg-gray-800',
       {
         'border-red-400': !!error,
       },
