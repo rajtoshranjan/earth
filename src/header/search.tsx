@@ -4,12 +4,12 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Combobox } from '@headlessui/react';
 import { useDebounce } from '@uidotdev/usehooks';
 import { Marker } from 'maplibre-gl';
+import { Icon, IconIdentifier, Spinner } from '../components';
 import { GlobalContext } from '../contexts';
-import { Icon, IconIdentifier } from '../components';
 import {
-  useSearchLocation,
   FeatureResponse,
   useLocation,
+  useSearchLocation,
 } from '../services/apis';
 
 type SearchProps = React.HTMLProps<HTMLDivElement>;
@@ -35,7 +35,8 @@ export const Search: React.FC<SearchProps> = ({ className }) => {
   const [selectedLocationId, setSelectedLocationId] = useState<string>();
 
   // APIs.
-  const { data: searchedLocations } = useSearchLocation(debouncedSearchQuery);
+  const { data: searchedLocations, isLoading: isLoadingLocations } =
+    useSearchLocation(debouncedSearchQuery);
   const { data: selectedLocationFeatures } = useLocation(selectedLocationId);
 
   // useEffects.
@@ -132,7 +133,11 @@ export const Search: React.FC<SearchProps> = ({ className }) => {
         </div>
 
         <Combobox.Options className="absolute mt-1 max-h-80 w-full overflow-auto rounded-md bg-gray-800 py-1 text-base shadow-lg focus:outline-none">
-          {searchedLocations?.features.length === 0 && query !== '' ? (
+          {isLoadingLocations ? (
+            <div className="flex items-center justify-center py-1">
+              <Spinner />
+            </div>
+          ) : searchedLocations?.features.length === 0 && query !== '' ? (
             <div className="relative cursor-default select-none px-4 py-2 text-gray-50">
               Nothing found.
             </div>
