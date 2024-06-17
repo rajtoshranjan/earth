@@ -5,7 +5,7 @@ import { TerraDraw, TerraDrawMapLibreGLAdapter } from 'terra-draw';
 
 import { GlobalContext } from '../../contexts';
 
-import { Button, IconIdentifier } from '../../components';
+import { Button } from '../../components';
 import { toTitleCase } from '../../utils';
 import { MODES } from './constants';
 import { DrawFeatureModal } from './draw-feature-modal';
@@ -66,10 +66,6 @@ export const Draw: React.FC<DrawProps> = ({ className, ...rest }) => {
     setSelectedMode(mode);
   };
 
-  const onClear = () => {
-    draw?.clear();
-  };
-
   const onModalClose = () => {
     setSelectedMode(undefined);
     draw?.stop();
@@ -87,13 +83,6 @@ export const Draw: React.FC<DrawProps> = ({ className, ...rest }) => {
           className="size-[34px] rounded-none"
         />
       ))}
-
-      <Button
-        iconIdentifier={IconIdentifier.Bin}
-        onClick={onClear}
-        title="Clear"
-        className="size-[34px] rounded-none"
-      />
 
       {/* Feature details modal */}
       {draw && (

@@ -118,7 +118,6 @@ export const DrawFeatureModal: React.FC<DrawFeatureModalProps> = ({
   // Handlers.
   const onModalClose = () => {
     onClose();
-    setValue('drawnFeatures', {}, { shouldDirty: true });
     reset();
   };
 
@@ -132,6 +131,12 @@ export const DrawFeatureModal: React.FC<DrawFeatureModalProps> = ({
 
     draw.clear();
     onModalClose();
+  };
+
+  const onClear = () => {
+    draw.clear();
+    setValue('drawnFeatures', {}, { shouldDirty: true });
+    setActiveFeature(undefined);
   };
 
   return (
@@ -155,7 +160,7 @@ export const DrawFeatureModal: React.FC<DrawFeatureModalProps> = ({
     >
       <FeaturesInfo features={drawnFeatures} activeFeature={activeFeature} />
 
-      <div className="mt-4 ">
+      <div className="mt-4 flex items-center justify-between">
         <Button
           type="submit"
           iconIdentifier={IconIdentifier.Save}
@@ -166,6 +171,15 @@ export const DrawFeatureModal: React.FC<DrawFeatureModalProps> = ({
         >
           Save as Layer
         </Button>
+
+        <Button
+          iconIdentifier={IconIdentifier.Bin}
+          onClick={onClear}
+          variant="secondary"
+          className="text-red-500"
+          title="Remove drawn features"
+          disabled={Object.keys(drawnFeatures).length === 0}
+        />
       </div>
     </Modal>
   );
