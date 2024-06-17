@@ -1,8 +1,9 @@
 import { IconIdentifier } from '../../components';
 import { Styles } from '../../core/maplibre';
-import { ModeInfo, Modes } from './types';
+import { ModeInfo, OptionalModes, RequiredModes } from './types';
 
-export const MODES: Record<Modes, ModeInfo> = {
+export const MODES: Record<RequiredModes, ModeInfo> &
+  Partial<Record<OptionalModes, ModeInfo>> = {
   select: {
     iconIdentifier: IconIdentifier.Select,
   },
@@ -15,16 +16,20 @@ export const MODES: Record<Modes, ModeInfo> = {
   polygon: {
     iconIdentifier: IconIdentifier.Polygon,
   },
-  rectangle: {
-    iconIdentifier: IconIdentifier.Rectangle,
-  },
-  circle: {
-    iconIdentifier: IconIdentifier.Circle,
-  },
-  freehand: {
-    iconIdentifier: IconIdentifier.Freehand,
-  },
 };
+
+// Enable rest of the modes in desktop view.
+if (window.innerWidth > 768) {
+  MODES.rectangle = {
+    iconIdentifier: IconIdentifier.Rectangle,
+  };
+  MODES.circle = {
+    iconIdentifier: IconIdentifier.Circle,
+  };
+  MODES.freehand = {
+    iconIdentifier: IconIdentifier.Freehand,
+  };
+}
 
 export const DEFAULT_STYLES: Styles = {
   pointColor: '#60a5fa',

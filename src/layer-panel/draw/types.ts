@@ -9,6 +9,9 @@ export type Modes =
   | 'circle'
   | 'freehand';
 
+export type RequiredModes = Exclude<Modes, 'freehand' | 'circle' | 'rectangle'>;
+export type OptionalModes = Exclude<Modes, RequiredModes>;
+
 export type ModeInfo = {
   iconIdentifier: IconIdentifier;
 };
