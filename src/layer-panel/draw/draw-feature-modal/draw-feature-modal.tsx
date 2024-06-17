@@ -119,6 +119,7 @@ export const DrawFeatureModal: React.FC<DrawFeatureModalProps> = ({
   const onModalClose = () => {
     onClose();
     reset();
+    setActiveFeature(undefined);
   };
 
   const saveAsLayer = (data: CreateLayerData) => {
