@@ -1,9 +1,9 @@
 import React, { createContext } from 'react';
 
 import { User } from 'firebase/auth';
-import { Map } from 'maplibre-gl';
+import { LayerManager, Layers } from '../core/hooks';
+import { Map } from '../core/maplibre';
 import { firebaseAuth } from '../services';
-import { Layers, LayerManager } from '../utils/hooks';
 
 type GlobalContextType = {
   map?: Map;

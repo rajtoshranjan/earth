@@ -160,17 +160,15 @@ export const AddLayerModal: React.FC<AddLayerModalProps> = ({
           />
         </div>
 
-        <div className="mt-6 flex justify-end">
-          <Button
-            type="submit"
-            iconIdentifier={IconIdentifier.Plus}
-            variant="secondary"
-            className="border px-5"
-            size="sm"
-          >
-            Add Layer
-          </Button>
-        </div>
+        <Button
+          type="submit"
+          iconIdentifier={IconIdentifier.Plus}
+          variant="secondary"
+          className="float-end mt-5 border px-5"
+          size="sm"
+        >
+          Add Layer
+        </Button>
       </Fieldset>
     </Modal>
   );

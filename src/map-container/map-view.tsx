@@ -1,7 +1,7 @@
 import classNames from 'classnames';
-import { Map } from 'maplibre-gl';
 import React, { HTMLProps, useContext, useEffect, useRef } from 'react';
 import { GlobalContext } from '../contexts';
+import { Map } from '../core/maplibre';
 import { baseStyleSpec } from './constants';
 import { setupMapControls } from './helpers';
 

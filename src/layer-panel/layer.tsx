@@ -1,7 +1,8 @@
+import FileSaver from 'file-saver';
 import React, { useContext } from 'react';
 import { DropdownMenu, Icon, IconIdentifier } from '../components';
-import { LayerInfo } from '../utils/hooks';
 import { GlobalContext } from '../contexts';
+import { LayerInfo } from '../core/hooks';
 
 type LayerProps = {
   layerId: string;
@@ -15,6 +16,16 @@ export const Layer: React.FC<LayerProps> = ({
 }) => {
   // Context.
   const { layerManager } = useContext(GlobalContext);
+
+  // Handlers.
+  const downloadDrawnLayer = () => {
+    if (layerInfo.type !== 'geojson') return;
+
+    const blob = new Blob([JSON.stringify(layerInfo.sourceSpec.data)], {
+      type: 'application/geojson',
+    });
+    FileSaver.saveAs(blob, layerInfo.name + '.geojson');
+  };
 
   return (
     <div
@@ -33,6 +44,13 @@ export const Layer: React.FC<LayerProps> = ({
           className="bg-transparent px-[0.15rem] py-[0.1rem] data-[open]:block"
           anchor="bottom end"
         >
+          {layerInfo.type === 'geojson' && (
+            <DropdownMenu.Item onClick={downloadDrawnLayer}>
+              <Icon identifier={IconIdentifier.Download} className="size-4" />
+              Download
+            </DropdownMenu.Item>
+          )}
+
           <DropdownMenu.Item
             onClick={() => {
               layerManager?.removeLayer(layerId);

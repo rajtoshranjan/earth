@@ -1,6 +1,6 @@
-import React from 'react';
+import { Field, Input as HeadlessInput, Label } from '@headlessui/react';
 import classNames from 'classnames';
-import { Field, Label, Input as HeadlessInput } from '@headlessui/react';
+import React from 'react';
 import { InputProps } from './types';
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
@@ -27,10 +27,11 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
       <div className={containerClassName}>
         <Field className={fieldClassName}>
           <HeadlessInput
-            className="peer w-full bg-transparent px-2 py-1 text-gray-300 outline-none placeholder:text-transparent"
+            className="peer w-full rounded-lg bg-transparent px-2 py-1 text-gray-300 outline-none placeholder:text-transparent"
             placeholder=""
             {...rest}
             ref={ref}
+            autoComplete="off"
           />
           <Label className="-z-1 absolute left-0 ml-1 -translate-y-3 bg-gray-800 px-1 text-xs duration-100 ease-linear peer-placeholder-shown:translate-y-[0.36rem] peer-placeholder-shown:text-sm peer-placeholder-shown:text-gray-400 peer-focus:-translate-y-3 peer-focus:text-xs">
             {label}

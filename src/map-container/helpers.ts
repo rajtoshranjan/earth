@@ -1,11 +1,11 @@
 import {
   FullscreenControl,
   GeolocateControl,
-  Map,
   NavigationControl,
   ScaleControl,
   TerrainControl,
 } from 'maplibre-gl';
+import { Map } from '../core/maplibre';
 
 export const setupMapControls = (map: Map) => {
   map.addControl(

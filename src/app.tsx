@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import './assets/styles.css';
 
-import { Map } from 'maplibre-gl';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { User } from 'firebase/auth';
 import { GlobalContext } from './contexts';
+import { useMaplibreLayers } from './core/hooks';
+import { Map } from './core/maplibre';
 import { Header } from './header';
 import { LayerPanel } from './layer-panel';
 import { MapView } from './map-container';
-import { useMaplibreLayers } from './utils/hooks';
 
 // React query client.
 const queryClient = new QueryClient();

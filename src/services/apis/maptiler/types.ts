@@ -1,5 +1,4 @@
-// eslint-disable-next-line import/no-unresolved
-import { GeoJSON, Geometry } from 'geojson';
+import { Feature, FeatureCollection, Geometry } from '@turf/turf';
 import { LngLatBoundsLike, LngLatLike } from 'maplibre-gl';
 
 type Context = {
@@ -23,10 +22,7 @@ type PropertiesResponse = {
   place_type_name: (string | null)[];
 };
 
-export type FeatureResponse = {
-  type: string;
-  properties: PropertiesResponse;
-  geometry: Geometry;
+export type FeatureResponse = Feature<Geometry, PropertiesResponse> & {
   bbox?: LngLatBoundsLike;
   center: LngLatLike;
   place_name: string;
@@ -42,8 +38,7 @@ export type FeatureResponse = {
   language_en?: string;
 };
 
-export type FeatureCollectionResponse = GeoJSON & {
-  type: string;
+export type FeatureCollectionResponse = Omit<FeatureCollection, 'features'> & {
   features: FeatureResponse[];
   query: string[];
   attribution: string;
