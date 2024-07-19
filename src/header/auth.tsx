@@ -1,4 +1,4 @@
-import { Popover } from '@headlessui/react';
+import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react';
 import {
   GoogleAuthProvider,
   onAuthStateChanged,
@@ -51,15 +51,15 @@ export const Auth = () => {
 
   return (
     <Popover className="relative">
-      <Popover.Button className="flex size-8 shrink-0 overflow-hidden rounded-full border outline-none">
+      <PopoverButton className="flex size-8 shrink-0 overflow-hidden rounded-full border outline-none">
         <img
           className="aspect-square size-full"
           src={loggedUser ? loggedUser.photoURL ?? randomAvatarUrl : Image.User}
           alt={loggedUser?.displayName ?? 'User Info'}
         />
-      </Popover.Button>
+      </PopoverButton>
 
-      <Popover.Panel className="absolute right-0 mt-4 min-w-60 rounded-lg border border-gray-700 bg-gray-800 py-3 text-gray-50 shadow-md">
+      <PopoverPanel className="absolute right-0 mt-4 min-w-60 rounded-lg border border-gray-700 bg-gray-800 py-3 text-gray-50 shadow-md">
         <div className="mb-3 px-4">
           {loggedUser ? (
             <>
@@ -112,7 +112,7 @@ export const Auth = () => {
             title="CodinGunda"
           />
         </div>
-      </Popover.Panel>
+      </PopoverPanel>
     </Popover>
   );
 };
