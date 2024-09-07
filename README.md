@@ -40,5 +40,6 @@ To get started with the CodinGunda Earth, follow these steps:
 
 ### Usage
 
-1. Start the development server: `npm run dev`
-2. Open your web browser and go to `http://localhost:5173`
+1. Create a `.env.development` file in the `env-files` directory, using the `env-files/.env.sample` file as a reference for all required environment variables. 
+2. Start the development server: `npm run dev`
+3. Open your web browser and go to `http://localhost:5173`
