@@ -54,7 +54,9 @@ export const Auth = () => {
       <PopoverButton className="flex size-8 shrink-0 overflow-hidden rounded-full border outline-none">
         <img
           className="aspect-square size-full"
-          src={loggedUser ? loggedUser.photoURL ?? randomAvatarUrl : Image.User}
+          src={
+            loggedUser ? (loggedUser.photoURL ?? randomAvatarUrl) : Image.User
+          }
           alt={loggedUser?.displayName ?? 'User Info'}
         />
       </PopoverButton>

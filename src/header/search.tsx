@@ -64,8 +64,6 @@ export const Search: React.FC<SearchProps> = ({ className }) => {
 
     // Show searched location on map.
     const layerId = map?.createGeoJSONLayer({
-      type: 'geojson',
-      // @ts-ignore
       data: selectedLocationFeatures,
       styles: {
         polygonOutlineColor: '#dc2626',
@@ -80,7 +78,9 @@ export const Search: React.FC<SearchProps> = ({ className }) => {
       scale: 0.9,
     });
     marker.setLngLat(selectedLocationFeatures.features[0].center);
-    map && marker.addTo(map);
+    if (map) {
+      marker.addTo(map);
+    }
 
     return () => {
       marker.remove();

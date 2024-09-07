@@ -50,14 +50,14 @@ export const LayerPanel = () => {
       </Button>
 
       {/* Draw tools */}
-      <Draw className="absolute ml-[15.65rem] mt-[-0.35rem] " />
+      <Draw className="absolute ml-[15.65rem] mt-[-0.35rem]" />
 
       {/* Body */}
       <div className="flex items-center justify-between">
         <h2 className="sticky text-sm font-medium text-gray-400">Layers</h2>
         <DropdownMenu
           iconIdentifier={IconIdentifier.MeatBallMenu}
-          className=" bg-transparent"
+          className="bg-transparent"
           anchor="bottom start"
         >
           <DropdownMenu.Item onClick={() => setShowAddLayerModal(true)}>

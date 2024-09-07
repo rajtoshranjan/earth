@@ -1,4 +1,4 @@
-import { Feature, FeatureCollection, Geometry } from '@turf/turf';
+import { Feature, FeatureCollection, Geometry } from 'geojson';
 import { LngLatBoundsLike, LngLatLike } from 'maplibre-gl';
 
 type Context = {
