@@ -8,6 +8,7 @@ export enum IconIdentifier {
   Eye = 'eye',
   EyeCross = 'eye-cross',
   Freehand = 'freehand',
+  GitHub = 'github',
   GoogleColor = 'google-color',
   Image = 'image',
   Layer = 'layer',

@@ -7,7 +7,7 @@ import {
 } from 'firebase/auth';
 import { useContext, useEffect } from 'react';
 import { Image } from '../assets/images';
-import { Button, IconIdentifier } from '../components';
+import { Button, Icon, IconIdentifier } from '../components';
 import { GlobalContext } from '../contexts';
 import { firebaseAuth } from '../services';
 
@@ -106,13 +106,14 @@ export const Auth = () => {
         {/* Panel Footer */}
         <hr />
         <div className="mt-2 flex items-center justify-center gap-2 rounded-md px-4">
-          <p className="text-sm font-medium italic text-gray-300">Product by</p>
-          <img
-            src={Image.Logo}
-            alt="CodinGunda"
-            className="aspect-square size-6 object-contain"
-            title="CodinGunda"
-          />
+          <a
+            href="https://github.com/rajtoshranjan/earth"
+            target="_blank"
+            rel="noreferrer"
+            className="flex items-center gap-1 text-sm font-medium italic text-gray-300"
+          >
+            View on GitHub <Icon identifier={IconIdentifier.GitHub} />
+          </a>
         </div>
       </PopoverPanel>
     </Popover>
