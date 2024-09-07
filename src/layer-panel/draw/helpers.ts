@@ -69,7 +69,6 @@ export const setupModes = () => {
     }),
     new TerraDrawLineStringMode({
       snapping: true,
-      allowSelfIntersections: false,
       styles: DEFAULT_STYLES,
     }),
     new TerraDrawPolygonMode({
@@ -80,7 +79,6 @@ export const setupModes = () => {
         outlineWidth: DEFAULT_STYLES.polygonOutlineWidth,
       },
       snapping: true,
-      allowSelfIntersections: false,
     }),
     new TerraDrawRectangleMode({
       styles: {
