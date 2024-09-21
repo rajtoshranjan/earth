@@ -39,6 +39,17 @@ export const Layer: React.FC<LayerProps> = ({
       <span className="truncate">{layerInfo.name}</span>
 
       <div className="ml-auto flex items-center gap-2 *:hidden group-hover:*:block">
+        <button
+          className="flex text-sm font-medium hover:text-gray-300 group-data-[visible=false]:block"
+          onClick={() => layerManager?.toggleLayerVisibility(layerId)}
+        >
+          <Icon
+            identifier={
+              layerInfo.show ? IconIdentifier.Eye : IconIdentifier.EyeCross
+            }
+            className="size-5"
+          />
+        </button>
         <DropdownMenu
           iconIdentifier={IconIdentifier.MeatBallMenu}
           className="bg-transparent px-[0.15rem] py-[0.1rem] data-[open]:block"
@@ -60,18 +71,6 @@ export const Layer: React.FC<LayerProps> = ({
             Delete
           </DropdownMenu.Item>
         </DropdownMenu>
-
-        <button
-          className="flex text-sm font-medium hover:text-gray-300 group-data-[visible=false]:block"
-          onClick={() => layerManager?.toggleLayerVisibility(layerId)}
-        >
-          <Icon
-            identifier={
-              layerInfo.show ? IconIdentifier.Eye : IconIdentifier.EyeCross
-            }
-            className="size-5"
-          />
-        </button>
       </div>
     </div>
   );
