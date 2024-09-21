@@ -3,6 +3,7 @@ import './assets/styles.css';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { User } from 'firebase/auth';
+import { Toaster } from 'react-hot-toast';
 import { GlobalContext } from './contexts';
 import { useMaplibreLayers } from './core/hooks';
 import { Map } from './core/maplibre';
@@ -16,6 +17,7 @@ const queryClient = new QueryClient();
 function App() {
   // States.
   const [map, setMap] = useState<Map>();
+  const [editingLayerId, setEditingLayerId] = useState<string>();
   const [loggedUser, setLoggedUser] = useState<User | null>(null);
 
   // Hooks.
@@ -24,12 +26,34 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <GlobalContext.Provider
-        value={{ map, setMap, loggedUser, setLoggedUser, layers, layerManager }}
+        value={{
+          map,
+          setMap,
+          loggedUser,
+          setLoggedUser,
+          layers,
+          layerManager,
+          editingLayerId,
+          setEditingLayerId,
+        }}
       >
         <Header />
         <LayerPanel />
         <MapView />
       </GlobalContext.Provider>
+
+      {/* Toaster setup */}
+      <Toaster
+        position="bottom-center"
+        toastOptions={{
+          style: {
+            borderRadius: '0.75rem',
+            background: '#111827',
+            color: '#f9fafb',
+            paddingRight: 0,
+          },
+        }}
+      />
     </QueryClientProvider>
   );
 }

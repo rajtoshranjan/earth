@@ -1,8 +1,10 @@
 import * as turf from '@turf/turf';
+import { Feature } from 'geojson';
 import React, { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { GeoJSONStoreFeatures, TerraDraw } from 'terra-draw';
 import { useMediaQuery } from 'usehooks-ts';
+import { v4 as uuid4 } from 'uuid';
 import {
   Button,
   Icon,
@@ -12,10 +14,12 @@ import {
 } from '../../../components';
 import { GlobalContext } from '../../../contexts';
 import { DEFAULT_STYLES } from '../constants';
+import { Modes } from '../types';
 import { FeaturesInfo } from './features-info';
 
 type DrawFeatureModalProps = Omit<ModalProps, 'title'> & {
   draw: TerraDraw;
+  changeMode: (mode: Modes) => void;
 };
 
 type CreateLayerData = {
@@ -26,10 +30,12 @@ type CreateLayerData = {
 export const DrawFeatureModal: React.FC<DrawFeatureModalProps> = ({
   draw,
   onClose,
+  changeMode,
   ...rest
 }) => {
   // Context.
-  const { layerManager } = useContext(GlobalContext);
+  const { map, layers, setEditingLayerId, editingLayerId, layerManager } =
+    useContext(GlobalContext);
 
   // Hooks.
   const {
@@ -115,20 +121,71 @@ export const DrawFeatureModal: React.FC<DrawFeatureModalProps> = ({
     };
   }, []);
 
+  useEffect(() => {
+    if (!layers || !editingLayerId) return;
+
+    const layer = layers[editingLayerId];
+    if (layer.type !== 'geojson') return;
+
+    // Hide the layer from map.
+    map?.setLayerVisibility(editingLayerId, 'none');
+    layerManager?.zoomToLayer(editingLayerId);
+
+    draw?.start();
+    changeMode('select');
+
+    const featuresCollection = layer.sourceSpec.data;
+
+    if (
+      typeof featuresCollection === 'string' ||
+      featuresCollection.type !== 'FeatureCollection'
+    ) {
+      throw new Error('Invalid GeoJSON object: Expected a FeatureCollection.');
+    }
+
+    // @ts-ignore
+    draw?.addFeatures(featuresCollection.features);
+
+    const features: Record<string, Feature> = {};
+
+    for (const feature of featuresCollection.features) {
+      const id: string = feature['id'] ?? feature.properties?.['id'] ?? uuid4();
+      features[id] = feature;
+    }
+
+    // @ts-ignore
+    setValue('drawnFeatures', features);
+    setValue('layerName', layer.name);
+  }, [editingLayerId]);
+
   // Handlers.
   const onModalClose = () => {
     onClose();
     reset();
     setActiveFeature(undefined);
+    setEditingLayerId?.(undefined);
+
+    if (editingLayerId) {
+      map?.setLayerVisibility(editingLayerId, 'visible');
+    }
   };
 
-  const saveAsLayer = (data: CreateLayerData) => {
+  const onSubmit = (data: CreateLayerData) => {
     const features = turf.featureCollection(Object.values(data.drawnFeatures));
-    layerManager?.addGeoJsonLayer({
-      name: data.layerName,
-      data: features,
-      styles: DEFAULT_STYLES,
-    });
+
+    if (editingLayerId) {
+      setEditingLayerId?.(undefined);
+      layerManager?.updateGeoJsonLayer(editingLayerId, {
+        name: data.layerName,
+        data: features,
+      });
+    } else {
+      layerManager?.addGeoJsonLayer({
+        name: data.layerName,
+        data: features,
+        styles: DEFAULT_STYLES,
+      });
+    }
 
     draw.clear();
     onModalClose();
@@ -167,10 +224,10 @@ export const DrawFeatureModal: React.FC<DrawFeatureModalProps> = ({
           iconIdentifier={IconIdentifier.Save}
           variant="secondary"
           className="border px-5"
-          onClick={handleSubmit(saveAsLayer)}
+          onClick={handleSubmit(onSubmit)}
           disabled={!isDirty}
         >
-          Save as Layer
+          {editingLayerId ? 'Save' : 'Save as Layer'}
         </Button>
 
         <Button

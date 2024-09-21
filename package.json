@@ -23,6 +23,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.53.0",
+    "react-hot-toast": "^2.4.1",
     "react-icomoon": "^2.5.7",
     "terra-draw": "^1.0.0-beta.1",
     "usehooks-ts": "^3.1.0",

@@ -1,5 +1,6 @@
 import FileSaver from 'file-saver';
 import React, { useContext } from 'react';
+import toast from 'react-hot-toast';
 import { DropdownMenu, Icon, IconIdentifier } from '../components';
 import { GlobalContext } from '../contexts';
 import { LayerInfo } from '../core/hooks';
@@ -11,7 +12,8 @@ type LayerProps = {
 
 export const Layer: React.FC<LayerProps> = ({ layerInfo, layerId }) => {
   // Context.
-  const { layerManager } = useContext(GlobalContext);
+  const { layerManager, editingLayerId, setEditingLayerId } =
+    useContext(GlobalContext);
 
   // Handlers.
   const downloadDrawnLayer = () => {
@@ -23,10 +25,19 @@ export const Layer: React.FC<LayerProps> = ({ layerInfo, layerId }) => {
     FileSaver.saveAs(blob, layerInfo.name + '.geojson');
   };
 
+  const onEditBtnClick = () => {
+    if (!editingLayerId) {
+      setEditingLayerId?.(layerId);
+    } else {
+      toast.error('Close the drawing tool before editing another layer');
+    }
+  };
+
   return (
     <div
-      className="group inline-flex h-10 w-full items-center gap-2 whitespace-nowrap rounded-md px-3 text-sm font-medium text-gray-50 transition-colors hover:bg-gray-800 data-[visible=false]:text-gray-500"
+      className="group inline-flex h-10 w-full items-center gap-2 whitespace-nowrap rounded-md px-3 text-sm font-medium text-gray-50 transition-colors hover:bg-gray-800 data-[active=true]:bg-gray-700"
       data-visible={layerInfo.show}
+      data-active={layerId === editingLayerId}
       draggable
     >
       <div>
@@ -59,6 +70,11 @@ export const Layer: React.FC<LayerProps> = ({ layerInfo, layerId }) => {
           >
             <Icon identifier={IconIdentifier.Plane} className="size-4" />
             Fly to
+          </DropdownMenu.Item>
+
+          <DropdownMenu.Item onClick={onEditBtnClick}>
+            <Icon identifier={IconIdentifier.Edit} className="size-4" />
+            Edit
           </DropdownMenu.Item>
 
           {layerInfo.type === 'geojson' && (

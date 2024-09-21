@@ -12,6 +12,8 @@ type GlobalContextType = {
   setLoggedUser?: React.Dispatch<React.SetStateAction<User | null>>;
   layers?: Layers;
   layerManager?: LayerManager;
+  editingLayerId?: string;
+  setEditingLayerId?: React.Dispatch<React.SetStateAction<string | undefined>>;
 };
 
 export const GlobalContext = createContext<GlobalContextType>({
