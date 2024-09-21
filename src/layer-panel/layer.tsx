@@ -9,11 +9,7 @@ type LayerProps = {
   layerInfo: LayerInfo;
 };
 
-export const Layer: React.FC<LayerProps> = ({
-  layerInfo,
-
-  layerId,
-}) => {
+export const Layer: React.FC<LayerProps> = ({ layerInfo, layerId }) => {
   // Context.
   const { layerManager } = useContext(GlobalContext);
 
@@ -50,11 +46,21 @@ export const Layer: React.FC<LayerProps> = ({
             className="size-5"
           />
         </button>
+
         <DropdownMenu
           iconIdentifier={IconIdentifier.MeatBallMenu}
           className="bg-transparent px-[0.15rem] py-[0.1rem] data-[open]:block"
           anchor="bottom end"
         >
+          <DropdownMenu.Item
+            onClick={() => {
+              layerManager?.zoomToLayer(layerId);
+            }}
+          >
+            <Icon identifier={IconIdentifier.Plane} className="size-4" />
+            Fly to
+          </DropdownMenu.Item>
+
           {layerInfo.type === 'geojson' && (
             <DropdownMenu.Item onClick={downloadDrawnLayer}>
               <Icon identifier={IconIdentifier.Download} className="size-4" />

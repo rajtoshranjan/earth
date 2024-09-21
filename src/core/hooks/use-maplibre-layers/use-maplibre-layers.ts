@@ -1,5 +1,5 @@
-import { useLocalStorage } from 'usehooks-ts';
 import { useMemo } from 'react';
+import { useLocalStorage } from 'usehooks-ts';
 import { Map } from '../../maplibre';
 
 import { LayerManager } from './layer-manager';

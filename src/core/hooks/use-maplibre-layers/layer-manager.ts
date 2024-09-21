@@ -1,6 +1,13 @@
+import * as turf from '@turf/turf';
+import { LngLatBoundsLike } from 'maplibre-gl';
 import { Dispatch, SetStateAction } from 'react';
 import { Map } from '../../maplibre';
-import { AddRasterLayerParams, AddGeoJsonLayerParams, Layers } from './types';
+import {
+  AddGeoJsonLayerParams,
+  AddRasterLayerParams,
+  LayerInfo,
+  Layers,
+} from './types';
 
 interface IOptions {
   map: Map;
@@ -9,20 +16,23 @@ interface IOptions {
 }
 
 export class LayerManager {
-  protected readonly map: Map;
-  protected setLayers: Dispatch<SetStateAction<Layers>>;
+  private layers: Layers;
+  private readonly map: Map;
+  private readonly setLayers: Dispatch<SetStateAction<Layers>>;
 
   constructor(options: IOptions) {
     this.map = options.map;
+    this.layers = options.initialLayers;
     this.setLayers = options.setLayers;
 
     if (this.map) {
-      this._loadInitialLayers(options.initialLayers);
+      this._loadInitialLayers();
     }
   }
 
-  private _loadInitialLayers(initialLayers: Layers) {
-    Object.entries(initialLayers).forEach(([id, layerInfo]) => {
+  // Initialize layers on construction.
+  private _loadInitialLayers() {
+    Object.entries(this.layers).forEach(([id, layerInfo]) => {
       switch (layerInfo.type) {
         case 'raster':
           this.map.createRasterLayer(
@@ -40,64 +50,69 @@ export class LayerManager {
     });
   }
 
+  // State and layers update methods.
+  private _updateLayers(layers: Layers) {
+    this.layers = layers;
+    this.setLayers(layers);
+  }
+
+  private _addLayer(id: string, layerInfo: LayerInfo) {
+    this._updateLayers({ ...this.layers, [id]: layerInfo });
+  }
+
+  private _deleteLayer(id: string) {
+    delete this.layers[id];
+    this.setLayers(this.layers);
+  }
+
+  // Public methods to manage layers.
   addRasterLayer(params: AddRasterLayerParams, show = true) {
     const { name, ...sourceSpec } = params;
     const id = this.map.createRasterLayer(sourceSpec, show);
-
-    this.setLayers((layers) => {
-      return {
-        ...layers,
-        [id]: {
-          name,
-          show,
-          type: 'raster',
-          sourceSpec,
-        },
-      };
-    });
+    this._addLayer(id, { name, show, type: 'raster', sourceSpec });
   }
 
   addGeoJsonLayer(params: AddGeoJsonLayerParams, show = true) {
     const { name, ...sourceSpec } = params;
     const id = this.map.createGeoJSONLayer(sourceSpec, show);
-
-    this.setLayers((layers) => {
-      return {
-        ...layers,
-        [id]: {
-          name,
-          show,
-          type: 'geojson',
-          sourceSpec,
-        },
-      };
-    });
+    this._addLayer(id, { name, show, type: 'geojson', sourceSpec });
   }
 
   removeLayer(id: string) {
     this.map.deleteLayer(id);
-
-    this.setLayers((layers) => {
-      delete layers[id];
-      return layers;
-    });
+    this._deleteLayer(id);
   }
 
   toggleLayerVisibility(id: string) {
-    this.setLayers((layers) => {
-      if (layers[id].show) {
-        this.map.hideLayer(id);
-      } else {
-        this.map.showLayer(id);
-      }
+    const layer = this.layers[id];
+    if (!layer) return;
 
-      return {
-        ...layers,
-        [id]: {
-          ...layers[id],
-          show: !layers[id].show,
-        },
-      };
+    if (layer.show) {
+      this.map.hideLayer(id);
+    } else {
+      this.map.showLayer(id);
+    }
+
+    this._updateLayers({
+      ...this.layers,
+      [id]: { ...layer, show: !layer.show },
     });
+  }
+
+  zoomToLayer(id: string) {
+    const layer = this.layers[id];
+    if (!layer) return;
+
+    let bounds: LngLatBoundsLike | undefined;
+    if (layer.type === 'geojson' && typeof layer.sourceSpec.data !== 'string') {
+      const bbox = turf.bbox(layer.sourceSpec.data);
+      bounds = [bbox[0], bbox[1], bbox[2], bbox[3]];
+    } else if (layer.type === 'raster') {
+      bounds = layer.sourceSpec.bounds;
+    }
+
+    if (bounds) {
+      this.map.fitBounds(bounds);
+    }
   }
 }
