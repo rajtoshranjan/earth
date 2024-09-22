@@ -2,7 +2,6 @@ import { useState } from 'react';
 import './assets/styles.css';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { User } from 'firebase/auth';
 import { Toaster } from 'react-hot-toast';
 import { GlobalContext } from './contexts';
 import { useMaplibreLayers } from './core/hooks';
@@ -18,7 +17,6 @@ function App() {
   // States.
   const [map, setMap] = useState<Map>();
   const [editingLayerId, setEditingLayerId] = useState<string>();
-  const [loggedUser, setLoggedUser] = useState<User | null>(null);
 
   // Hooks.
   const { layers, layerManager } = useMaplibreLayers(map as Map);
@@ -29,8 +27,6 @@ function App() {
         value={{
           map,
           setMap,
-          loggedUser,
-          setLoggedUser,
           layers,
           layerManager,
           editingLayerId,

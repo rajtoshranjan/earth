@@ -1,5 +1,5 @@
 import { Icon, IconIdentifier } from '../components';
-import { Auth } from './auth';
+
 import { Search } from './search';
 
 export const Header = () => {
@@ -19,7 +19,19 @@ export const Header = () => {
       {/* Right Side */}
       <div className="flex w-8/12 items-center space-x-4 md:w-6/12 lg:w-3/12">
         <Search />
-        <Auth />
+
+        <a
+          href="https://github.com/rajtoshranjan/earth"
+          target="_blank"
+          rel="noreferrer"
+          className="flex size-9 shrink-0 overflow-hidden rounded-full text-gray-50"
+          title="View on GitHub"
+        >
+          <Icon
+            identifier={IconIdentifier.GitHub}
+            className="aspect-square size-full"
+          />
+        </a>
       </div>
     </header>
   );
