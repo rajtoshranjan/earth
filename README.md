@@ -2,6 +2,8 @@
 
 This project is an Earth exploration application inspired by Google Earth, built using Maplibre, React, and Tailwind CSS. While it draws inspiration from Google Earth's design and functionality, it includes unique custom-made features and improvements. This application offers a visually engaging way for users to explore and interact with Earth's geography and landmarks.
 
+![Earth](docs/earth.jpeg)
+
 Note: Although inspired by Google Earth, this project includes significant differences in both design and functionality, providing a distinct user experience.
 
 ## Table of Contents
