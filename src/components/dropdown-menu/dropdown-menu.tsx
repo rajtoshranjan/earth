@@ -22,7 +22,7 @@ export const DropdownMenu: React.FC<DropdownMenuProps> &
 }) => {
   // Constants.
   const customClassNames = classNames(
-    'inline-flex items-center gap-2 rounded-md bg-gray-800 p-1.5 text-sm/6 font-semibold text-gray-50 focus:outline-none data-[hover]:bg-gray-700 data-[open]:bg-gray-700 data-[focus]:outline-1 data-[focus]:outline-gray-50',
+    'inline-flex items-center gap-2 rounded-md bg-gray-800 p-1.5 text-sm/6 font-semibold text-gray-50 focus:outline-none data-[hover]:bg-gray-700 data-[disabled]:cursor-not-allowed data-[disabled]:text-gray-500 data-[open]:bg-gray-700 data-[focus]:outline-1 data-[focus]:outline-gray-50',
     className,
   );
 
@@ -59,7 +59,7 @@ const DropdownMenuItem: React.FC<MenuItemProps<'div'>> = ({
 }) => {
   // Constants.
   const customClassNames = classNames(
-    'group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 cursor-pointer data-[focus]:bg-gray-50/10 data-[disabled]:text-gray-500',
+    'group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 cursor-pointer data-[focus]:bg-gray-50/10 data-[disabled]:text-gray-500 data-[disabled]:cursor-not-allowed',
     className,
   );
 

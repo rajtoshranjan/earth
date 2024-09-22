@@ -38,7 +38,7 @@ export const Layer: React.FC<LayerProps> = ({ layerInfo, layerId }) => {
 
   return (
     <div
-      className="group inline-flex h-10 w-full items-center gap-2 whitespace-nowrap rounded-md px-3 text-sm font-medium text-gray-50 transition-colors hover:bg-gray-800 data-[active=true]:bg-gray-700"
+      className="group inline-flex h-10 w-full items-center gap-2 whitespace-nowrap rounded-md px-3 text-sm font-medium text-gray-50 transition-colors hover:bg-gray-800 data-[active=true]:bg-gray-700 data-[visible=false]:text-gray-500"
       data-visible={layerInfo.show}
       data-active={isEditing}
       draggable
@@ -66,6 +66,7 @@ export const Layer: React.FC<LayerProps> = ({ layerInfo, layerId }) => {
           iconIdentifier={IconIdentifier.MeatBallMenu}
           className="bg-transparent px-[0.15rem] py-[0.1rem] data-[open]:block"
           anchor="bottom end"
+          disabled={!layerInfo.show}
         >
           <DropdownMenu.Item
             onClick={() => {
