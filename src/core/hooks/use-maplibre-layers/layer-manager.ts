@@ -81,16 +81,20 @@ export class LayerManager {
 
   updateGeoJsonLayer(id: string, params: UpdateGeoJsonLayerParams) {
     const layer = this.layers[id];
-    if (layer.type === 'raster') {
-      throw Error('Wrong layer type');
+
+    if (!layer || layer.type === 'raster') {
+      throw new Error('Wrong layer type or layer does not exist');
     }
 
     const { name, data, ...sourceSpec } = params;
+    const updatedData = data ?? layer.sourceSpec.data;
+    const updatedName = name ?? layer.name;
 
+    // Only recreate the layer if the data has changed.
     if (data) {
       this.map.deleteLayer(id);
       this.map.createGeoJSONLayer(
-        { ...layer.sourceSpec, id, data, ...sourceSpec },
+        { ...layer.sourceSpec, id, data: updatedData, ...sourceSpec },
         layer.show,
       );
     }
@@ -99,7 +103,11 @@ export class LayerManager {
       ...this.layers,
       [id]: {
         ...layer,
-        name: name ?? layer.name,
+        name: updatedName,
+        sourceSpec: {
+          ...layer.sourceSpec,
+          data: updatedData,
+        },
       },
     });
   }

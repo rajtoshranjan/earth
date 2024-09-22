@@ -127,15 +127,7 @@ export const DrawFeatureModal: React.FC<DrawFeatureModalProps> = ({
     const layer = layers[editingLayerId];
     if (layer.type !== 'geojson') return;
 
-    // Hide the layer from map.
-    map?.setLayerVisibility(editingLayerId, 'none');
-    layerManager?.zoomToLayer(editingLayerId);
-
-    draw?.start();
-    changeMode('select');
-
     const featuresCollection = layer.sourceSpec.data;
-
     if (
       typeof featuresCollection === 'string' ||
       featuresCollection.type !== 'FeatureCollection'
@@ -143,18 +135,32 @@ export const DrawFeatureModal: React.FC<DrawFeatureModalProps> = ({
       throw new Error('Invalid GeoJSON object: Expected a FeatureCollection.');
     }
 
-    // @ts-ignore
-    draw?.addFeatures(featuresCollection.features);
+    const features: Feature[] = featuresCollection.features;
 
-    const features: Record<string, Feature> = {};
-
-    for (const feature of featuresCollection.features) {
-      const id: string = feature['id'] ?? feature.properties?.['id'] ?? uuid4();
-      features[id] = feature;
+    if (features.length > 0) {
+      map?.setLayerVisibility(editingLayerId, 'none');
+      layerManager?.zoomToLayer(editingLayerId);
     }
 
+    // Setup draw with initial features.
+    draw?.start();
     // @ts-ignore
-    setValue('drawnFeatures', features);
+    draw?.addFeatures(features);
+
+    changeMode('select');
+
+    // Setup initial form values.
+    const featuresValue = features.reduce<Record<string, Feature>>(
+      (acc, feature) => {
+        const id: string = feature.id ?? feature.properties?.id ?? uuid4();
+        acc[id] = feature;
+        return acc;
+      },
+      {},
+    );
+
+    // @ts-ignore
+    setValue('drawnFeatures', featuresValue);
     setValue('layerName', layer.name);
   }, [editingLayerId]);
 
