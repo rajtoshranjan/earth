@@ -7,6 +7,7 @@ import {
   AddRasterLayerParams,
   LayerInfo,
   Layers,
+  UpdateGeoJsonLayerParams,
 } from './types';
 
 interface IOptions {
@@ -78,6 +79,39 @@ export class LayerManager {
     this._addLayer(id, { name, show, type: 'geojson', sourceSpec });
   }
 
+  updateGeoJsonLayer(id: string, params: UpdateGeoJsonLayerParams) {
+    const layer = this.layers[id];
+
+    if (!layer || layer.type === 'raster') {
+      throw new Error('Wrong layer type or layer does not exist');
+    }
+
+    const { name, data, ...sourceSpec } = params;
+    const updatedData = data ?? layer.sourceSpec.data;
+    const updatedName = name ?? layer.name;
+
+    // Only recreate the layer if the data has changed.
+    if (data) {
+      this.map.deleteLayer(id);
+      this.map.createGeoJSONLayer(
+        { ...layer.sourceSpec, id, data: updatedData, ...sourceSpec },
+        layer.show,
+      );
+    }
+
+    this._updateLayers({
+      ...this.layers,
+      [id]: {
+        ...layer,
+        name: updatedName,
+        sourceSpec: {
+          ...layer.sourceSpec,
+          data: updatedData,
+        },
+      },
+    });
+  }
+
   removeLayer(id: string) {
     this.map.deleteLayer(id);
     this._deleteLayer(id);
@@ -104,6 +138,7 @@ export class LayerManager {
     if (!layer) return;
 
     let bounds: LngLatBoundsLike | undefined;
+
     if (layer.type === 'geojson' && typeof layer.sourceSpec.data !== 'string') {
       const bbox = turf.bbox(layer.sourceSpec.data);
       bounds = [bbox[0], bbox[1], bbox[2], bbox[3]];

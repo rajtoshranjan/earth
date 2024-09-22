@@ -29,3 +29,5 @@ export type AddRasterLayerParams = CreateRasterLayerSpecs & {
 export type AddGeoJsonLayerParams = CreateGeoJSONLayerSpecs & {
   name: string;
 };
+
+export type UpdateGeoJsonLayerParams = Partial<AddGeoJsonLayerParams>;

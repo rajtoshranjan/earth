@@ -59,7 +59,7 @@ const DropdownMenuItem: React.FC<MenuItemProps<'div'>> = ({
 }) => {
   // Constants.
   const customClassNames = classNames(
-    'group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 cursor-pointer data-[focus]:bg-gray-50/10',
+    'group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 cursor-pointer data-[focus]:bg-gray-50/10 data-[disabled]:text-gray-500',
     className,
   );
 
