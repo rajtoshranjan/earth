@@ -77,19 +77,21 @@ export const Layer: React.FC<LayerProps> = ({ layerInfo, layerId }) => {
             Fly to
           </DropdownMenu.Item>
 
-          <DropdownMenu.Item onClick={onEditBtnClick} disabled={isEditing}>
-            <Icon identifier={IconIdentifier.Edit} className="size-4" />
-            Edit
-          </DropdownMenu.Item>
-
           {layerInfo.type === 'geojson' && (
-            <DropdownMenu.Item
-              onClick={downloadDrawnLayer}
-              disabled={isEditing}
-            >
-              <Icon identifier={IconIdentifier.Download} className="size-4" />
-              Download
-            </DropdownMenu.Item>
+            <>
+              <DropdownMenu.Item onClick={onEditBtnClick} disabled={isEditing}>
+                <Icon identifier={IconIdentifier.Edit} className="size-4" />
+                Edit
+              </DropdownMenu.Item>
+
+              <DropdownMenu.Item
+                onClick={downloadDrawnLayer}
+                disabled={isEditing}
+              >
+                <Icon identifier={IconIdentifier.Download} className="size-4" />
+                Download
+              </DropdownMenu.Item>
+            </>
           )}
 
           <DropdownMenu.Item
