@@ -1,12 +1,12 @@
-import { useLocalStorage, useToggle } from 'usehooks-ts';
-import classNames from 'classnames';
 import { Button } from '@headlessui/react';
+import classNames from 'classnames';
 import { useContext } from 'react';
+import { useLocalStorage, useToggle } from 'usehooks-ts';
 import { DropdownMenu, Icon, IconIdentifier } from '../components';
 import { GlobalContext } from '../contexts';
+import { AddLayerModal } from './add-layer';
 import { Draw } from './draw';
 import { Layer } from './layer';
-import { AddLayerModal } from './add-layer';
 
 export const LayerPanel = () => {
   // Context.
@@ -39,18 +39,18 @@ export const LayerPanel = () => {
     <div className={customClassNames}>
       {/* Toggle Button */}
       <Button
-        className="absolute top-2/4 ml-60 flex w-[1.4rem] -translate-y-2/4 rounded-e-lg border-y border-r border-gray-700 bg-gray-900 px-1 py-4 text-gray-50"
+        className="absolute right-[-1.46rem] top-2/4 flex w-[1.4rem] -translate-y-2/4 rounded-e-lg border-y border-r border-gray-700 bg-gray-900 px-1 py-4 text-gray-50"
         onClick={onClickToggleLayerPanel}
       >
         <Icon
           identifier={IconIdentifier.Down}
-          className="size-[14px] -rotate-90 data-[open=true]:rotate-90"
+          className="size-[0.88rem] -rotate-90 data-[open=true]:rotate-90"
           data-open={show}
         />
       </Button>
 
       {/* Draw tools */}
-      <Draw className="absolute ml-[15.65rem] mt-[-0.35rem]" />
+      <Draw className="absolute right-[-2.85rem] mt-[-0.35rem]" />
 
       {/* Body */}
       <div className="flex items-center justify-between">
