@@ -233,7 +233,7 @@ export const DrawFeatureModal: React.FC<DrawFeatureModalProps> = ({
           onClick={handleSubmit(onSubmit)}
           disabled={!isDirty}
         >
-          {editingLayerId ? 'Save' : 'Save as Layer'}
+          {editingLayerId ? 'Save updates' : 'Save as Layer'}
         </Button>
 
         <Button
