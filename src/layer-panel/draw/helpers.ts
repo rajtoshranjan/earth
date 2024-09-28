@@ -48,18 +48,39 @@ export const setupModes = () => {
         },
 
         freehand: {
-          feature: { draggable: true, coordinates: {} },
+          feature: {
+            draggable: true,
+            rotateable: true,
+            scaleable: true,
+            coordinates: {
+              midpoints: true,
+              draggable: true,
+              deletable: true,
+            },
+          },
         },
 
         circle: {
           feature: {
             draggable: true,
+            rotateable: true,
+            scaleable: true,
+            coordinates: {
+              draggable: true,
+              resizable: 'center-fixed',
+            },
           },
         },
 
         rectangle: {
           feature: {
             draggable: true,
+            rotateable: true,
+            scaleable: true,
+            coordinates: {
+              draggable: true,
+              resizable: 'center-fixed',
+            },
           },
         },
       },
