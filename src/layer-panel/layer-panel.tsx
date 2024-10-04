@@ -10,7 +10,7 @@ import { Layer } from './layer';
 
 export const LayerPanel = () => {
   // Context.
-  const { layers } = useContext(GlobalContext);
+  const { map, layers } = useContext(GlobalContext);
 
   // States.
   const [show, setShow] = useLocalStorage<boolean>(
@@ -23,7 +23,7 @@ export const LayerPanel = () => {
 
   // Constants.
   const customClassNames = classNames(
-    'absolute z-10 h-screen-container w-64 p-4 bg-gray-900 border-r border-gray-700 transition-all duration-300 ease-in-out',
+    'absolute z-10 h-screen-container w-64 p-4 bg-gray-900 border-r border-gray-700 transition-all duration-500 ease-in-out',
     {
       '-left-64': !show,
       'left-0': show,
@@ -32,6 +32,11 @@ export const LayerPanel = () => {
 
   // Handlers.
   const onClickToggleLayerPanel = () => {
+    map?.easeTo({
+      padding: { left: show ? 0 : 256 },
+      duration: 500,
+    });
+
     setShow((prev) => !prev);
   };
 
