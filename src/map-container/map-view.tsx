@@ -31,7 +31,7 @@ export const MapView: React.FC<HTMLProps<HTMLDivElement>> = ({
       container: mapContainerRef.current,
       style: baseStyleSpec,
       center: [78.8718, 21.7679],
-      zoom: 0,
+      zoom: 2,
       attributionControl: false,
     });
 

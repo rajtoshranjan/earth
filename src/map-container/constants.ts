@@ -10,7 +10,9 @@ export const terrainSource: SourceSpecification = {
 
 export const baseStyleSpec: StyleSpecification = {
   version: 8,
-
+  projection: {
+    type: 'globe',
+  },
   sources: {
     satellite: {
       type: 'raster',
