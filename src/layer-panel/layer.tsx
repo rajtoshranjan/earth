@@ -48,7 +48,7 @@ export const Layer: React.FC<LayerProps> = ({ layerInfo, layerId }) => {
       </div>
       <span className="truncate">{layerInfo.name}</span>
 
-      <div className="ml-auto flex items-center gap-2 *:hidden group-hover:*:block">
+      <div className="ml-auto flex items-center gap-2 md:*:hidden md:group-hover:*:block">
         <button
           className="flex text-sm font-medium hover:text-gray-300 disabled:text-gray-500 group-data-[visible=false]:block"
           onClick={() => layerManager?.toggleLayerVisibility(layerId)}
