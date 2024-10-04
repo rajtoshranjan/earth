@@ -55,7 +55,9 @@ export const Search: React.FC<SearchProps> = ({ className }) => {
 
     // Zoom to location.
     if (selectedLocationFeatures.features[0].bbox) {
-      map?.fitBounds(selectedLocationFeatures?.features[0].bbox);
+      map?.fitBounds(selectedLocationFeatures?.features[0].bbox, {
+        padding: 50,
+      });
     } else {
       map?.jumpTo({
         center: selectedLocationFeatures.features[0].center,

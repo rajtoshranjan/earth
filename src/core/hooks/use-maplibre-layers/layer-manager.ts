@@ -147,7 +147,7 @@ export class LayerManager {
     }
 
     if (bounds) {
-      this.map.fitBounds(bounds);
+      this.map.fitBounds(bounds, { padding: 20 });
     }
   }
 }
