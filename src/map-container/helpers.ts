@@ -20,6 +20,10 @@ export const setupMapControls = (map: Map) => {
   map.addControl(
     new GeolocateControl({
       showUserLocation: true,
+      positionOptions: {
+        enableHighAccuracy: true,
+      },
+      trackUserLocation: true,
       showAccuracyCircle: true,
     }),
     'bottom-right',
