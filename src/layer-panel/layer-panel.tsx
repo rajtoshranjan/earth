@@ -54,14 +54,16 @@ export const LayerPanel = () => {
 
       {/* Body */}
       <div className="flex items-center justify-between">
-        <h2 className="sticky text-sm font-medium text-gray-400">Layers</h2>
+        <h2 className="sticky flex items-center gap-2 text-sm font-medium text-gray-400">
+          <Icon identifier={IconIdentifier.Layer} className="size-4" /> Layers
+        </h2>
         <DropdownMenu
           iconIdentifier={IconIdentifier.MeatBallMenu}
           className="bg-transparent"
           anchor="bottom start"
         >
           <DropdownMenu.Item onClick={() => setShowAddLayerModal(true)}>
-            <Icon identifier={IconIdentifier.Layer} />
+            <Icon identifier={IconIdentifier.TileLayer} />
             Add Raster Layer
           </DropdownMenu.Item>
         </DropdownMenu>

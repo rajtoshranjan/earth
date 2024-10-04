@@ -26,4 +26,6 @@ export enum IconIdentifier {
   Search = 'search',
   Select = 'select',
   Tick = 'tick',
+  TileLayer = 'tiled-layer',
+  VectorLayer = 'vector-layer',
 }

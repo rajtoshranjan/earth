@@ -44,7 +44,14 @@ export const Layer: React.FC<LayerProps> = ({ layerInfo, layerId }) => {
       draggable
     >
       <div>
-        <Icon identifier={IconIdentifier.Layer} className="size-4" />
+        <Icon
+          identifier={
+            layerInfo.type == 'raster'
+              ? IconIdentifier.TileLayer
+              : IconIdentifier.VectorLayer
+          }
+          className="p-[0.5px]"
+        />
       </div>
       <span className="truncate">{layerInfo.name}</span>
 
