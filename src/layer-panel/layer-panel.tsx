@@ -41,6 +41,7 @@ export const LayerPanel = () => {
       <Button
         className="absolute right-[-1.45rem] top-2/4 flex w-[1.4rem] -translate-y-2/4 rounded-e-lg border-y border-r border-gray-700 bg-gray-900 px-1 py-4 text-gray-50"
         onClick={onClickToggleLayerPanel}
+        title={show ? 'Collapse panel' : 'Expand panel'}
       >
         <Icon
           identifier={IconIdentifier.Down}

@@ -53,13 +53,16 @@ export const Layer: React.FC<LayerProps> = ({ layerInfo, layerId }) => {
           className="p-[0.5px]"
         />
       </div>
-      <span className="truncate">{layerInfo.name}</span>
+      <span className="truncate" title={layerInfo.name}>
+        {layerInfo.name}
+      </span>
 
       <div className="ml-auto flex items-center gap-2 md:*:hidden md:group-hover:*:block">
         <button
           className="flex text-sm font-medium hover:text-gray-300 disabled:text-gray-500 group-data-[visible=false]:block"
           onClick={() => layerManager?.toggleLayerVisibility(layerId)}
           disabled={isEditing}
+          title={layerInfo.show ? 'Hide layer' : 'Show layer'}
         >
           <Icon
             identifier={
@@ -74,6 +77,7 @@ export const Layer: React.FC<LayerProps> = ({ layerInfo, layerId }) => {
           className="bg-transparent px-[0.15rem] py-[0.1rem] data-[open]:block"
           anchor="bottom end"
           disabled={!layerInfo.show}
+          title="Show more options"
         >
           <DropdownMenu.Item
             onClick={() => {
