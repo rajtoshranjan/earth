@@ -18,10 +18,12 @@ Note: Although inspired by Google Earth, this project includes significant diffe
 
 - Interactive 3D Map: Explore a 3D representation of Earth's surface.
 - Zoom and Pan: Zoom in and out and pan across the map.
-- Landmarks: View prominent landmarks and points of interest.
-- Geographic Information: Access geographic data and maps.
-- Measurement: Measure distance and area
-- Custom: Add custom raster and vector layers
+- Search: Search a place by name.
+- Measurement: Measurement of vector geometry (length, area, etc.)
+- Layers: Add custom raster and vector layers
+- Vector Digitization, Editing and Export
+- State Persistence: This application stores data such as layers, component states, etc in local storage.
+
 
 ## Technologies Used
 
