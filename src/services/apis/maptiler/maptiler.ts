@@ -24,6 +24,7 @@ export const useSearchLocation = (searchQuery?: string) =>
     queryKey: ['searchLocations', searchQuery],
     queryFn: () => fetchSearchedLocations(searchQuery),
     enabled: !!searchQuery,
+    staleTime: Infinity,
   });
 
 export const useLocation = (id?: string) =>
@@ -31,4 +32,5 @@ export const useLocation = (id?: string) =>
     queryKey: ['location', id],
     queryFn: () => fetchLocation(id),
     enabled: !!id,
+    staleTime: Infinity,
   });
