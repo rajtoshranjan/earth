@@ -1,6 +1,6 @@
 import { Button } from '@headlessui/react';
 import classNames from 'classnames';
-import { useContext } from 'react';
+import { useContext, useLayoutEffect } from 'react';
 import { useLocalStorage, useToggle } from 'usehooks-ts';
 import { DropdownMenu, Icon, IconIdentifier } from '../components';
 import { GlobalContext } from '../contexts';
@@ -29,6 +29,16 @@ export const LayerPanel = () => {
       'left-0': show,
     },
   );
+
+  // Effects.
+  useLayoutEffect(() => {
+    if (show) {
+      map?.easeTo({
+        padding: { left: 256 },
+        duration: 0,
+      });
+    }
+  }, [map]);
 
   // Handlers.
   const onClickToggleLayerPanel = () => {
