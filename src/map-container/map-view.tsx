@@ -5,6 +5,7 @@ import { GlobalContext } from '../contexts';
 import { Map } from '../core/maplibre';
 import { baseStyleSpec } from './constants';
 import { setupMapControls } from './helpers';
+import { SpaceBackground } from './space-background/space-background';
 
 export const MapView: React.FC<HTMLProps<HTMLDivElement>> = ({
   className,
@@ -18,7 +19,7 @@ export const MapView: React.FC<HTMLProps<HTMLDivElement>> = ({
 
   // Constants.
   const customClassNames = classNames(
-    'w-full h-screen-container bg-gray-600',
+    'w-full h-screen-container bg-transparent relative',
     className,
   );
 
@@ -43,5 +44,10 @@ export const MapView: React.FC<HTMLProps<HTMLDivElement>> = ({
     setMap?.(maplibreMap);
   }, []);
 
-  return <div ref={mapContainerRef} className={customClassNames} {...rest} />;
+  return (
+    <>
+      <SpaceBackground />
+      <div ref={mapContainerRef} className={customClassNames} {...rest} />
+    </>
+  );
 };
