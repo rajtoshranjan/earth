@@ -1,6 +1,6 @@
 import { Button, Transition } from '@headlessui/react';
 import classNames from 'classnames';
-import React, { Fragment } from 'react';
+import React, { Fragment, useRef, useState, useEffect } from 'react';
 import { Icon, IconIdentifier } from '../icon';
 import { ModalProps } from './type';
 
@@ -13,18 +13,96 @@ export const Modal: React.FC<ModalProps> = ({
   position = 'top-right',
   ...rest
 }) => {
+  const [isDragging, setIsDragging] = useState(false);
+  const [currentPosition, setCurrentPosition] = useState<{
+    x: number | null;
+    y: number | null;
+  }>({ x: null, y: null });
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Set initial position based on the position prop when modal first shows
+    if (
+      show &&
+      currentPosition.x === null &&
+      currentPosition.y === null &&
+      modalRef.current
+    ) {
+      const rect = modalRef.current.getBoundingClientRect();
+      setCurrentPosition({ x: rect.left, y: rect.top });
+    }
+  }, [show]);
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (isDragging) {
+        setCurrentPosition({
+          x: e.clientX - dragOffset.x,
+          y: e.clientY - dragOffset.y,
+        });
+      }
+    };
+
+    const handleMouseUp = () => {
+      setIsDragging(false);
+    };
+
+    if (isDragging) {
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+    }
+
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [isDragging, dragOffset]);
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    // Check if the click target is the interactive elements.
+    const targetElement = e.target as HTMLElement;
+    const isButton = targetElement.closest('button');
+    const isInput = targetElement.closest('input');
+
+    if (isButton || isInput) {
+      return;
+    }
+
+    if (modalRef.current) {
+      const rect = modalRef.current.getBoundingClientRect();
+      setDragOffset({
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top,
+      });
+      setIsDragging(true);
+    }
+  };
+
   // Constants.
   const customClassNames = classNames(
-    'fixed m-2 z-40 h-fit w-full max-w-sm transform overflow-hidden rounded-xl flex-col bg-gray-800 border pointer-events-auto border-gray-700 shadow-xl transition-all',
+    'fixed m-2 z-40 h-fit w-full max-w-sm transform overflow-hidden rounded-xl flex-col bg-gray-800 border pointer-events-auto border-gray-700 shadow-xl',
     className,
-    {
-      'below-header left-1/2 !top-1/2 -translate-x-1/2 -translate-y-1/2':
-        position === 'center',
-      'below-header left-1/2 -translate-x-1/2': position === 'top-center',
-      'below-header right-0': position === 'top-right',
-      'left-0 bottom-0 ': position === 'bottom-left',
-    },
   );
+
+  const getInitialPosition = () => {
+    if (currentPosition.x !== null && currentPosition.y !== null) {
+      return '';
+    }
+
+    switch (position) {
+      case 'center':
+        return 'left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2';
+      case 'top-center':
+        return 'left-1/2 -translate-x-1/2 below-header';
+      case 'top-right':
+        return 'right-0 below-header';
+      case 'bottom-left':
+        return 'left-0 bottom-0';
+      default:
+        return '';
+    }
+  };
 
   return (
     <Transition
@@ -39,10 +117,34 @@ export const Modal: React.FC<ModalProps> = ({
       leaveTo="opacity-0 scale-95"
       unmount={true}
     >
-      <div className={customClassNames} {...rest}>
+      <div
+        ref={modalRef}
+        className={`${customClassNames} ${getInitialPosition()}`}
+        style={{
+          left:
+            currentPosition.x !== null ? `${currentPosition.x}px` : undefined,
+          top:
+            currentPosition.y !== null ? `${currentPosition.y}px` : undefined,
+          transform: currentPosition.x !== null ? 'none' : undefined,
+        }}
+        role="dialog"
+        aria-modal="true"
+        {...rest}
+      >
         {/* Header */}
-        <div className="flex h-12 items-center justify-between border-b border-gray-700 px-4">
-          <h3 className="font-bold text-gray-50">{title}</h3>
+        <div
+          className="flex h-12 w-full items-center justify-between border-b border-gray-700 px-4"
+          onMouseDown={handleMouseDown}
+          style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              setIsDragging(true);
+            }
+          }}
+        >
+          <h3 className="select-none font-bold text-gray-50">{title}</h3>
 
           <Button
             type="button"
