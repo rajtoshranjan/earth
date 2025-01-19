@@ -71,12 +71,14 @@ export class LayerManager {
     const { name, ...sourceSpec } = params;
     const id = this.map.createRasterLayer(sourceSpec, show);
     this._addLayer(id, { name, show, type: 'raster', sourceSpec });
+    return id;
   }
 
   addGeoJsonLayer(params: AddGeoJsonLayerParams, show = true) {
     const { name, ...sourceSpec } = params;
     const id = this.map.createGeoJSONLayer(sourceSpec, show);
     this._addLayer(id, { name, show, type: 'geojson', sourceSpec });
+    return id;
   }
 
   updateGeoJsonLayer(id: string, params: UpdateGeoJsonLayerParams) {

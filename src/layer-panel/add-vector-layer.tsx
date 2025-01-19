@@ -1,5 +1,5 @@
 import { Fieldset } from '@headlessui/react';
-import React, { useCallback, useContext } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button, IconIdentifier, Input, Modal, FileInput } from '../components';
 import { GlobalContext } from '../contexts';
@@ -21,6 +21,7 @@ export const AddVectorLayerModal: React.FC<AddLayerModalProps> = ({
   onClose,
 }) => {
   const { layerManager } = useContext(GlobalContext);
+  const [isFileLoading, setIsFileLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -31,18 +32,20 @@ export const AddVectorLayerModal: React.FC<AddLayerModalProps> = ({
 
   const handleFileUpload = useCallback(
     (file: File) => {
+      setIsFileLoading(true);
       const reader = new FileReader();
       reader.onload = (e) => {
         try {
           const content = e.target?.result as string;
           const geojson = JSON.parse(content);
 
-          layerManager?.addGeoJsonLayer({
+          const layerId = layerManager?.addGeoJsonLayer({
             name: file.name.replace(/\.[^/.]+$/, ''), // Remove file extension
             data: geojson,
             styles: DEFAULT_STYLES,
           });
 
+          if (layerId) layerManager?.zoomToLayer(layerId);
           reset();
           onClose();
         } catch {
@@ -50,6 +53,8 @@ export const AddVectorLayerModal: React.FC<AddLayerModalProps> = ({
             type: 'validate',
             message: 'Invalid GeoJSON format',
           });
+        } finally {
+          setIsFileLoading(false);
         }
       };
       reader.readAsText(file);
@@ -60,11 +65,12 @@ export const AddVectorLayerModal: React.FC<AddLayerModalProps> = ({
   const onSubmit = (data: FormData) => {
     try {
       const geojson = JSON.parse(data.geojsonData);
-      layerManager?.addGeoJsonLayer({
+      const layerId = layerManager?.addGeoJsonLayer({
         name: data.name,
         data: geojson,
         styles: DEFAULT_STYLES,
       });
+      if (layerId) layerManager?.zoomToLayer(layerId);
       reset();
       onClose();
     } catch {
@@ -78,25 +84,21 @@ export const AddVectorLayerModal: React.FC<AddLayerModalProps> = ({
   return (
     <Modal title="Add Vector Layer" show={show} onClose={onClose}>
       <Fieldset as="form" onSubmit={handleSubmit(onSubmit)}>
-        {/* Basic Info */}
-        <h6 className="text-sm text-gray-500">Basic Info</h6>
-        <Input
-          label="Layer Name"
-          className="mt-2"
-          error={errors.name}
-          {...register('name', { required: 'Layer name is required' })}
-        />
-
-        {/* GeoJSON Data */}
-        <h6 className="mt-5 text-sm text-gray-500">GeoJSON Data</h6>
-
-        {/* File Upload */}
-        <FileInput
-          accept=".geojson,.json"
-          onChange={handleFileUpload}
-          error={!!errors.file}
-          className="mt-2"
-        />
+        {/* File Upload Section */}
+        <h6 className="text-sm text-gray-500">Upload GeoJSON File</h6>
+        <div className="relative">
+          <FileInput
+            accept=".geojson,.json"
+            onChange={handleFileUpload}
+            error={!!errors.file}
+            className="mt-2"
+          />
+          {isFileLoading && (
+            <div className="absolute inset-0 flex items-center justify-center bg-gray-900/50">
+              <div className="size-5 animate-spin rounded-full border-2 border-blue-500 border-t-transparent"></div>
+            </div>
+          )}
+        </div>
 
         {/* Divider with OR */}
         <div className="relative my-4">
@@ -110,7 +112,15 @@ export const AddVectorLayerModal: React.FC<AddLayerModalProps> = ({
           </div>
         </div>
 
-        {/* Text Input */}
+        {/* Manual Input Section */}
+        <h6 className="text-sm text-gray-500">Enter GeoJSON Manually</h6>
+        <Input
+          label="Layer Name"
+          className="mt-2"
+          error={errors.name}
+          {...register('name', { required: 'Layer name is required' })}
+        />
+
         <div className="mt-4">
           <label
             htmlFor="geojson-data"
@@ -156,6 +166,7 @@ export const AddVectorLayerModal: React.FC<AddLayerModalProps> = ({
           variant="secondary"
           className="float-end mt-5 border px-5"
           size="sm"
+          disabled={isFileLoading}
         >
           Add Layer
         </Button>
