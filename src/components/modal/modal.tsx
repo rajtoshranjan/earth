@@ -35,32 +35,39 @@ export const Modal: React.FC<ModalProps> = ({
   }, [show]);
 
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      if (isDragging) {
-        setCurrentPosition({
-          x: e.clientX - dragOffset.x,
-          y: e.clientY - dragOffset.y,
-        });
-      }
+    const handleMove = (e: MouseEvent | TouchEvent) => {
+      if (!isDragging) return;
+
+      const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+      const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+
+      setCurrentPosition({
+        x: clientX - dragOffset.x,
+        y: clientY - dragOffset.y,
+      });
     };
 
-    const handleMouseUp = () => {
+    const handleEnd = () => {
       setIsDragging(false);
     };
 
     if (isDragging) {
-      document.addEventListener('mousemove', handleMouseMove);
-      document.addEventListener('mouseup', handleMouseUp);
+      document.addEventListener('mousemove', handleMove);
+      document.addEventListener('mouseup', handleEnd);
+      document.addEventListener('touchmove', handleMove);
+      document.addEventListener('touchend', handleEnd);
     }
 
     return () => {
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
+      document.removeEventListener('mousemove', handleMove);
+      document.removeEventListener('mouseup', handleEnd);
+      document.removeEventListener('touchmove', handleMove);
+      document.removeEventListener('touchend', handleEnd);
     };
   }, [isDragging, dragOffset]);
 
-  const handleMouseDown = (e: React.MouseEvent) => {
-    // Check if the click target is the interactive elements.
+  const handleStart = (e: React.MouseEvent | React.TouchEvent) => {
+    // Check if the click/touch target is an interactive element
     const targetElement = e.target as HTMLElement;
     const isButton = targetElement.closest('button');
     const isInput = targetElement.closest('input');
@@ -71,9 +78,12 @@ export const Modal: React.FC<ModalProps> = ({
 
     if (modalRef.current) {
       const rect = modalRef.current.getBoundingClientRect();
+      const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+      const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+
       setDragOffset({
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top,
+        x: clientX - rect.left,
+        y: clientY - rect.top,
       });
       setIsDragging(true);
     }
@@ -126,6 +136,7 @@ export const Modal: React.FC<ModalProps> = ({
           top:
             currentPosition.y !== null ? `${currentPosition.y}px` : undefined,
           transform: currentPosition.x !== null ? 'none' : undefined,
+          touchAction: 'none',
         }}
         role="dialog"
         aria-modal="true"
@@ -134,7 +145,8 @@ export const Modal: React.FC<ModalProps> = ({
         {/* Header */}
         <div
           className="flex h-12 w-full items-center justify-between border-b border-gray-700 px-4"
-          onMouseDown={handleMouseDown}
+          onMouseDown={handleStart}
+          onTouchStart={handleStart}
           style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
           role="button"
           tabIndex={0}
