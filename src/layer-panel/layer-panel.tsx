@@ -4,9 +4,10 @@ import { useContext, useLayoutEffect } from 'react';
 import { useLocalStorage, useToggle } from 'usehooks-ts';
 import { DropdownMenu, Icon, IconIdentifier } from '../components';
 import { GlobalContext } from '../contexts';
-import { AddLayerModal } from './add-layer';
+import { AddRasterLayerModal } from './add-raster-layer';
 import { Draw } from './draw';
 import { Layer } from './layer';
+import { AddVectorLayerModal } from './add-vector-layer';
 
 export const LayerPanel = () => {
   // Context.
@@ -20,6 +21,12 @@ export const LayerPanel = () => {
 
   const [showAddLayerModal, toggleAddLayerModal, setShowAddLayerModal] =
     useToggle(false);
+
+  const [
+    showAddVectorLayerModal,
+    toggleAddVectorLayerModal,
+    setShowAddVectorLayerModal,
+  ] = useToggle(false);
 
   // Constants.
   const customClassNames = classNames(
@@ -82,6 +89,10 @@ export const LayerPanel = () => {
             <Icon identifier={IconIdentifier.TileLayer} />
             Add Raster Layer
           </DropdownMenu.Item>
+          <DropdownMenu.Item onClick={() => setShowAddVectorLayerModal(true)}>
+            <Icon identifier={IconIdentifier.Layer} />
+            Add Vector Layer
+          </DropdownMenu.Item>
         </DropdownMenu>
       </div>
 
@@ -101,7 +112,16 @@ export const LayerPanel = () => {
       </div>
 
       {/* Add layer modal */}
-      <AddLayerModal show={showAddLayerModal} onClose={toggleAddLayerModal} />
+      <AddRasterLayerModal
+        show={showAddLayerModal}
+        onClose={toggleAddLayerModal}
+      />
+
+      {/* Add vector layer modal */}
+      <AddVectorLayerModal
+        show={showAddVectorLayerModal}
+        onClose={toggleAddVectorLayerModal}
+      />
     </div>
   );
 };

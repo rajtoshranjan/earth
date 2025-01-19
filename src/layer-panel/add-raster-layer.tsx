@@ -19,7 +19,7 @@ type FormData = {
   southLatitude: number;
 };
 
-export const AddLayerModal: React.FC<AddLayerModalProps> = ({
+export const AddRasterLayerModal: React.FC<AddLayerModalProps> = ({
   show,
   onClose,
 }) => {

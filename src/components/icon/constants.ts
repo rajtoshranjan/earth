@@ -28,4 +28,5 @@ export enum IconIdentifier {
   Tick = 'tick',
   TileLayer = 'tiled-layer',
   VectorLayer = 'vector-layer',
+  Upload = 'upload',
 }
