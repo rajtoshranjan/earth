@@ -1,7 +1,6 @@
 import {
   FullscreenControl,
   GeolocateControl,
-  GlobeControl,
   NavigationControl,
   ScaleControl,
   TerrainControl,
@@ -37,7 +36,6 @@ export const setupMapControls = (map: Map) => {
     }),
     'bottom-right',
   );
-  map.addControl(new GlobeControl(), 'bottom-right');
 
   map.addControl(new FullscreenControl({}), 'bottom-right');
 
