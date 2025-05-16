@@ -36,6 +36,9 @@ export const MapView: React.FC<HTMLProps<HTMLDivElement>> = ({
       center: [78.8718, 21.7679],
       zoom: isMediumDevice ? 1 : 2,
       attributionControl: false,
+      hash: true,
+      maxPitch: 180,
+      rollEnabled: true,
     });
 
     setupMapControls(maplibreMap);
