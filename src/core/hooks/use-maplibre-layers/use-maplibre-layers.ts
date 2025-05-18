@@ -1,22 +1,35 @@
 import { useMemo } from 'react';
-import { useLocalStorage } from 'usehooks-ts';
+import { useIndexedDbStore } from 'use-idb-store';
 import { Map } from '../../maplibre';
-
 import { LayerManager } from './layer-manager';
-import { Layers } from './types';
+import { LayerInfo } from './types';
 
-export const useMaplibreLayers = (map: Map, initialLayer: Layers = {}) => {
+export const useMaplibreLayers = (map: Map) => {
   // State.
-  const [layers, setLayers] = useLocalStorage<Layers>('layers', initialLayer);
+  const {
+    values: layers,
+    mutations,
+    isLoading,
+  } = useIndexedDbStore<LayerInfo>('layers');
+
+  // Hanlders.
+  const getLayer = (id: string) => layers[id];
 
   // Manager.
   const layerManager = useMemo(
-    () => new LayerManager({ map, initialLayers: layers, setLayers }),
-    [map],
+    () =>
+      new LayerManager({
+        map,
+        initialLayers: layers,
+        getLayer,
+        layerMutations: mutations,
+      }),
+    [map, isLoading],
   );
 
   return {
     layers,
     layerManager,
+    isLoading,
   };
 };

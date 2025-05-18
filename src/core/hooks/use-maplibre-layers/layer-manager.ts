@@ -1,6 +1,6 @@
 import * as turf from '@turf/turf';
 import { LngLatBoundsLike } from 'maplibre-gl';
-import { Dispatch, SetStateAction } from 'react';
+import { IndexedDbStoreMutations } from 'use-idb-store';
 import { Map } from '../../maplibre';
 import {
   AddGeoJsonLayerParams,
@@ -13,18 +13,21 @@ import {
 interface IOptions {
   map: Map;
   initialLayers: Layers;
-  setLayers: Dispatch<SetStateAction<Layers>>;
+  getLayer: (id: string) => LayerInfo | undefined;
+  layerMutations: IndexedDbStoreMutations<LayerInfo>;
 }
 
 export class LayerManager {
-  private layers: Layers;
+  private readonly initialLayers: Layers;
+  private readonly getLayer: (id: string) => LayerInfo | undefined;
   private readonly map: Map;
-  private readonly setLayers: Dispatch<SetStateAction<Layers>>;
+  private readonly layerMutations: IndexedDbStoreMutations<LayerInfo>;
 
   constructor(options: IOptions) {
     this.map = options.map;
-    this.layers = options.initialLayers;
-    this.setLayers = options.setLayers;
+    this.initialLayers = options.initialLayers;
+    this.getLayer = options.getLayer;
+    this.layerMutations = options.layerMutations;
 
     if (this.map) {
       this._loadInitialLayers();
@@ -33,7 +36,7 @@ export class LayerManager {
 
   // Initialize layers on construction.
   private _loadInitialLayers() {
-    Object.entries(this.layers).forEach(([id, layerInfo]) => {
+    Object.entries(this.initialLayers).forEach(([id, layerInfo]) => {
       switch (layerInfo.type) {
         case 'raster':
           this.map.createRasterLayer(
@@ -51,38 +54,33 @@ export class LayerManager {
     });
   }
 
-  // State and layers update methods.
-  private _updateLayers(layers: Layers) {
-    this.layers = layers;
-    this.setLayers(layers);
-  }
-
-  private _addLayer(id: string, layerInfo: LayerInfo) {
-    this._updateLayers({ ...this.layers, [id]: layerInfo });
-  }
-
-  private _deleteLayer(id: string) {
-    delete this.layers[id];
-    this.setLayers(this.layers);
-  }
-
   // Public methods to manage layers.
   addRasterLayer(params: AddRasterLayerParams, show = true) {
     const { name, ...sourceSpec } = params;
     const id = this.map.createRasterLayer(sourceSpec, show);
-    this._addLayer(id, { name, show, type: 'raster', sourceSpec });
+    this.layerMutations.setValue(id, {
+      name,
+      show,
+      type: 'raster',
+      sourceSpec,
+    });
     return id;
   }
 
   addGeoJsonLayer(params: AddGeoJsonLayerParams, show = true) {
     const { name, ...sourceSpec } = params;
     const id = this.map.createGeoJSONLayer(sourceSpec, show);
-    this._addLayer(id, { name, show, type: 'geojson', sourceSpec });
+    this.layerMutations.setValue(id, {
+      name,
+      show,
+      type: 'geojson',
+      sourceSpec,
+    });
     return id;
   }
 
   updateGeoJsonLayer(id: string, params: UpdateGeoJsonLayerParams) {
-    const layer = this.layers[id];
+    const layer = this.getLayer(id);
 
     if (!layer || layer.type === 'raster') {
       throw new Error('Wrong layer type or layer does not exist');
@@ -101,26 +99,23 @@ export class LayerManager {
       );
     }
 
-    this._updateLayers({
-      ...this.layers,
-      [id]: {
-        ...layer,
-        name: updatedName,
-        sourceSpec: {
-          ...layer.sourceSpec,
-          data: updatedData,
-        },
+    this.layerMutations.setValue(id, {
+      ...layer,
+      name: updatedName,
+      sourceSpec: {
+        ...layer.sourceSpec,
+        data: updatedData,
       },
     });
   }
 
   removeLayer(id: string) {
     this.map.deleteLayer(id);
-    this._deleteLayer(id);
+    this.layerMutations.deleteValue(id);
   }
 
   toggleLayerVisibility(id: string) {
-    const layer = this.layers[id];
+    const layer = this.getLayer(id);
     if (!layer) return;
 
     if (layer.show) {
@@ -129,14 +124,11 @@ export class LayerManager {
       this.map.showLayer(id);
     }
 
-    this._updateLayers({
-      ...this.layers,
-      [id]: { ...layer, show: !layer.show },
-    });
+    this.layerMutations.updateValue(id, { ...layer, show: !layer.show });
   }
 
   zoomToLayer(id: string) {
-    const layer = this.layers[id];
+    const layer = this.getLayer(id);
     if (!layer) return;
 
     let bounds: LngLatBoundsLike | undefined;

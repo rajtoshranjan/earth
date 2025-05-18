@@ -2,7 +2,7 @@ import { Button } from '@headlessui/react';
 import classNames from 'classnames';
 import { useContext, useLayoutEffect } from 'react';
 import { useLocalStorage, useToggle } from 'usehooks-ts';
-import { DropdownMenu, Icon, IconIdentifier } from '../components';
+import { DropdownMenu, Icon, IconIdentifier, Spinner } from '../components';
 import { GlobalContext } from '../contexts';
 import { AddRasterLayerModal } from './add-raster-layer';
 import { Draw } from './draw';
@@ -11,7 +11,7 @@ import { AddVectorLayerModal } from './add-vector-layer';
 
 export const LayerPanel = () => {
   // Context.
-  const { map, layers } = useContext(GlobalContext);
+  const { map, layers, isLayerLoading } = useContext(GlobalContext);
 
   // States.
   const [show, setShow] = useLocalStorage<boolean>(
@@ -57,6 +57,31 @@ export const LayerPanel = () => {
     setShow((prev) => !prev);
   };
 
+  // Renders.
+  const renderLayers = () => {
+    if (isLayerLoading) {
+      return (
+        <div className="flex h-full items-center justify-center">
+          <Spinner />
+        </div>
+      );
+    }
+
+    if (layers && Object.keys(layers).length > 0) {
+      return Object.entries(layers).map(([layerId, layerInfo]) => (
+        <Layer key={layerId} layerId={layerId} layerInfo={layerInfo} />
+      ));
+    } else {
+      return (
+        <div>
+          <p className="mt-4 text-center text-sm text-gray-600">
+            No layers available
+          </p>
+        </div>
+      );
+    }
+  };
+
   return (
     <div className={customClassNames}>
       {/* Toggle Button */}
@@ -97,18 +122,7 @@ export const LayerPanel = () => {
       </div>
 
       <div className="mt-3 h-[calc(100%-2.5rem)] w-full space-y-2 overflow-y-auto">
-        {layers &&
-          Object.entries(layers).map(([layerId, layerInfo]) => (
-            <Layer key={layerId} layerId={layerId} layerInfo={layerInfo} />
-          ))}
-
-        {layers && Object.keys(layers).length === 0 && (
-          <div>
-            <p className="mt-4 text-center text-sm text-gray-600">
-              No layers available
-            </p>
-          </div>
-        )}
+        {renderLayers()}
       </div>
 
       {/* Add layer modal */}

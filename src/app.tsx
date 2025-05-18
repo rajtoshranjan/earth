@@ -19,7 +19,11 @@ function App() {
   const [editingLayerId, setEditingLayerId] = useState<string>();
 
   // Hooks.
-  const { layers, layerManager } = useMaplibreLayers(map as Map);
+  const {
+    layers,
+    layerManager,
+    isLoading: isLayerLoading,
+  } = useMaplibreLayers(map as Map);
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -28,6 +32,7 @@ function App() {
           map,
           setMap,
           layers,
+          isLayerLoading,
           layerManager,
           editingLayerId,
           setEditingLayerId,
