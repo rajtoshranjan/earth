@@ -11,7 +11,15 @@ export const terrainSource: SourceSpecification = {
 export const baseStyleSpec: StyleSpecification = {
   version: 8,
   projection: {
-    type: ['step', ['zoom'], 'vertical-perspective', 11, 'mercator'],
+    type: [
+      'interpolate',
+      ['linear'],
+      ['zoom'],
+      10,
+      'vertical-perspective',
+      12,
+      'mercator',
+    ],
   },
   sky: {
     'sky-color': [
