@@ -12,17 +12,13 @@ export const useMaplibreLayers = (map: Map) => {
     isLoading,
   } = useIndexedDbStore<LayerInfo>('layers');
 
-  // Hanlders.
-  const getLayer = (id: string) => layers[id];
-
   // Manager.
   const layerManager = useMemo(
     () =>
       new LayerManager({
         map,
         initialLayers: layers,
-        getLayer,
-        layerMutations: mutations,
+        layerStoreMutations: mutations,
       }),
     [map, isLoading],
   );

@@ -60,7 +60,9 @@ export const Layer: React.FC<LayerProps> = ({ layerInfo, layerId }) => {
       <div className="ml-auto flex items-center gap-2 md:*:hidden md:group-hover:*:block">
         <button
           className="flex text-sm font-medium hover:text-gray-300 disabled:text-gray-500 group-data-[visible=false]:block"
-          onClick={() => layerManager?.toggleLayerVisibility(layerId)}
+          onClick={async () => {
+            await layerManager?.toggleLayerVisibility(layerId);
+          }}
           disabled={isEditing}
           title={layerInfo.show ? 'Hide layer' : 'Show layer'}
         >
@@ -80,8 +82,8 @@ export const Layer: React.FC<LayerProps> = ({ layerInfo, layerId }) => {
           title="Show more options"
         >
           <DropdownMenu.Item
-            onClick={() => {
-              layerManager?.zoomToLayer(layerId);
+            onClick={async () => {
+              await layerManager?.zoomToLayer(layerId);
             }}
           >
             <Icon identifier={IconIdentifier.Plane} className="size-4" />
@@ -106,8 +108,8 @@ export const Layer: React.FC<LayerProps> = ({ layerInfo, layerId }) => {
           )}
 
           <DropdownMenu.Item
-            onClick={() => {
-              layerManager?.removeLayer(layerId);
+            onClick={async () => {
+              await layerManager?.removeLayer(layerId);
             }}
             disabled={isEditing}
           >

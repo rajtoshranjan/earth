@@ -176,17 +176,17 @@ export const DrawFeatureModal: React.FC<DrawFeatureModalProps> = ({
     }
   };
 
-  const onSubmit = (data: CreateLayerData) => {
+  const onSubmit = async (data: CreateLayerData) => {
     const features = turf.featureCollection(Object.values(data.drawnFeatures));
 
     if (editingLayerId) {
       setEditingLayerId?.(undefined);
-      layerManager?.updateGeoJsonLayer(editingLayerId, {
+      await layerManager?.updateGeoJsonLayer(editingLayerId, {
         name: data.layerName,
         data: features,
       });
     } else {
-      layerManager?.addGeoJsonLayer({
+      await layerManager?.addGeoJsonLayer({
         name: data.layerName,
         data: features,
         styles: DEFAULT_STYLES,

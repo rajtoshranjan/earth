@@ -43,8 +43,8 @@ export const AddRasterLayerModal: React.FC<AddLayerModalProps> = ({
   });
 
   // Handlers.
-  const onSubmit = (data: FormData) => {
-    layerManager?.addRasterLayer({
+  const onSubmit = async (data: FormData) => {
+    await layerManager?.addRasterLayer({
       name: data.name,
       tiles: [data.urlPattern],
       bounds: [

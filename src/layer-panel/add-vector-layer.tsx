@@ -34,18 +34,18 @@ export const AddVectorLayerModal: React.FC<AddLayerModalProps> = ({
     (file: File) => {
       setIsFileLoading(true);
       const reader = new FileReader();
-      reader.onload = (e) => {
+      reader.onload = async (e) => {
         try {
           const content = e.target?.result as string;
           const geojson = JSON.parse(content);
 
-          const layerId = layerManager?.addGeoJsonLayer({
+          const layerId = await layerManager?.addGeoJsonLayer({
             name: file.name.replace(/\.[^/.]+$/, ''), // Remove file extension
             data: geojson,
             styles: DEFAULT_STYLES,
           });
 
-          if (layerId) layerManager?.zoomToLayer(layerId);
+          if (layerId) await layerManager?.zoomToLayer(layerId);
           reset();
           onClose();
         } catch {
@@ -62,15 +62,15 @@ export const AddVectorLayerModal: React.FC<AddLayerModalProps> = ({
     [layerManager, onClose, reset, setError],
   );
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = async (data: FormData) => {
     try {
       const geojson = JSON.parse(data.geojsonData);
-      const layerId = layerManager?.addGeoJsonLayer({
+      const layerId = await layerManager?.addGeoJsonLayer({
         name: data.name,
         data: geojson,
         styles: DEFAULT_STYLES,
       });
-      if (layerId) layerManager?.zoomToLayer(layerId);
+      if (layerId) await layerManager?.zoomToLayer(layerId);
       reset();
       onClose();
     } catch {

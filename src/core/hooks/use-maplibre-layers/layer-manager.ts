@@ -13,21 +13,18 @@ import {
 interface IOptions {
   map: Map;
   initialLayers: Layers;
-  getLayer: (id: string) => LayerInfo | undefined;
-  layerMutations: IndexedDbStoreMutations<LayerInfo>;
+  layerStoreMutations: IndexedDbStoreMutations<LayerInfo>;
 }
 
 export class LayerManager {
   private readonly initialLayers: Layers;
-  private readonly getLayer: (id: string) => LayerInfo | undefined;
   private readonly map: Map;
-  private readonly layerMutations: IndexedDbStoreMutations<LayerInfo>;
+  private readonly layerStoreMutations: IndexedDbStoreMutations<LayerInfo>;
 
   constructor(options: IOptions) {
     this.map = options.map;
     this.initialLayers = options.initialLayers;
-    this.getLayer = options.getLayer;
-    this.layerMutations = options.layerMutations;
+    this.layerStoreMutations = options.layerStoreMutations;
 
     if (this.map) {
       this._loadInitialLayers();
@@ -55,10 +52,10 @@ export class LayerManager {
   }
 
   // Public methods to manage layers.
-  addRasterLayer(params: AddRasterLayerParams, show = true) {
+  async addRasterLayer(params: AddRasterLayerParams, show = true) {
     const { name, ...sourceSpec } = params;
     const id = this.map.createRasterLayer(sourceSpec, show);
-    this.layerMutations.setValue(id, {
+    await this.layerStoreMutations.addValue(id, {
       name,
       show,
       type: 'raster',
@@ -67,10 +64,10 @@ export class LayerManager {
     return id;
   }
 
-  addGeoJsonLayer(params: AddGeoJsonLayerParams, show = true) {
+  async addGeoJsonLayer(params: AddGeoJsonLayerParams, show = true) {
     const { name, ...sourceSpec } = params;
     const id = this.map.createGeoJSONLayer(sourceSpec, show);
-    this.layerMutations.setValue(id, {
+    await this.layerStoreMutations.addValue(id, {
       name,
       show,
       type: 'geojson',
@@ -79,10 +76,10 @@ export class LayerManager {
     return id;
   }
 
-  updateGeoJsonLayer(id: string, params: UpdateGeoJsonLayerParams) {
-    const layer = this.getLayer(id);
+  async updateGeoJsonLayer(id: string, params: UpdateGeoJsonLayerParams) {
+    const layer = await this.layerStoreMutations.getValue(id);
 
-    if (!layer || layer.type === 'raster') {
+    if (!layer || layer?.type === 'raster') {
       throw new Error('Wrong layer type or layer does not exist');
     }
 
@@ -99,8 +96,7 @@ export class LayerManager {
       );
     }
 
-    this.layerMutations.setValue(id, {
-      ...layer,
+    this.layerStoreMutations.updateValue(id, {
       name: updatedName,
       sourceSpec: {
         ...layer.sourceSpec,
@@ -109,13 +105,13 @@ export class LayerManager {
     });
   }
 
-  removeLayer(id: string) {
+  async removeLayer(id: string) {
     this.map.deleteLayer(id);
-    this.layerMutations.deleteValue(id);
+    await this.layerStoreMutations.deleteValue(id);
   }
 
-  toggleLayerVisibility(id: string) {
-    const layer = this.getLayer(id);
+  async toggleLayerVisibility(id: string) {
+    const layer = await this.layerStoreMutations.getValue(id);
     if (!layer) return;
 
     if (layer.show) {
@@ -124,11 +120,11 @@ export class LayerManager {
       this.map.showLayer(id);
     }
 
-    this.layerMutations.updateValue(id, { ...layer, show: !layer.show });
+    this.layerStoreMutations.updateValue(id, { show: !layer.show });
   }
 
-  zoomToLayer(id: string) {
-    const layer = this.getLayer(id);
+  async zoomToLayer(id: string) {
+    const layer = await this.layerStoreMutations.getValue(id);
     if (!layer) return;
 
     let bounds: LngLatBoundsLike | undefined;
