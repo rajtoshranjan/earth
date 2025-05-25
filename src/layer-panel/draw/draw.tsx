@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 
 import classNames from 'classnames';
-import { TerraDraw, TerraDrawMapLibreGLAdapter } from 'terra-draw';
+import { TerraDraw } from 'terra-draw';
+import { TerraDrawMapLibreGLAdapter } from 'terra-draw-maplibre-gl-adapter';
 
 import { GlobalContext } from '../../contexts';
 
