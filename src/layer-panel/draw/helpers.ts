@@ -89,7 +89,9 @@ export const setupModes = () => {
       styles: DEFAULT_STYLES,
     }),
     new TerraDrawLineStringMode({
-      snapping: true,
+      snapping: {
+        toCoordinate: true,
+      },
       styles: DEFAULT_STYLES,
     }),
     new TerraDrawPolygonMode({
@@ -99,7 +101,10 @@ export const setupModes = () => {
         outlineColor: DEFAULT_STYLES.polygonOutlineColor,
         outlineWidth: DEFAULT_STYLES.polygonOutlineWidth,
       },
-      snapping: true,
+      snapping: {
+        toLine: true,
+        toCoordinate: true,
+      },
     }),
     new TerraDrawRectangleMode({
       styles: {
