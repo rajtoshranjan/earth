@@ -41,7 +41,7 @@ export const Header = () => {
       {/* Right Side */}
       <div className="flex w-8/12 items-center justify-end gap-3 md:w-6/12 lg:w-3/12">
         {/* A vertical divider */}
-        <div className="h-6 w-px bg-gray-700" />
+        {/* <div className="h-6 w-px bg-gray-700" /> */}
         <Search />
       </div>
     </header>

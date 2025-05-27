@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useRef } from 'react';
 
 import {
   Combobox,
@@ -9,7 +9,7 @@ import {
 } from '@headlessui/react';
 import { Marker } from 'maplibre-gl';
 import { useDebounceValue } from 'usehooks-ts';
-import { Button, Icon, IconIdentifier, Spinner } from '../components';
+import { Icon, IconIdentifier, Spinner } from '../components';
 import { GlobalContext } from '../contexts';
 import {
   FeatureResponse,
@@ -35,8 +35,10 @@ export const Search: React.FC<SearchProps> = ({ className }) => {
   // State.
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [debouncedSearchQuery, setQuery] = useDebounceValue<string>('', 300);
-
   const [selectedLocationId, setSelectedLocationId] = useState<string>();
+
+  // Refs
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   // APIs.
   const { data: searchedLocations, isLoading: isLoadingLocations } =
@@ -52,6 +54,8 @@ export const Search: React.FC<SearchProps> = ({ className }) => {
     if (!selectedLocationFeatures) {
       return;
     }
+
+    setSelectedLocationId(selectedLocationFeatures.features[0].id);
 
     // Zoom to location.
     if (selectedLocationFeatures.features[0].bbox) {
@@ -92,6 +96,23 @@ export const Search: React.FC<SearchProps> = ({ className }) => {
     };
   }, [selectedLocationFeatures]);
 
+  // Click outside handler
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   // Handlers.
   const onPlaceSelect = (feature: FeatureResponse) => {
     if (!feature.place_name_en) {
@@ -103,72 +124,149 @@ export const Search: React.FC<SearchProps> = ({ className }) => {
     window.history.pushState(null, '', url.toString());
 
     setSelectedLocationId(feature.id);
+    setIsOpen(false); // Close after selection
   };
 
+  const handleToggleSearch = () => {
+    setIsOpen(!isOpen);
+    if (!isOpen) {
+      // Focus input when opening
+      setTimeout(() => {
+        const input = document.querySelector(
+          'input[type="search"]',
+        ) as HTMLInputElement;
+        input?.focus();
+      }, 100);
+    }
+  };
+
+  // Get selected location name for button display
+  const selectedLocation =
+    searchedLocations?.features.find(({ id }) => id === selectedLocationId) ||
+    selectedLocationFeatures?.features[0];
+  const selectedLocationName =
+    selectedLocation?.place_name_en?.split(',')[0] || 'Search';
+
   return (
-    <div className="relative">
-      <Button
-        className={classNames(className, {
-          '!bg-gray-700': isOpen,
-        })}
-        variant="secondary"
-        onClick={() => setIsOpen(!isOpen)}
+    <div className="relative" ref={dropdownRef}>
+      {/* Search Button */}
+      <button
+        onClick={handleToggleSearch}
+        className={classNames(
+          'inline-flex items-center gap-2 rounded-md border border-gray-700/50 bg-gray-900/90 p-1.5 text-sm/6 font-semibold text-gray-50 backdrop-blur-sm transition-all duration-200 hover:bg-gray-800/90 focus:outline-none',
+          className,
+          {
+            '!bg-gray-800/90 ring-2 ring-blue-500/30': isOpen,
+          },
+        )}
       >
-        <Icon identifier={IconIdentifier.Search} />
-      </Button>
+        <Icon identifier={IconIdentifier.Search} className="size-4" />
+        <span className="max-w-32 truncate text-sm">
+          {selectedLocationName}
+        </span>
+      </button>
+
+      {/* Search Dropdown */}
       <div
-        className={classNames('absolute right-0 top-12 min-w-52', {
-          hidden: !isOpen,
-        })}
+        className={classNames(
+          'absolute right-0 top-12 z-50 w-80 max-w-[calc(100vw-2rem)] transition-all duration-200',
+          {
+            'pointer-events-none scale-95 opacity-0': !isOpen,
+            'scale-100 opacity-100': isOpen,
+          },
+        )}
       >
-        <Combobox
-          value={searchedLocations?.features.find(
-            ({ id }) => id === selectedLocationId,
-          )}
-          onChange={onPlaceSelect}
-        >
-          <div className="flex items-center overflow-hidden rounded-lg bg-gray-700">
-            <Icon
-              identifier={IconIdentifier.Search}
-              className="ml-3 size-5 text-gray-400"
-            />
-            <ComboboxInput
-              type="search"
-              className="w-full border-none bg-gray-700 py-2 pl-2 pr-3 text-sm leading-5 text-gray-50 outline-none"
-              displayValue={(feature?: FeatureResponse) =>
-                feature?.place_name_en ?? ''
-              }
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search locations"
-              autoComplete="off"
-            />
+        <div className="overflow-hidden rounded-xl border border-gray-700/50 bg-gray-800/90 shadow-xl backdrop-blur-md">
+          {/* Header */}
+          <div className="border-b border-gray-700/50 px-4 py-3">
+            <div className="flex items-center gap-2">
+              <Icon
+                identifier={IconIdentifier.Search}
+                className="size-4 text-gray-400"
+              />
+              <h4 className="text-sm font-medium text-gray-200">
+                Search Locations
+              </h4>
+            </div>
+            <p className="mt-1 text-xs text-gray-400">
+              Find places, cities, and landmarks
+            </p>
           </div>
 
-          <ComboboxOptions className="absolute mt-1 max-h-80 w-full overflow-auto rounded-md bg-gray-800 py-1 text-base shadow-lg focus:outline-none">
-            {isLoadingLocations ? (
-              <div className="flex items-center justify-center py-1">
-                <Spinner />
-              </div>
-            ) : searchedLocations?.features.length === 0 &&
-              debouncedSearchQuery !== '' ? (
-              <div className="relative cursor-default select-none px-4 py-2 text-gray-50">
-                Nothing found.
-              </div>
-            ) : (
-              searchedLocations?.features.map((feature) => (
-                <ComboboxOption key={feature.id} value={feature}>
-                  {({ selected }) => (
-                    <SearchItem
-                      feature={feature}
-                      isSelected={feature.id === selectedLocationId}
-                      isActive={selected}
-                    />
+          {/* Search Input */}
+          <div className="p-3">
+            <Combobox value={selectedLocation} onChange={onPlaceSelect}>
+              <div className="relative">
+                <div className="flex items-center rounded-lg border border-gray-600/50 bg-gray-700/50 transition-all duration-200 focus-within:border-blue-500/50 focus-within:ring-1 focus-within:ring-blue-500/20">
+                  <Icon
+                    identifier={IconIdentifier.Search}
+                    className="ml-3 size-4 text-gray-400"
+                  />
+                  <ComboboxInput
+                    type="search"
+                    className="w-full border-none bg-transparent py-2.5 pl-2 pr-3 text-sm text-gray-50 outline-none placeholder:text-gray-400"
+                    displayValue={(feature?: FeatureResponse) =>
+                      feature?.place_name_en ?? ''
+                    }
+                    onChange={(e) => setQuery(e.target.value)}
+                    placeholder="Search for a location..."
+                    autoComplete="off"
+                  />
+                </div>
+
+                <ComboboxOptions className="mt-2 max-h-64 overflow-auto rounded-lg border border-gray-600/30 bg-gray-700/30">
+                  {debouncedSearchQuery === '' ? (
+                    <div className="px-4 py-8 text-center">
+                      <Icon
+                        identifier={IconIdentifier.Search}
+                        className="mx-auto mb-2 size-6 text-gray-500"
+                      />
+                      <p className="text-sm text-gray-400">
+                        Start typing to search locations
+                      </p>
+                    </div>
+                  ) : isLoadingLocations ? (
+                    <div className="flex items-center justify-center py-8">
+                      <Spinner className="size-[1.2rem]" />
+                      <span className="ml-2 text-sm text-gray-400">
+                        Searching...
+                      </span>
+                    </div>
+                  ) : !searchedLocations?.features ||
+                    searchedLocations.features.length === 0 ? (
+                    <div className="px-4 py-8 text-center">
+                      <Icon
+                        identifier={IconIdentifier.Close}
+                        className="mx-auto mb-2 size-8 text-gray-500"
+                      />
+                      <p className="text-sm text-gray-400">
+                        No locations found
+                      </p>
+                      <p className="mt-1 text-xs text-gray-500">
+                        Try a different search term
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="py-1">
+                      {searchedLocations.features.map((feature, index) => (
+                        <ComboboxOption key={feature.id} value={feature}>
+                          {({ focus }) => (
+                            <SearchItem
+                              feature={feature}
+                              isSelected={feature.id === selectedLocationId}
+                              isActive={focus}
+                              className={index === 0 ? 'mt-0' : ''}
+                            />
+                          )}
+                        </ComboboxOption>
+                      ))}
+                    </div>
                   )}
-                </ComboboxOption>
-              ))
-            )}
-          </ComboboxOptions>
-        </Combobox>
+                </ComboboxOptions>
+              </div>
+            </Combobox>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -188,28 +286,40 @@ const SearchItem: React.FC<SearchItemProps> = ({
   const placeAddress = place?.slice(1).join(', ');
 
   const customClassNames = classNames(
-    'flex items-center px-4 py-2 text-gray-200 hover:text-white select-none',
+    'relative flex items-center px-3 py-2.5 mx-1 rounded-lg cursor-pointer transition-all duration-200 group',
     className,
     {
-      'font-medium': isSelected,
-      'font-normal': !isSelected,
-      'bg-gray-700': isActive,
+      'bg-blue-600/20 border border-blue-500/30': isSelected,
+      'hover:bg-gray-600/50': !isSelected && !isActive,
+      'bg-gray-600/50': isActive && !isSelected,
     },
   );
 
   return (
     <div className={customClassNames} {...rest}>
-      <div className="w-full">
-        <p>{placeName}</p>
-        <p className="block truncate text-sm text-gray-400">{placeAddress}</p>
-      </div>
-      {isSelected && (
+      {/* Location Icon */}
+      <div
+        className={`mr-3 flex size-8 shrink-0 items-center justify-center rounded-md bg-gradient-to-br from-blue-500 to-purple-600 ${isSelected ? 'ring-2 ring-blue-400/50' : ''}`}
+      >
         <Icon
-          identifier={IconIdentifier.Tick}
-          className="ml-auto mr-1 size-4 text-teal-600"
-          title="selected"
+          identifier={IconIdentifier.PointMarker}
+          className="size-4 text-white"
         />
-      )}
+      </div>
+
+      {/* Content */}
+      <div className="min-w-0 flex-1">
+        <div className="flex items-center gap-2">
+          <p className="truncate text-sm font-medium text-gray-200 transition-colors group-hover:text-white">
+            {placeName}
+          </p>
+        </div>
+        {placeAddress && (
+          <p className="mt-0.5 truncate text-xs text-gray-400 transition-colors group-hover:text-gray-300">
+            {placeAddress}
+          </p>
+        )}
+      </div>
     </div>
   );
 };
