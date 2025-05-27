@@ -9,7 +9,7 @@ import {
 } from '@headlessui/react';
 import { Marker } from 'maplibre-gl';
 import { useDebounceValue } from 'usehooks-ts';
-import { Icon, IconIdentifier, Spinner } from '../components';
+import { Button, Icon, IconIdentifier, Spinner } from '../components';
 import { GlobalContext } from '../contexts';
 import {
   FeatureResponse,
@@ -30,10 +30,10 @@ export const Search: React.FC<SearchProps> = ({ className }) => {
   const { map } = useContext(GlobalContext);
 
   // Constants.
-  const customClassNames = classNames(['relative', 'w-full', className]);
   const url = new URL(window.location.href);
 
   // State.
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [debouncedSearchQuery, setQuery] = useDebounceValue<string>('', 300);
 
   const [selectedLocationId, setSelectedLocationId] = useState<string>();
@@ -106,55 +106,70 @@ export const Search: React.FC<SearchProps> = ({ className }) => {
   };
 
   return (
-    <div className={customClassNames}>
-      <Combobox
-        value={searchedLocations?.features.find(
-          ({ id }) => id === selectedLocationId,
-        )}
-        onChange={onPlaceSelect}
+    <div className="relative">
+      <Button
+        className={classNames(className, {
+          '!bg-gray-700': isOpen,
+        })}
+        variant="secondary"
+        onClick={() => setIsOpen(!isOpen)}
       >
-        <div className="flex items-center overflow-hidden rounded-lg bg-gray-700">
-          <Icon
-            identifier={IconIdentifier.Search}
-            className="ml-3 size-5 text-gray-400"
-          />
-          <ComboboxInput
-            type="search"
-            className="w-full border-none bg-gray-700 py-2 pl-2 pr-3 text-sm leading-5 text-gray-50 outline-none"
-            displayValue={(feature?: FeatureResponse) =>
-              feature?.place_name_en ?? ''
-            }
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search locations"
-            autoComplete="off"
-          />
-        </div>
-
-        <ComboboxOptions className="absolute mt-1 max-h-80 w-full overflow-auto rounded-md bg-gray-800 py-1 text-base shadow-lg focus:outline-none">
-          {isLoadingLocations ? (
-            <div className="flex items-center justify-center py-1">
-              <Spinner />
-            </div>
-          ) : searchedLocations?.features.length === 0 &&
-            debouncedSearchQuery !== '' ? (
-            <div className="relative cursor-default select-none px-4 py-2 text-gray-50">
-              Nothing found.
-            </div>
-          ) : (
-            searchedLocations?.features.map((feature) => (
-              <ComboboxOption key={feature.id} value={feature}>
-                {({ selected }) => (
-                  <SearchItem
-                    feature={feature}
-                    isSelected={feature.id === selectedLocationId}
-                    isActive={selected}
-                  />
-                )}
-              </ComboboxOption>
-            ))
+        <Icon identifier={IconIdentifier.Search} />
+      </Button>
+      <div
+        className={classNames('absolute right-0 top-12 min-w-52', {
+          hidden: !isOpen,
+        })}
+      >
+        <Combobox
+          value={searchedLocations?.features.find(
+            ({ id }) => id === selectedLocationId,
           )}
-        </ComboboxOptions>
-      </Combobox>
+          onChange={onPlaceSelect}
+        >
+          <div className="flex items-center overflow-hidden rounded-lg bg-gray-700">
+            <Icon
+              identifier={IconIdentifier.Search}
+              className="ml-3 size-5 text-gray-400"
+            />
+            <ComboboxInput
+              type="search"
+              className="w-full border-none bg-gray-700 py-2 pl-2 pr-3 text-sm leading-5 text-gray-50 outline-none"
+              displayValue={(feature?: FeatureResponse) =>
+                feature?.place_name_en ?? ''
+              }
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search locations"
+              autoComplete="off"
+            />
+          </div>
+
+          <ComboboxOptions className="absolute mt-1 max-h-80 w-full overflow-auto rounded-md bg-gray-800 py-1 text-base shadow-lg focus:outline-none">
+            {isLoadingLocations ? (
+              <div className="flex items-center justify-center py-1">
+                <Spinner />
+              </div>
+            ) : searchedLocations?.features.length === 0 &&
+              debouncedSearchQuery !== '' ? (
+              <div className="relative cursor-default select-none px-4 py-2 text-gray-50">
+                Nothing found.
+              </div>
+            ) : (
+              searchedLocations?.features.map((feature) => (
+                <ComboboxOption key={feature.id} value={feature}>
+                  {({ selected }) => (
+                    <SearchItem
+                      feature={feature}
+                      isSelected={feature.id === selectedLocationId}
+                      isActive={selected}
+                    />
+                  )}
+                </ComboboxOption>
+              ))
+            )}
+          </ComboboxOptions>
+        </Combobox>
+      </div>
     </div>
   );
 };

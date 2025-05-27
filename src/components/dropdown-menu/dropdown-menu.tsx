@@ -16,7 +16,7 @@ export const DropdownMenu: React.FC<DropdownMenuProps> &
   children,
   className,
   iconIdentifier,
-  buttonBodyText,
+  buttonBody: buttonBodyText,
   anchor = 'bottom end',
   ...rest
 }) => {

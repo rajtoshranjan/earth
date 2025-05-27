@@ -11,5 +11,5 @@ export type DropdownMenuProps = MenuButtonProps & {
   children: ReactNode;
   anchor?: AnchorProps;
   iconIdentifier?: IconIdentifier;
-  buttonBodyText?: string;
+  buttonBody?: ReactNode;
 };
