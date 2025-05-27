@@ -159,6 +159,11 @@ export const Search: React.FC<SearchProps> = ({ className }) => {
             '!bg-gray-800/90 ring-2 ring-blue-500/30': isOpen,
           },
         )}
+        title={
+          selectedLocation?.place_name_en
+            ? `Searched: ${selectedLocation?.place_name_en}`
+            : 'Search for a location'
+        }
       >
         <Icon identifier={IconIdentifier.Search} className="size-4" />
         <span className="max-w-32 truncate text-sm">
@@ -205,9 +210,6 @@ export const Search: React.FC<SearchProps> = ({ className }) => {
                   <ComboboxInput
                     type="search"
                     className="w-full border-none bg-transparent py-2.5 pl-2 pr-3 text-sm text-gray-50 outline-none placeholder:text-gray-400"
-                    displayValue={(feature?: FeatureResponse) =>
-                      feature?.place_name_en ?? ''
-                    }
                     onChange={(e) => setQuery(e.target.value)}
                     placeholder="Search for a location..."
                     autoComplete="off"
