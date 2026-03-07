@@ -147,6 +147,9 @@ export class Map extends MaplibreMap {
     const sourceId = id ?? uuid4();
     this.addSource(sourceId, {
       ...source,
+      bounds: source.bounds
+        ? (source.bounds.map(Number) as [number, number, number, number])
+        : undefined,
       type: 'vector',
     });
 
@@ -163,8 +166,7 @@ export class Map extends MaplibreMap {
       source: sourceId,
       'source-layer': sourceLayer,
       type: 'circle',
-      // eslint-disable-next-line prettier/prettier
-      filter: ['any', ['==', '$type', 'Point'], ['==', '$type', 'MultiPoint']],
+      filter: ['==', '$type', 'Point'],
       layout: {
         visibility: show ? 'visible' : 'none',
       },
@@ -182,11 +184,7 @@ export class Map extends MaplibreMap {
       source: sourceId,
       'source-layer': sourceLayer,
       type: 'line',
-      filter: [
-        'any',
-        ['==', '$type', 'LineString'],
-        ['==', '$type', 'MultiLineString'],
-      ],
+      filter: ['==', '$type', 'LineString'],
       layout: {
         visibility: show ? 'visible' : 'none',
         'line-join': 'round',
@@ -204,11 +202,7 @@ export class Map extends MaplibreMap {
       source: sourceId,
       'source-layer': sourceLayer,
       type: 'fill',
-      filter: [
-        'any',
-        ['==', '$type', 'Polygon'],
-        ['==', '$type', 'MultiPolygon'],
-      ],
+      filter: ['==', '$type', 'Polygon'],
       layout: {
         visibility: show ? 'visible' : 'none',
       },
@@ -224,11 +218,7 @@ export class Map extends MaplibreMap {
       source: sourceId,
       'source-layer': sourceLayer,
       type: 'line',
-      filter: [
-        'any',
-        ['==', '$type', 'Polygon'],
-        ['==', '$type', 'MultiPolygon'],
-      ],
+      filter: ['==', '$type', 'Polygon'],
       layout: {
         visibility: show ? 'visible' : 'none',
       },
