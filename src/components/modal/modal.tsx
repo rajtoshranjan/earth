@@ -91,7 +91,7 @@ export const Modal: React.FC<ModalProps> = ({
 
   // Constants.
   const customClassNames = classNames(
-    'fixed m-2 z-40 h-fit w-full max-w-sm transform overflow-hidden rounded-xl flex-col bg-gray-800 border pointer-events-auto border-gray-700 shadow-xl',
+    'fixed m-2 z-40 max-h-[calc(100svh-1rem)] w-full max-w-sm transform overflow-hidden rounded-xl flex flex-col bg-gray-800 border pointer-events-auto border-gray-700 shadow-xl',
     className,
   );
 
@@ -168,7 +168,9 @@ export const Modal: React.FC<ModalProps> = ({
         </div>
 
         {/* Body */}
-        <div className="overflow-y-auto p-4 text-gray-50">{children}</div>
+        <div className="flex-1 overflow-y-auto p-4 text-gray-50">
+          {children}
+        </div>
       </div>
     </Transition>
   );
