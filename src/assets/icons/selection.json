@@ -830,6 +830,28 @@
       "setIdx": 3,
       "setId": 2,
       "iconIdx": 19
+    },
+    {
+      "icon": {
+        "paths": [
+          "M512 0l-469.333 213.333v298.667c0 264.448 201.216 515.669 469.333 586.667 268.117-70.997 469.333-322.219 469.333-586.667v-298.667l-469.333-213.333z"
+        ],
+        "attrs": [{}],
+        "isMulticolor": false,
+        "isMulticolor2": false,
+        "grid": 0,
+        "tags": ["shield", "security", "protection"]
+      },
+      "attrs": [{}],
+      "properties": {
+        "order": 22,
+        "id": 2,
+        "name": "shield",
+        "prevSize": 32
+      },
+      "setIdx": 3,
+      "setId": 2,
+      "iconIdx": 20
     }
   ],
   "height": 1024,

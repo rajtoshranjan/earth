@@ -30,7 +30,7 @@ export const Header = () => {
         anchor="bottom start"
       >
         <DropdownMenu.Item onClick={() => setShowAuthModal(true)}>
-          <Icon identifier={IconIdentifier.Layer} className="size-4" /> Auth
+          <Icon identifier={IconIdentifier.Shield} className="size-4" /> Auth
           Methods
         </DropdownMenu.Item>
 
