@@ -43,7 +43,6 @@ export const Header = () => {
       </DropdownMenu>
 
       {/* Right Side */}
-      <div className="h-6 w-px bg-gray-700" />
       <div className="flex w-8/12 items-center justify-end gap-3 md:w-6/12 lg:w-4/12">
         <DropdownMenu
           iconIdentifier={IconIdentifier.Settings}
