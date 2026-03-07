@@ -1,12 +1,4 @@
-import {
-  Fieldset,
-  Tab,
-  TabGroup,
-  TabList,
-  TabPanel,
-  TabPanels,
-} from '@headlessui/react';
-import classNames from 'classnames';
+import { Fieldset } from '@headlessui/react';
 import React, { useCallback, useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import {
@@ -17,6 +9,11 @@ import {
   Modal,
   FileInput,
   Select,
+  Tab,
+  TabGroup,
+  TabList,
+  TabPanel,
+  TabPanels,
 } from '../components';
 import { GlobalContext } from '../contexts';
 import { useAuthStore } from '../core/auth';
@@ -137,35 +134,10 @@ export const AddVectorLayerModal: React.FC<AddLayerModalProps> = ({
   return (
     <Modal title="Add Vector Layer" show={show} onClose={onClose}>
       <TabGroup selectedIndex={activeTab} onChange={setActiveTab}>
-        <TabList className="mb-4 flex space-x-1 rounded-xl bg-gray-800 p-1">
-          <Tab
-            className={({ selected }) =>
-              classNames(
-                'w-full rounded-lg py-2.5 text-sm font-medium leading-5',
-                'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
-                selected
-                  ? 'bg-gray-700 text-white shadow'
-                  : 'text-gray-400 hover:bg-gray-700/[0.5] hover:text-white',
-              )
-            }
-          >
-            GeoJSON
-          </Tab>
-          <Tab
-            className={({ selected }) =>
-              classNames(
-                'w-full rounded-lg py-2.5 text-sm font-medium leading-5',
-                'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
-                selected
-                  ? 'bg-gray-700 text-white shadow'
-                  : 'text-gray-400 hover:bg-gray-700/[0.5] hover:text-white',
-              )
-            }
-          >
-            Tile Server (URL)
-          </Tab>
+        <TabList className="mb-4">
+          <Tab>GeoJSON</Tab>
+          <Tab>Tile Server (URL)</Tab>
         </TabList>
-
         <TabPanels>
           <TabPanel>
             <Fieldset as="form" onSubmit={handleSubmit(onSubmit)}>
