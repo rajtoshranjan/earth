@@ -39,9 +39,7 @@ export const AuthPanel: React.FC<AuthPanelProps> = ({ show, onClose }) => {
       {!isAdding ? (
         <div className="flex flex-col gap-4">
           <div className="flex items-center justify-between">
-            <h6 className="text-[0.8rem] font-medium text-gray-400">
-              Your Saved Methods
-            </h6>
+            <h6 className="font-medium text-gray-400">Your Saved Methods</h6>
             <Button
               variant="secondary"
               size="sm"
@@ -52,21 +50,38 @@ export const AuthPanel: React.FC<AuthPanelProps> = ({ show, onClose }) => {
               Add New
             </Button>
           </div>
-          <div className="flex max-h-60 flex-col gap-2 overflow-y-auto">
+          <div className="flex max-h-60 flex-col gap-3 overflow-y-auto">
             {Object.entries(authRecords).length === 0 ? (
-              <p className="py-4 text-center text-sm text-gray-500">
-                No auth methods found.
-              </p>
+              <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-gray-700 bg-gray-800/50 py-8">
+                <Icon
+                  identifier={IconIdentifier.Save}
+                  className="mb-3 size-8 text-gray-600"
+                />
+                <p className="text-sm font-medium text-gray-400">
+                  No auth methods found
+                </p>
+                <p className="mt-1 text-xs text-gray-500">
+                  Add one to use with your tiled layers
+                </p>
+              </div>
             ) : (
               Object.entries(authRecords).map(([id, record]) => (
                 <div
                   key={id}
-                  className="flex items-center justify-between rounded-lg border border-gray-700 bg-gray-800 p-3"
+                  className="group flex items-center justify-between rounded-xl border border-gray-700 bg-gray-800 p-3 transition-colors hover:border-blue-500/50 hover:bg-gray-800/80"
                 >
-                  <span className="text-sm text-gray-200">{record.name}</span>
+                  <div className="flex flex-col">
+                    <span className="text-sm font-medium text-gray-200">
+                      {record.name}
+                    </span>
+                    <span className="mt-0.5 text-xs text-gray-500">
+                      {record.headers.length} header
+                      {record.headers.length === 1 ? '' : 's'} configured
+                    </span>
+                  </div>
                   <button
                     onClick={() => authMutations.deleteValue(id)}
-                    className="text-gray-500 transition-colors hover:text-red-400"
+                    className="flex size-8 items-center justify-center rounded-lg text-gray-500 opacity-0 transition-all hover:bg-red-500/10 hover:text-red-400 group-hover:opacity-100"
                     title="Delete Method"
                   >
                     <Icon identifier={IconIdentifier.Bin} className="size-4" />
@@ -80,49 +95,55 @@ export const AuthPanel: React.FC<AuthPanelProps> = ({ show, onClose }) => {
         <Fieldset
           as="form"
           onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col gap-4"
+          className="flex flex-col gap-5"
         >
-          <Input
-            label="Method Name (e.g. My Protected Raster Server)"
-            {...register('name', { required: true })}
-          />
+          <div>
+            <h6 className="mb-3 text-[0.8rem] font-medium text-gray-400">
+              Auth Method Details
+            </h6>
+            <Input
+              label="Auth Name"
+              {...register('name', { required: true })}
+            />
+          </div>
 
           <div>
-            <div className="mb-2 flex items-center justify-between">
-              <label
-                htmlFor="custom-headers"
-                className="text-xs font-medium text-gray-300"
-              >
-                Custom Headers
-              </label>
+            <div className="mb-3 flex items-center justify-between">
+              <h6 className="text-[0.8rem] font-medium text-gray-400">
+                Headers Configuration
+              </h6>
             </div>
             <div
               id="custom-headers"
-              className="flex max-h-48 flex-col gap-3 overflow-y-auto rounded-lg border border-gray-700 bg-gray-800 p-2"
+              className="flex max-h-[300px] flex-col gap-3 overflow-y-auto rounded-xl border border-gray-700 bg-gray-900/50 p-3"
             >
               {fields.map((field, index) => (
-                <div key={field.id} className="flex items-center gap-2">
-                  <Input
-                    label=""
-                    className="flex-1"
-                    defaultValue={field.key}
-                    {...register(`headers.${index}.key` as const, {
-                      required: true,
-                    })}
-                  />
-                  <Input
-                    label=""
-                    className="flex-1"
-                    defaultValue={field.value}
-                    {...register(`headers.${index}.value` as const, {
-                      required: true,
-                    })}
-                  />
+                <div
+                  key={field.id}
+                  className="flex items-start gap-2 rounded-lg bg-gray-800 p-2"
+                >
+                  <div className="flex flex-1 flex-col gap-2">
+                    <Input
+                      label="Key"
+                      defaultValue={field.key}
+                      {...register(`headers.${index}.key` as const, {
+                        required: true,
+                      })}
+                    />
+                    <Input
+                      label="Value"
+                      defaultValue={field.value}
+                      {...register(`headers.${index}.value` as const, {
+                        required: true,
+                      })}
+                    />
+                  </div>
                   <button
                     type="button"
                     onClick={() => remove(index)}
-                    className="mt-1 flex shrink-0 items-center justify-center p-2 text-gray-500 hover:text-red-400"
+                    className="mt-1 flex size-8 shrink-0 items-center justify-center rounded-lg text-gray-500 transition-colors hover:bg-red-500/10 hover:text-red-400"
                     disabled={fields.length === 1}
+                    title="Remove Header"
                   >
                     <Icon identifier={IconIdentifier.Bin} className="size-4" />
                   </button>
@@ -132,21 +153,22 @@ export const AuthPanel: React.FC<AuthPanelProps> = ({ show, onClose }) => {
                 type="button"
                 variant="secondary"
                 size="sm"
-                className="mt-1 w-full justify-center text-xs"
+                className="mt-1 w-full justify-center border-dashed py-2 text-xs text-gray-400 hover:text-white"
                 onClick={() => append({ key: '', value: '' })}
                 iconIdentifier={IconIdentifier.Plus}
               >
-                Add Header
+                Add Another Header
               </Button>
             </div>
           </div>
 
-          <div className="mt-2 flex justify-end gap-2">
+          <div className="mt-2 flex justify-end gap-3">
             <Button
               type="button"
               variant="secondary"
               size="sm"
               onClick={() => setIsAdding(false)}
+              className="px-4"
             >
               Cancel
             </Button>
@@ -155,8 +177,9 @@ export const AuthPanel: React.FC<AuthPanelProps> = ({ show, onClose }) => {
               variant="secondary"
               size="sm"
               iconIdentifier={IconIdentifier.Save}
+              className="border"
             >
-              Save Details
+              Save Method
             </Button>
           </div>
         </Fieldset>

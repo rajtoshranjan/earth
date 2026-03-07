@@ -101,7 +101,10 @@ export const Layer: React.FC<LayerProps> = ({ layerInfo, layerId }) => {
                   onClick={() => setShowStyleModal(true)}
                   disabled={isEditing}
                 >
-                  <Icon identifier={IconIdentifier.Edit} className="size-4" />
+                  <Icon
+                    identifier={IconIdentifier.PaintBrush}
+                    className="size-4"
+                  />
                   Style
                 </DropdownMenu.Item>
 

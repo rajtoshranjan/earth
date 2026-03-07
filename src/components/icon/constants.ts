@@ -20,6 +20,7 @@ export enum IconIdentifier {
   Plus = 'plus',
   PointMarker = 'point-marker',
   Polygon = 'polygon',
+  PaintBrush = 'paint-brush',
   Rectangle = 'rectangle',
   Satellite = 'satellite',
   Save = 'save',
