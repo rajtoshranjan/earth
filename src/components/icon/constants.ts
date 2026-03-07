@@ -26,6 +26,7 @@ export enum IconIdentifier {
   Save = 'save',
   Search = 'search',
   Select = 'select',
+  Settings = 'settings',
   Shield = 'shield',
   Tick = 'tick',
   TileLayer = 'tiled-layer',

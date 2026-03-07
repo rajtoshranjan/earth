@@ -29,11 +29,6 @@ export const Header = () => {
         className="-ml-2 bg-transparent"
         anchor="bottom start"
       >
-        <DropdownMenu.Item onClick={() => setShowAuthModal(true)}>
-          <Icon identifier={IconIdentifier.Shield} className="size-4" /> Auth
-          Methods
-        </DropdownMenu.Item>
-
         <DropdownMenu.Item>
           <a
             href="https://github.com/rajtoshranjan/earth"
@@ -47,14 +42,26 @@ export const Header = () => {
         </DropdownMenu.Item>
       </DropdownMenu>
 
-      <AuthPanel show={showAuthModal} onClose={() => setShowAuthModal(false)} />
-
       {/* Right Side */}
-      <div className="flex w-8/12 items-center justify-end gap-3 md:w-6/12 lg:w-3/12">
+      <div className="h-6 w-px bg-gray-700" />
+      <div className="flex w-8/12 items-center justify-end gap-3 md:w-6/12 lg:w-4/12">
+        <DropdownMenu
+          iconIdentifier={IconIdentifier.Settings}
+          className="flex size-8 items-center justify-center rounded-lg border border-transparent bg-transparent text-gray-400 transition-colors hover:border-gray-700 hover:bg-gray-800 hover:text-gray-50 focus:border-gray-700 focus:bg-gray-800 focus:text-gray-50 data-[open]:border-gray-700 data-[open]:bg-gray-800 data-[open]:text-gray-50"
+          anchor="bottom end"
+        >
+          <DropdownMenu.Item onClick={() => setShowAuthModal(true)}>
+            <Icon identifier={IconIdentifier.Shield} className="size-4" />
+            Auth Methods
+          </DropdownMenu.Item>
+        </DropdownMenu>
+
         {/* A vertical divider */}
-        {/* <div className="h-6 w-px bg-gray-700" /> */}
+        <div className="h-6 w-px bg-gray-700" />
         <Search />
       </div>
+
+      <AuthPanel show={showAuthModal} onClose={() => setShowAuthModal(false)} />
     </header>
   );
 };

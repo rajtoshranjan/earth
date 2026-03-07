@@ -5,9 +5,9 @@ import { useLocalStorage, useToggle } from 'usehooks-ts';
 import { DropdownMenu, Icon, IconIdentifier, Spinner } from '../components';
 import { GlobalContext } from '../contexts';
 import { AddRasterLayerModal } from './add-raster-layer';
+import { AddVectorLayerModal } from './add-vector-layer';
 import { Draw } from './draw';
 import { Layer } from './layer';
-import { AddVectorLayerModal } from './add-vector-layer';
 
 export const LayerPanel = () => {
   // Context.
