@@ -16,11 +16,11 @@ export const Header = () => {
             <div className="flex w-6 items-center justify-center">
               <Icon
                 identifier={IconIdentifier.Earth}
-                className="size-6 text-blue-500 transition-all duration-150 group-hover:rotate-180 group-hover:opacity-0"
+                className="size-5 text-blue-500 transition-all duration-150 group-hover:rotate-180 group-hover:opacity-0"
               />
               <Icon
                 identifier={IconIdentifier.Down}
-                className="absolute size-4 opacity-0 transition-all duration-150 group-hover:rotate-0 group-hover:opacity-100"
+                className="absolute size-3 opacity-0 transition-all duration-150 group-hover:rotate-0 group-hover:opacity-100"
               />
             </div>
             <span className="text-lg font-bold text-gray-50">Earth</span>
