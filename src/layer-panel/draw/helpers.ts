@@ -7,9 +7,18 @@ import {
   TerraDrawFreehandMode,
   TerraDrawRectangleMode,
 } from 'terra-draw';
+import { Styles } from '../../core/maplibre';
 import { DEFAULT_STYLES } from './constants';
 
-export const setupModes = () => {
+export const setupModes = (styles: Styles = DEFAULT_STYLES) => {
+  const merged_styles = { ...DEFAULT_STYLES, ...styles };
+  const polygonStyles = {
+    fillColor: merged_styles.polygonFillColor!,
+    fillOpacity: merged_styles.polygonFillOpacity!,
+    outlineColor: merged_styles.polygonOutlineColor!,
+    outlineWidth: merged_styles.polygonOutlineWidth!,
+  };
+
   return [
     new TerraDrawSelectMode({
       flags: {
@@ -86,49 +95,31 @@ export const setupModes = () => {
       },
     }),
     new TerraDrawPointMode({
-      styles: DEFAULT_STYLES,
+      styles: {
+        pointColor: merged_styles.pointColor!,
+        pointWidth: merged_styles.pointWidth!,
+        pointOutlineColor: merged_styles.pointOutlineColor!,
+        pointOutlineWidth: merged_styles.pointOutlineWidth!,
+      },
     }),
     new TerraDrawLineStringMode({
       snapping: {
         toCoordinate: true,
       },
-      styles: DEFAULT_STYLES,
+      styles: {
+        lineStringColor: merged_styles.lineStringColor!,
+        lineStringWidth: merged_styles.lineStringWidth!,
+      },
     }),
     new TerraDrawPolygonMode({
-      styles: {
-        fillColor: DEFAULT_STYLES.polygonFillColor,
-        fillOpacity: DEFAULT_STYLES.polygonFillOpacity,
-        outlineColor: DEFAULT_STYLES.polygonOutlineColor,
-        outlineWidth: DEFAULT_STYLES.polygonOutlineWidth,
-      },
+      styles: polygonStyles,
       snapping: {
         toLine: true,
         toCoordinate: true,
       },
     }),
-    new TerraDrawRectangleMode({
-      styles: {
-        fillColor: DEFAULT_STYLES.polygonFillColor,
-        fillOpacity: DEFAULT_STYLES.polygonFillOpacity,
-        outlineColor: DEFAULT_STYLES.polygonOutlineColor,
-        outlineWidth: DEFAULT_STYLES.polygonOutlineWidth,
-      },
-    }),
-    new TerraDrawCircleMode({
-      styles: {
-        fillColor: DEFAULT_STYLES.polygonFillColor,
-        fillOpacity: DEFAULT_STYLES.polygonFillOpacity,
-        outlineColor: DEFAULT_STYLES.polygonOutlineColor,
-        outlineWidth: DEFAULT_STYLES.polygonOutlineWidth,
-      },
-    }),
-    new TerraDrawFreehandMode({
-      styles: {
-        fillColor: DEFAULT_STYLES.polygonFillColor,
-        fillOpacity: DEFAULT_STYLES.polygonFillOpacity,
-        outlineColor: DEFAULT_STYLES.polygonOutlineColor,
-        outlineWidth: DEFAULT_STYLES.polygonOutlineWidth,
-      },
-    }),
+    new TerraDrawRectangleMode({ styles: polygonStyles }),
+    new TerraDrawCircleMode({ styles: polygonStyles }),
+    new TerraDrawFreehandMode({ styles: polygonStyles }),
   ];
 };

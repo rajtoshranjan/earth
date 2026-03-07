@@ -8,7 +8,7 @@ import { GlobalContext } from '../../contexts';
 
 import { Button } from '../../components';
 import { toTitleCase } from '../../utils';
-import { MODES } from './constants';
+import { DEFAULT_STYLES, MODES } from './constants';
 import { DrawFeatureModal } from './draw-feature-modal';
 import { setupModes } from './helpers';
 import { Modes } from './types';
@@ -17,7 +17,7 @@ type DrawProps = React.HTMLProps<HTMLDivElement>;
 
 export const Draw: React.FC<DrawProps> = ({ className, ...rest }) => {
   // Context.
-  const { map } = useContext(GlobalContext);
+  const { map, editingLayerId, layers } = useContext(GlobalContext);
 
   // States.
   const [draw, setDraw] = useState<TerraDraw>();
@@ -52,6 +52,31 @@ export const Draw: React.FC<DrawProps> = ({ className, ...rest }) => {
       map?.off('load', loadTerraDraw);
     };
   }, [map]);
+
+  // Rebuild TerraDraw with layer styles when editing a layer, or reset to defaults.
+  useEffect(() => {
+    if (!draw || !map) return;
+    console.log('editingLayerId', editingLayerId);
+
+    const layer = editingLayerId ? layers?.[editingLayerId] : null;
+    const styles =
+      layer?.type === 'geojson' ? layer.sourceSpec.styles : DEFAULT_STYLES;
+
+    if (draw.enabled) draw.stop();
+
+    const newDraw = new TerraDraw({
+      adapter: new TerraDrawMapLibreGLAdapter({ map }),
+      modes: setupModes(styles),
+    });
+
+    if (editingLayerId) {
+      newDraw.start();
+      newDraw.setMode('select');
+      setSelectedMode('select');
+    }
+
+    setDraw(newDraw);
+  }, [editingLayerId]);
 
   // Handlers.
   const changeMode = (mode: Modes) => {

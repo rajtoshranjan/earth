@@ -30,7 +30,6 @@ type CreateLayerData = {
 export const DrawFeatureModal: React.FC<DrawFeatureModalProps> = ({
   draw,
   onClose,
-  changeMode,
   ...rest
 }) => {
   // Context.
@@ -119,10 +118,10 @@ export const DrawFeatureModal: React.FC<DrawFeatureModalProps> = ({
       draw.off('change', onDraw);
       draw.off('finish', onDrawEnd);
     };
-  }, []);
+  }, [draw]);
 
   useEffect(() => {
-    if (!layers || !editingLayerId) return;
+    if (!layers || !editingLayerId || !draw?.enabled) return;
 
     const layer = layers[editingLayerId];
     if (layer.type !== 'geojson') return;
@@ -142,12 +141,8 @@ export const DrawFeatureModal: React.FC<DrawFeatureModalProps> = ({
       layerManager?.zoomToLayer(editingLayerId);
     }
 
-    // Setup draw with initial features.
-    draw?.start();
     // @ts-ignore
-    draw?.addFeatures(features);
-
-    changeMode('select');
+    draw.addFeatures(features);
 
     // Setup initial form values.
     const featuresValue = features.reduce<Record<string, Feature>>(
@@ -162,7 +157,7 @@ export const DrawFeatureModal: React.FC<DrawFeatureModalProps> = ({
     // @ts-ignore
     setValue('drawnFeatures', featuresValue);
     setValue('layerName', layer.name);
-  }, [editingLayerId]);
+  }, [draw]);
 
   // Handlers.
   const onModalClose = () => {
