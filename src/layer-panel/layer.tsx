@@ -1,9 +1,10 @@
 import FileSaver from 'file-saver';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import toast from 'react-hot-toast';
 import { DropdownMenu, Icon, IconIdentifier } from '../components';
 import { GlobalContext } from '../contexts';
 import { LayerInfo } from '../core/hooks';
+import { StyleLayerModal } from './style-layer';
 
 type LayerProps = {
   layerId: string;
@@ -14,6 +15,9 @@ export const Layer: React.FC<LayerProps> = ({ layerInfo, layerId }) => {
   // Context.
   const { layerManager, editingLayerId, setEditingLayerId } =
     useContext(GlobalContext);
+
+  // States.
+  const [showStyleModal, setShowStyleModal] = useState(false);
 
   // Constants.
   const isEditing = layerId === editingLayerId;
@@ -37,87 +41,114 @@ export const Layer: React.FC<LayerProps> = ({ layerInfo, layerId }) => {
   };
 
   return (
-    <div
-      className="group inline-flex h-10 w-full items-center gap-2 whitespace-nowrap rounded-md px-3 text-sm font-medium text-gray-50 transition-colors hover:bg-gray-800 data-[active=true]:bg-gray-700 data-[visible=false]:text-gray-500"
-      data-visible={layerInfo.show}
-      data-active={isEditing}
-      draggable
-    >
-      <div>
-        <Icon
-          identifier={
-            layerInfo.type == 'raster'
-              ? IconIdentifier.TileLayer
-              : IconIdentifier.VectorLayer
-          }
-          className="p-[0.5px]"
-        />
-      </div>
-      <span className="truncate" title={layerInfo.name}>
-        {layerInfo.name}
-      </span>
-
-      <div className="ml-auto flex items-center gap-2 md:*:hidden md:group-hover:*:block">
-        <button
-          className="flex text-sm font-medium hover:text-gray-300 disabled:text-gray-500 group-data-[visible=false]:block"
-          onClick={async () => {
-            await layerManager?.toggleLayerVisibility(layerId);
-          }}
-          disabled={isEditing}
-          title={layerInfo.show ? 'Hide layer' : 'Show layer'}
-        >
+    <>
+      <div
+        className="group inline-flex h-10 w-full items-center gap-2 whitespace-nowrap rounded-md px-3 text-sm font-medium text-gray-50 transition-colors hover:bg-gray-800 data-[active=true]:bg-gray-700 data-[visible=false]:text-gray-500"
+        data-visible={layerInfo.show}
+        data-active={isEditing}
+        draggable
+      >
+        <div>
           <Icon
             identifier={
-              layerInfo.show ? IconIdentifier.Eye : IconIdentifier.EyeCross
+              layerInfo.type == 'raster'
+                ? IconIdentifier.TileLayer
+                : IconIdentifier.VectorLayer
             }
-            className="size-5"
+            className="p-[0.5px]"
           />
-        </button>
+        </div>
+        <span className="truncate" title={layerInfo.name}>
+          {layerInfo.name}
+        </span>
 
-        <DropdownMenu
-          iconIdentifier={IconIdentifier.MeatBallMenu}
-          className="bg-transparent px-[0.15rem] py-[0.1rem] data-[open]:block"
-          anchor="bottom end"
-          disabled={!layerInfo.show}
-          title="Show more options"
-        >
-          <DropdownMenu.Item
+        <div className="ml-auto flex items-center gap-2 md:*:hidden md:group-hover:*:block">
+          <button
+            className="flex text-sm font-medium hover:text-gray-300 disabled:text-gray-500 group-data-[visible=false]:block"
             onClick={async () => {
-              await layerManager?.zoomToLayer(layerId);
-            }}
-          >
-            <Icon identifier={IconIdentifier.Plane} className="size-4" />
-            Fly to
-          </DropdownMenu.Item>
-
-          {layerInfo.type === 'geojson' && (
-            <>
-              <DropdownMenu.Item onClick={onEditBtnClick} disabled={isEditing}>
-                <Icon identifier={IconIdentifier.Edit} className="size-4" />
-                Edit
-              </DropdownMenu.Item>
-
-              <DropdownMenu.Item
-                onClick={downloadDrawnLayer}
-                disabled={isEditing}
-              >
-                <Icon identifier={IconIdentifier.Download} className="size-4" />
-                Download
-              </DropdownMenu.Item>
-            </>
-          )}
-
-          <DropdownMenu.Item
-            onClick={async () => {
-              await layerManager?.removeLayer(layerId);
+              await layerManager?.toggleLayerVisibility(layerId);
             }}
             disabled={isEditing}
+            title={layerInfo.show ? 'Hide layer' : 'Show layer'}
           >
-            <Icon identifier={IconIdentifier.Bin} className="size-4" />
-            Delete
-          </DropdownMenu.Item>
-        </DropdownMenu>
+            <Icon
+              identifier={
+                layerInfo.show ? IconIdentifier.Eye : IconIdentifier.EyeCross
+              }
+              className="size-5"
+            />
+          </button>
+
+          <DropdownMenu
+            iconIdentifier={IconIdentifier.MeatBallMenu}
+            className="bg-transparent px-[0.15rem] py-[0.1rem] data-[open]:block"
+            anchor="bottom end"
+            disabled={!layerInfo.show}
+            title="Show more options"
+          >
+            <DropdownMenu.Item
+              onClick={async () => {
+                await layerManager?.zoomToLayer(layerId);
+              }}
+            >
+              <Icon identifier={IconIdentifier.Plane} className="size-4" />
+              Fly to
+            </DropdownMenu.Item>
+
+            {layerInfo.type === 'geojson' && (
+              <>
+                <DropdownMenu.Item
+                  onClick={() => setShowStyleModal(true)}
+                  disabled={isEditing}
+                >
+                  <Icon identifier={IconIdentifier.Edit} className="size-4" />
+                  Style
+                </DropdownMenu.Item>
+
+                <DropdownMenu.Item
+                  onClick={onEditBtnClick}
+                  disabled={isEditing}
+                >
+                  <Icon identifier={IconIdentifier.Edit} className="size-4" />
+                  Edit
+                </DropdownMenu.Item>
+
+                <DropdownMenu.Item
+                  onClick={downloadDrawnLayer}
+                  disabled={isEditing}
+                >
+                  <Icon
+                    identifier={IconIdentifier.Download}
+                    className="size-4"
+                  />
+                  Download
+                </DropdownMenu.Item>
+              </>
+            )}
+
+            <DropdownMenu.Item
+              onClick={async () => {
+                await layerManager?.removeLayer(layerId);
+              }}
+              disabled={isEditing}
+            >
+              <Icon identifier={IconIdentifier.Bin} className="size-4" />
+              Delete
+            </DropdownMenu.Item>
+          </DropdownMenu>
+        </div>
       </div>
-    </div>
+
+      {layerInfo.type === 'geojson' && (
+        <StyleLayerModal
+          show={showStyleModal}
+          onClose={() => setShowStyleModal(false)}
+          layerId={layerId}
+          currentStyles={layerInfo.sourceSpec.styles}
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          layerData={layerInfo.sourceSpec.data as any}
+        />
+      )}
+    </>
   );
 };

@@ -1,7 +1,7 @@
 import * as turf from '@turf/turf';
 import { LngLatBoundsLike } from 'maplibre-gl';
 import { IndexedDbStoreMutations } from 'use-idb-store';
-import { Map } from '../../maplibre';
+import { Map, Styles } from '../../maplibre';
 import {
   AddGeoJsonLayerParams,
   AddRasterLayerParams,
@@ -121,6 +121,18 @@ export class LayerManager {
     }
 
     this.layerStoreMutations.updateValue(id, { show: !layer.show });
+  }
+
+  async updateLayerStyles(id: string, styles: Styles) {
+    const layer = await this.layerStoreMutations.getValue(id);
+    if (!layer || layer.type !== 'geojson') return;
+
+    await this.layerStoreMutations.updateValue(id, {
+      sourceSpec: {
+        ...layer.sourceSpec,
+        styles: { ...layer.sourceSpec.styles, ...styles },
+      },
+    });
   }
 
   async zoomToLayer(id: string) {

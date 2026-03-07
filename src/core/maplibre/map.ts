@@ -5,6 +5,7 @@ import {
   CreateRasterLayerSpecs,
   LayerIdsMap,
   LayerType,
+  Styles,
 } from './types';
 
 export class Map extends MaplibreMap {
@@ -175,5 +176,62 @@ export class Map extends MaplibreMap {
 
   hideLayer(id: string) {
     this.setLayerVisibility(id, 'none');
+  }
+
+  updateGeoJSONLayerStyles(id: string, styles: Styles) {
+    const {
+      pointLayerId,
+      lineLayerId,
+      polygonBoundaryLayerId,
+      polygonLayerId,
+    } = this._getLayerIds(id, 'geojson');
+
+    if (styles.pointColor !== undefined)
+      this.setPaintProperty(pointLayerId, 'circle-color', styles.pointColor);
+    if (styles.pointWidth !== undefined)
+      this.setPaintProperty(pointLayerId, 'circle-radius', styles.pointWidth);
+    if (styles.pointOutlineColor !== undefined)
+      this.setPaintProperty(
+        pointLayerId,
+        'circle-stroke-color',
+        styles.pointOutlineColor,
+      );
+    if (styles.pointOutlineWidth !== undefined)
+      this.setPaintProperty(
+        pointLayerId,
+        'circle-stroke-width',
+        styles.pointOutlineWidth,
+      );
+
+    if (styles.lineStringColor !== undefined)
+      this.setPaintProperty(lineLayerId, 'line-color', styles.lineStringColor);
+    if (styles.lineStringWidth !== undefined)
+      this.setPaintProperty(lineLayerId, 'line-width', styles.lineStringWidth);
+
+    if (styles.polygonOutlineColor !== undefined)
+      this.setPaintProperty(
+        polygonBoundaryLayerId,
+        'line-color',
+        styles.polygonOutlineColor,
+      );
+    if (styles.polygonOutlineWidth !== undefined)
+      this.setPaintProperty(
+        polygonBoundaryLayerId,
+        'line-width',
+        styles.polygonOutlineWidth,
+      );
+
+    if (styles.polygonFillColor !== undefined)
+      this.setPaintProperty(
+        polygonLayerId,
+        'fill-color',
+        styles.polygonFillColor,
+      );
+    if (styles.polygonFillOpacity !== undefined)
+      this.setPaintProperty(
+        polygonLayerId,
+        'fill-opacity',
+        styles.polygonFillOpacity,
+      );
   }
 }
