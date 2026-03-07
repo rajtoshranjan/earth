@@ -5,6 +5,7 @@ import { Map, Styles } from '../../maplibre';
 import {
   AddGeoJsonLayerParams,
   AddRasterLayerParams,
+  AddVectorLayerParams,
   LayerInfo,
   Layers,
   UpdateGeoJsonLayerParams,
@@ -47,31 +48,72 @@ export class LayerManager {
             layerInfo.show,
           );
           break;
+        case 'vector':
+          this.map.createVectorLayer(
+            { id, ...layerInfo.sourceSpec },
+            layerInfo.show,
+          );
+          break;
       }
     });
   }
 
   // Public methods to manage layers.
   async addRasterLayer(params: AddRasterLayerParams, show = true) {
-    const { name, ...sourceSpec } = params;
-    const id = this.map.createRasterLayer(sourceSpec, show);
+    const { name, authRecordId, ...sourceSpec } = params;
+
+    const modifiedSourceSpec = {
+      ...sourceSpec,
+      tiles: (sourceSpec.tiles || []).map((t) =>
+        authRecordId
+          ? `${t}${t.includes('?') ? '&' : '?'}x-earth-auth-id=${authRecordId}`
+          : t,
+      ),
+    };
+
+    const id = this.map.createRasterLayer(modifiedSourceSpec, show);
     await this.layerStoreMutations.addValue(id, {
       name,
       show,
+      authRecordId,
       type: 'raster',
-      sourceSpec,
+      sourceSpec: modifiedSourceSpec,
     });
     return id;
   }
 
   async addGeoJsonLayer(params: AddGeoJsonLayerParams, show = true) {
-    const { name, ...sourceSpec } = params;
+    const { name, authRecordId, ...sourceSpec } = params;
     const id = this.map.createGeoJSONLayer(sourceSpec, show);
     await this.layerStoreMutations.addValue(id, {
       name,
       show,
+      authRecordId,
       type: 'geojson',
       sourceSpec,
+    });
+    return id;
+  }
+
+  async addVectorLayer(params: AddVectorLayerParams, show = true) {
+    const { name, authRecordId, ...sourceSpec } = params;
+
+    const modifiedSourceSpec = {
+      ...sourceSpec,
+      tiles: (sourceSpec.tiles || []).map((t) =>
+        authRecordId
+          ? `${t}${t.includes('?') ? '&' : '?'}x-earth-auth-id=${authRecordId}`
+          : t,
+      ),
+    };
+
+    const id = this.map.createVectorLayer(modifiedSourceSpec, show);
+    await this.layerStoreMutations.addValue(id, {
+      name,
+      show,
+      authRecordId,
+      type: 'vector',
+      sourceSpec: modifiedSourceSpec,
     });
     return id;
   }
@@ -79,7 +121,7 @@ export class LayerManager {
   async updateGeoJsonLayer(id: string, params: UpdateGeoJsonLayerParams) {
     const layer = await this.layerStoreMutations.getValue(id);
 
-    if (!layer || layer?.type === 'raster') {
+    if (!layer || layer?.type !== 'geojson') {
       throw new Error('Wrong layer type or layer does not exist');
     }
 
@@ -125,11 +167,18 @@ export class LayerManager {
 
   async updateLayerStyles(id: string, styles: Styles) {
     const layer = await this.layerStoreMutations.getValue(id);
-    if (!layer || layer.type !== 'geojson') return;
+    if (!layer || layer.type === 'raster') return;
+
+    if (layer.type === 'geojson') {
+      this.map.updateGeoJSONLayerStyles(id, styles);
+    } else if (layer.type === 'vector') {
+      this.map.updateVectorLayerStyles(id, styles);
+    }
 
     await this.layerStoreMutations.updateValue(id, {
       sourceSpec: {
-        ...layer.sourceSpec,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        ...(layer.sourceSpec as any),
         styles: { ...layer.sourceSpec.styles, ...styles },
       },
     });
@@ -144,7 +193,7 @@ export class LayerManager {
     if (layer.type === 'geojson' && typeof layer.sourceSpec.data !== 'string') {
       const bbox = turf.bbox(layer.sourceSpec.data);
       bounds = [bbox[0], bbox[1], bbox[2], bbox[3]];
-    } else if (layer.type === 'raster') {
+    } else if (layer.type === 'raster' || layer.type === 'vector') {
       bounds = layer.sourceSpec.bounds;
     }
 

@@ -1,8 +1,16 @@
 import React, { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { Fieldset } from '@headlessui/react';
-import { Button, IconIdentifier, Input, Modal } from '../components';
+import {
+  Button,
+  BoundsInput,
+  IconIdentifier,
+  Input,
+  Modal,
+  Select,
+} from '../components';
 import { GlobalContext } from '../contexts';
+import { useAuthStore } from '../core/auth';
 
 type AddLayerModalProps = {
   onClose: VoidFunction;
@@ -17,6 +25,7 @@ type FormData = {
   westLongitude: number;
   eastLongitude: number;
   southLatitude: number;
+  authRecordId: string;
 };
 
 export const AddRasterLayerModal: React.FC<AddLayerModalProps> = ({
@@ -25,6 +34,7 @@ export const AddRasterLayerModal: React.FC<AddLayerModalProps> = ({
 }) => {
   // Context.
   const { layerManager } = useContext(GlobalContext);
+  const { values: authRecords } = useAuthStore();
 
   // Hooks.
   const {
@@ -39,6 +49,7 @@ export const AddRasterLayerModal: React.FC<AddLayerModalProps> = ({
       westLongitude: -180.0,
       eastLongitude: 180.0,
       southLatitude: -85.0,
+      authRecordId: '',
     },
   });
 
@@ -54,6 +65,7 @@ export const AddRasterLayerModal: React.FC<AddLayerModalProps> = ({
         data.northLatitude,
       ],
       tileSize: data.tileSize,
+      authRecordId: data.authRecordId || undefined,
     });
 
     reset();
@@ -71,6 +83,22 @@ export const AddRasterLayerModal: React.FC<AddLayerModalProps> = ({
           error={errors.name}
           {...register('name', { required: true })}
         />
+
+        {/* Authentication */}
+        {Object.keys(authRecords).length > 0 && (
+          <Select
+            label="Auth Method (Optional)"
+            className="mt-5"
+            {...register('authRecordId')}
+          >
+            <option value="">None</option>
+            {Object.entries(authRecords).map(([id, record]) => (
+              <option key={id} value={id}>
+                {record.name}
+              </option>
+            ))}
+          </Select>
+        )}
 
         {/* Tile Overlay */}
         <h6 className="mt-5 text-sm text-gray-500">Tile Overlay</h6>
@@ -110,55 +138,7 @@ export const AddRasterLayerModal: React.FC<AddLayerModalProps> = ({
         />
 
         {/* Tile Coverage */}
-        <h6 className="mt-5 text-sm text-gray-500">Tile Coverage (bounds)</h6>
-        <div className="mt-2 flex flex-col items-center justify-center gap-5 py-2">
-          <Input
-            className="w-6/12"
-            label="North Latitude"
-            type="number"
-            {...register('northLatitude', {
-              required: true,
-              max: 85,
-              min: -85,
-            })}
-            error={errors.northLatitude}
-          />
-          <div className="flex items-center justify-center gap-2">
-            <Input
-              className="w-6/12"
-              label="West Longitude"
-              type="number"
-              {...register('westLongitude', {
-                required: true,
-                max: 180,
-                min: -180,
-              })}
-              error={errors.westLongitude}
-            />
-            <Input
-              className="w-6/12"
-              label="East Longitude"
-              type="number"
-              {...register('eastLongitude', {
-                required: true,
-                max: 180,
-                min: -180,
-              })}
-              error={errors.eastLongitude}
-            />
-          </div>
-          <Input
-            className="w-6/12"
-            label="South Latitude"
-            type="number"
-            {...register('southLatitude', {
-              required: true,
-              max: 85,
-              min: -85,
-            })}
-            error={errors.southLatitude}
-          />
-        </div>
+        <BoundsInput register={register} errors={errors} required={true} />
 
         <Button
           type="submit"

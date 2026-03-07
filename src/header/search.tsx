@@ -114,8 +114,8 @@ export const Search: React.FC<SearchProps> = ({ className }) => {
   }, []);
 
   // Handlers.
-  const onPlaceSelect = (feature: FeatureResponse) => {
-    if (!feature.place_name_en) {
+  const onPlaceSelect = (feature: FeatureResponse | null) => {
+    if (!feature || !feature.place_name_en) {
       return;
     }
 

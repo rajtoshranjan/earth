@@ -1,6 +1,7 @@
 import {
   RasterSourceSpecification,
   GeoJSONSourceSpecification,
+  VectorSourceSpecification,
 } from 'maplibre-gl';
 import { HexColor } from 'terra-draw';
 
@@ -12,6 +13,12 @@ export type LayerIdsMap = {
     polygonLayerId: string;
   };
   raster: string;
+  vector: {
+    pointLayerId: string;
+    lineLayerId: string;
+    polygonBoundaryLayerId: string;
+    polygonLayerId: string;
+  };
 };
 
 export type LayerType = keyof LayerIdsMap;
@@ -38,5 +45,11 @@ export type CreateGeoJSONLayerSpecs = Omit<
   'type'
 > & {
   id?: string;
+  styles: Styles;
+};
+
+export type CreateVectorLayerSpecs = Omit<VectorSourceSpecification, 'type'> & {
+  id?: string;
+  sourceLayer: string;
   styles: Styles;
 };

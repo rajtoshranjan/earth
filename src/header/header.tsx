@@ -1,8 +1,12 @@
+import { useState } from 'react';
 import { DropdownMenu, Icon, IconIdentifier } from '../components';
+import { AuthPanel } from '../auth-panel';
 
 import { Search } from './search';
 
 export const Header = () => {
+  const [showAuthModal, setShowAuthModal] = useState(false);
+
   return (
     <header className="sticky top-0 z-50 flex h-[3.4rem] w-full items-center justify-between border-b border-gray-700 bg-gray-900 px-4">
       {/* Left Side */}
@@ -25,6 +29,11 @@ export const Header = () => {
         className="-ml-2 bg-transparent"
         anchor="bottom start"
       >
+        <DropdownMenu.Item onClick={() => setShowAuthModal(true)}>
+          <Icon identifier={IconIdentifier.Layer} className="size-4" /> Auth
+          Methods
+        </DropdownMenu.Item>
+
         <DropdownMenu.Item>
           <a
             href="https://github.com/rajtoshranjan/earth"
@@ -37,6 +46,8 @@ export const Header = () => {
           </a>
         </DropdownMenu.Item>
       </DropdownMenu>
+
+      <AuthPanel show={showAuthModal} onClose={() => setShowAuthModal(false)} />
 
       {/* Right Side */}
       <div className="flex w-8/12 items-center justify-end gap-3 md:w-6/12 lg:w-3/12">

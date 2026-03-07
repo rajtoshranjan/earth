@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import React, { HTMLProps, useContext, useEffect, useRef } from 'react';
 import { useMediaQuery } from 'usehooks-ts';
 import { GlobalContext } from '../contexts';
+import { useAuthStore } from '../core/auth';
 import { Map } from '../core/maplibre';
 import { baseStyleSpec } from './constants';
 import { setupMapControls } from './helpers';
@@ -15,6 +16,12 @@ export const MapView: React.FC<HTMLProps<HTMLDivElement>> = ({
 
   // Context.
   const { setMap } = useContext(GlobalContext);
+  const { values: authRecords } = useAuthStore();
+  const authRecordsRef = useRef(authRecords);
+
+  useEffect(() => {
+    authRecordsRef.current = authRecords;
+  }, [authRecords]);
 
   // Constants.
   const customClassNames = classNames(
@@ -40,6 +47,28 @@ export const MapView: React.FC<HTMLProps<HTMLDivElement>> = ({
       maxPitch: 180,
       rollEnabled: true,
       maxZoom: 24,
+      transformRequest: (url) => {
+        const authIdMatch = url.match(/[?&]x-earth-auth-id=([^&]+)/);
+        if (authIdMatch) {
+          const authId = authIdMatch[1];
+          // Clean the URL by removing the query param
+          const cleanUrl = url
+            .replace(new RegExp(`([?&])x-earth-auth-id=${authId}(&|$)`), '$1')
+            .replace(/[?&]$/, '');
+
+          const authRecord = authRecordsRef.current[authId];
+          const headers: Record<string, string> = {};
+          if (authRecord) {
+            authRecord.headers.forEach((h) => {
+              if (h.key && h.value) {
+                headers[h.key] = h.value;
+              }
+            });
+          }
+          return { url: cleanUrl, headers };
+        }
+        return { url };
+      },
     });
 
     setupMapControls(maplibreMap);
