@@ -15,13 +15,33 @@ export const MapView: React.FC<HTMLProps<HTMLDivElement>> = ({
   const mapContainerRef = useRef(null);
 
   // Context.
-  const { setMap } = useContext(GlobalContext);
+  const { setMap, map, activeBasemap } = useContext(GlobalContext);
   const { values: authRecords } = useAuthStore();
   const authRecordsRef = useRef(authRecords);
 
   useEffect(() => {
     authRecordsRef.current = authRecords;
   }, [authRecords]);
+
+  // Sync basemap layer visibilities
+  useEffect(() => {
+    if (!map) return;
+
+    const basemapLayerIds = ['satellite', 'standard', 'light', 'dark'];
+    basemapLayerIds.forEach((id) => {
+      try {
+        if (map.getLayer(id)) {
+          map.setLayoutProperty(
+            id,
+            'visibility',
+            activeBasemap === id ? 'visible' : 'none',
+          );
+        }
+      } catch (err) {
+        console.warn(`Failed to toggle visibility for layer ${id}:`, err);
+      }
+    });
+  }, [map, activeBasemap]);
 
   // Constants.
   const customClassNames = classNames(

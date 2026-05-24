@@ -17,6 +17,7 @@ function App() {
   // States.
   const [map, setMap] = useState<Map>();
   const [editingLayerId, setEditingLayerId] = useState<string>();
+  const [activeBasemap, setActiveBasemap] = useState<string>('satellite');
 
   // Hooks.
   const {
@@ -36,6 +37,8 @@ function App() {
           layerManager,
           editingLayerId,
           setEditingLayerId,
+          activeBasemap,
+          setActiveBasemap,
         }}
       >
         <Header />

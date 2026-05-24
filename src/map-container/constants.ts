@@ -57,15 +57,70 @@ export const baseStyleSpec: StyleSpecification = {
       tileSize: 256,
       maxzoom: 22,
     },
+    standard: {
+      type: 'raster',
+      tiles: ['https://tile.openstreetmap.org/{z}/{x}/{y}.png'],
+      tileSize: 256,
+      maxzoom: 19,
+      attribution: '&copy; OpenStreetMap contributors',
+    },
+    light: {
+      type: 'raster',
+      tiles: ['https://basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png'],
+      tileSize: 256,
+      maxzoom: 20,
+      attribution: '&copy; CARTO',
+    },
+    dark: {
+      type: 'raster',
+      tiles: ['https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png'],
+      tileSize: 256,
+      maxzoom: 20,
+      attribution: '&copy; CARTO',
+    },
 
     terrainSource,
   },
 
   layers: [
     {
+      id: 'background',
+      type: 'background',
+      paint: {
+        'background-color': '#111827',
+      },
+    },
+    {
       id: 'satellite',
       type: 'raster',
       source: 'satellite',
+      layout: {
+        visibility: 'visible',
+      },
+    },
+    {
+      id: 'standard',
+      type: 'raster',
+      source: 'standard',
+      layout: {
+        visibility: 'none',
+      },
+    },
+    {
+      id: 'light',
+      type: 'raster',
+      source: 'light',
+      layout: {
+        visibility: 'none',
+      },
+    },
+    {
+      id: 'dark',
+      type: 'raster',
+      source: 'dark',
+      layout: {
+        visibility: 'none',
+      },
     },
   ],
 };

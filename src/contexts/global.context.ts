@@ -11,8 +11,11 @@ type GlobalContextType = {
   layerManager?: LayerManager;
   editingLayerId?: string;
   setEditingLayerId?: React.Dispatch<React.SetStateAction<string | undefined>>;
+  activeBasemap?: string;
+  setActiveBasemap?: React.Dispatch<React.SetStateAction<string>>;
 };
 
 export const GlobalContext = createContext<GlobalContextType>({
   isLayerLoading: true,
+  activeBasemap: 'satellite',
 });
