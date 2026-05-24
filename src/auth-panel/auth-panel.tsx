@@ -12,7 +12,8 @@ type AuthPanelProps = {
 
 export const AuthPanel: React.FC<AuthPanelProps> = ({ show, onClose }) => {
   const { values: authRecords, mutations: authMutations } = useAuthStore();
-  const [isAdding, setIsAdding] = useState(false);
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [editId, setEditId] = useState<string | null>(null);
 
   const { register, control, handleSubmit, reset } = useForm<AuthRecord>({
     defaultValues: { name: '', headers: [{ key: 'Authorization', value: '' }] },
@@ -24,19 +25,31 @@ export const AuthPanel: React.FC<AuthPanelProps> = ({ show, onClose }) => {
   });
 
   const onSubmit = async (data: AuthRecord) => {
-    await authMutations.addValue(uuid4(), data);
+    if (editId) {
+      await authMutations.updateValue(editId, data);
+      setEditId(null);
+    } else {
+      await authMutations.addValue(uuid4(), data);
+    }
     reset();
-    setIsAdding(false);
+    setIsFormOpen(false);
   };
 
   const handleCreateNew = () => {
     reset({ name: '', headers: [{ key: 'Authorization', value: '' }] });
-    setIsAdding(true);
+    setEditId(null);
+    setIsFormOpen(true);
+  };
+
+  const handleEdit = (id: string, record: AuthRecord) => {
+    reset(record);
+    setEditId(id);
+    setIsFormOpen(true);
   };
 
   return (
     <Modal title="Auth Methods" show={show} onClose={onClose}>
-      {!isAdding ? (
+      {!isFormOpen ? (
         <div className="flex flex-col gap-4">
           <div className="flex items-center justify-between">
             <h6 className="font-medium text-gray-400">Your Saved Methods</h6>
@@ -70,7 +83,7 @@ export const AuthPanel: React.FC<AuthPanelProps> = ({ show, onClose }) => {
                   key={id}
                   className="group flex items-center justify-between rounded-xl border border-gray-700 bg-gray-800 p-3 transition-colors hover:border-blue-500/50 hover:bg-gray-800/80"
                 >
-                  <div className="flex flex-col">
+                  <div className="flex flex-1 flex-col">
                     <span className="text-sm font-medium text-gray-200">
                       {record.name}
                     </span>
@@ -79,13 +92,28 @@ export const AuthPanel: React.FC<AuthPanelProps> = ({ show, onClose }) => {
                       {record.headers.length === 1 ? '' : 's'} configured
                     </span>
                   </div>
-                  <button
-                    onClick={() => authMutations.deleteValue(id)}
-                    className="flex size-8 items-center justify-center rounded-lg text-gray-500 opacity-0 transition-all hover:bg-red-500/10 hover:text-red-400 group-hover:opacity-100"
-                    title="Delete Method"
-                  >
-                    <Icon identifier={IconIdentifier.Bin} className="size-4" />
-                  </button>
+                  <div className="flex items-center gap-2 opacity-0 transition-all group-hover:opacity-100">
+                    <button
+                      onClick={() => handleEdit(id, record)}
+                      className="flex size-8 items-center justify-center rounded-lg text-gray-500 transition-colors hover:bg-blue-500/10 hover:text-blue-400"
+                      title="Edit Method"
+                    >
+                      <Icon
+                        identifier={IconIdentifier.Edit}
+                        className="size-4"
+                      />
+                    </button>
+                    <button
+                      onClick={() => authMutations.deleteValue(id)}
+                      className="flex size-8 items-center justify-center rounded-lg text-gray-500 transition-colors hover:bg-red-500/10 hover:text-red-400"
+                      title="Delete Method"
+                    >
+                      <Icon
+                        identifier={IconIdentifier.Bin}
+                        className="size-4"
+                      />
+                    </button>
+                  </div>
                 </div>
               ))
             )}
@@ -99,7 +127,7 @@ export const AuthPanel: React.FC<AuthPanelProps> = ({ show, onClose }) => {
         >
           <div>
             <h6 className="mb-3 text-[0.8rem] font-medium text-gray-400">
-              Auth Method Details
+              {editId ? 'Edit Auth Method' : 'Auth Method Details'}
             </h6>
             <Input
               label="Auth Name"
@@ -167,7 +195,7 @@ export const AuthPanel: React.FC<AuthPanelProps> = ({ show, onClose }) => {
               type="button"
               variant="secondary"
               size="sm"
-              onClick={() => setIsAdding(false)}
+              onClick={() => setIsFormOpen(false)}
               className="px-4"
             >
               Cancel
@@ -179,7 +207,7 @@ export const AuthPanel: React.FC<AuthPanelProps> = ({ show, onClose }) => {
               iconIdentifier={IconIdentifier.Save}
               className="border"
             >
-              Save Method
+              {editId ? 'Update Method' : 'Save Method'}
             </Button>
           </div>
         </Fieldset>
